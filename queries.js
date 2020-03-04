@@ -1,11 +1,12 @@
-const Pool = require('pg').Pool
+const Pool = require('pg').Pool;
 const pool = new Pool({
-  user: 'Darren',
-  host: 'localhost',
+  user: 'postgres',
+  host: '172.21.148.170',
   database: 'kuropets_db',
-  password: '',
+  password: 'Kuroducky',
   port: 5432,
-})
+});
+
 const getUsers = (request, response) => {
   pool.query('SELECT * FROM tbl_account', (error, results) => {
     if (error) {
