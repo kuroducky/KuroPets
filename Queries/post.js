@@ -2,21 +2,23 @@ const pool = require('./connect')
 
 const getPost = (req, res) =>
 {
-    pool.query('SELECT * FROM "tbl_Post"'), (error, results) =>
+    pool.query('SELECT * FROM "tbl_Post"', (error, results) =>
     {
         if(error)
         {
             throw error;
         }
         res.status(200).json(results.rows);
-    }
+    })
 }
 
 const getAllAccountPost = (req,res) =>
 {
-    const accountID = parseInt(req.params.id)
+    const accountID = parseInt(req.params.id);
 
-    pool.query('SELECT * FROM "tbl_Post" WHERE "accountID" = $1' ), [accountID], (error, results) =>
+    console.log(accountID);
+
+    pool.query('SELECT * FROM "tbl_Post" WHERE "accountID" = $1' , [accountID], (error, results) =>
 
     {
         if(error)
@@ -24,21 +26,21 @@ const getAllAccountPost = (req,res) =>
             throw error;
         }
         res.status(200).json(results.rows)
-    }
+    })
 }
 
 const getOneAccountPost = (req, res) =>
 {
     const accountID = parseInt(req.params.id)
     const postID = parseInt(req.params.pid)
-    pool.query('SELECT * FROM "tbl_Post" WHERE "accountID" = $1 AND "postID" = $2') , [accountID, postID], (error,results) =>
+    pool.query('SELECT * FROM "tbl_Post" WHERE "accountID" = $1 AND "postID" = $2' , [accountID, postID], (error,results) =>
     {
         if(error)
         {
             throw error;
         }
         res.status(200).json(results.rows);
-    }
+    })
 }
 
 const createPost = (req,res) =>
@@ -61,14 +63,14 @@ const updatePost = (req,res) =>
     const accountID = parseInt(req.params.id)
     const postID = parseInt(req.params.pid)
 
-    const {postStatus, postTitle, postDescription, postLocation, postStartDate, postEndDate, postDate, postTypeOfPet, postService} = req.body
+    const {postStatus, postTitle, postDescription, postLocation, postStartDate, postEndDate, postDate, postTypeOfPet, postService} = req.body;
 
-    pool.query('UPDATE "tbl_Post" SET postStatus = $1, postTitle = $2, postDescription = $3, postLocation = $4, postStartDate = $5, postEndDate = $6, postDate = $7, postTypeOfPet = $8, postService = $9 WHERE "accountID" = $10 AND "postID" = $11') , [postStatus, postTitle, postDescription, postLocation, postStartDate, postEndDate, postDate, postTypeOfPet, postService, accountID, postID], (error, results) =>
+    pool.query('UPDATE "tbl_Post" SET "postStatus" = $1, "postTitle" = $2, "postDescription" = $3, "postLocation" = $4, "postStartDate" = $5, "postEndDate" = $6, "postDate" = $7, "postTypeOfPet" = $8, "postService" = $9 WHERE "accountID" = $10 AND "postID" = $11 RETURNING *;' , [postStatus, postTitle, postDescription, postLocation, postStartDate, postEndDate, postDate, postTypeOfPet, postService, accountID, postID], (error, results) =>
     {
         if(error)
             throw error;
-        res.status(201).send(`${results.postID} updated by ${results.accountID}`)
-    }
+        res.status(201).send(`${results.rows[0].postID} updated by ${results.rows[0].accountID}`)
+    })
 }
 
 const deletePost = (req,res) =>
