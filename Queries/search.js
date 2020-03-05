@@ -21,7 +21,7 @@ const searchPost = (req, res) => {
     if(req.body.TypeOfService !== undefined)
         parameters.TypeOfService = request.body.TypeOfService;
 
-    if (Object.keys(parameters).length = 0){
+    if (Object.keys(parameters).length == 0){
         pool.query('SELECT * FROM "tbl_Post"', (error, results) => {
             if (error){
                 throw error;
@@ -40,6 +40,7 @@ const searchPost = (req, res) => {
             }
         }
         queryString = queryString.substring(4);
+        console.log(queryString)
 
         pool.query('SELECT * FROM "tbl_Post" WHERE $1', [queryString], (error, results) => {
             if (error) {
@@ -50,17 +51,9 @@ const searchPost = (req, res) => {
     }
 }
 
-const searchUser = (res, res) => {
-    var parameters = {};
-
-    if(req.body.accountName !== undefined)
-        parameters.accountName = request.body.accountName;
-
-    if(req.body.TypeOfService !== undefined)
-        parameters.TypeOfService = request.body.TypeOfService;
-
-    if (Object.keys(parameters).length = 0){
-        pool.query('SELECT * FROM "tbl_User"', (error, results) => {
+const searchUser = (req, res) => {
+    if (req.body.accountName == undefined){
+        pool.query('SELECT * FROM "tbl_Account"', (error, results) => {
             if (error){
                 throw error;
             }
@@ -68,18 +61,9 @@ const searchUser = (res, res) => {
         });
     }
     else {
-        var queryString = '';
-        for (const key in parameters){
-            if (key = 'periodOfCaretaking'){
-                queryString += ` AND "postEndDate" - "postStartDate" = ${parameters[key]}`;
-            }
-            else {
-                queryString += ` AND "${key}" = ${parameters[key]}`;
-            }
-        }
-        queryString = queryString.substring(4);
+        const { accountName } = req.body;
 
-        pool.query('SELECT * FROM "tbl_User" WHERE $1', [queryString], (error, results) => {
+        pool.query('SELECT * FROM "tbl_Account" WHERE "accountName" = $1', [accountName], (error, results) => {
             if (error) {
                 throw error;
             }
