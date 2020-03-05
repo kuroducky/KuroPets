@@ -78,6 +78,7 @@ const searchUser = (req, res) => {
             }
         }
         queryString = queryString.substring(4);
+        console.log(queryString);
 
         pool.query('SELECT * FROM "tbl_Account" WHERE $1', [queryString], (error, results) => {
             if (error) {
