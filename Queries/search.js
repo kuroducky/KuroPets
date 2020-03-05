@@ -1,4 +1,4 @@
-const pool = require('./queries')
+const pool = require('./connect')
 
 const searchPost = (request, response) => {
     var parameters = {};

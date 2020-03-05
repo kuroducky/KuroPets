@@ -1,4 +1,4 @@
-const pool = require('./queries')
+const pool = require('./connect')
 
 const getAllRatings = (request, response) => {
     pool.query('SELECT * FROM tbl_Rating', (error, results) => {

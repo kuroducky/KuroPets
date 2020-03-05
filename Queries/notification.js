@@ -1,4 +1,4 @@
-const pool = require('./queries')
+const pool = require('./connect')
 
 const getAllNotifications = (request, response) => {
     pool.query('SELECT * FROM tbl_Notification', (error, results) => {

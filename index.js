@@ -29,8 +29,20 @@ app.get('/api/search/post', db.search.searchPost);
 app.get('/api/search/user', db.search.searchUser);
 
 // Post endpoints
+app.get('/api/post', db.post.getPost);
+app.get('/api/post/:id', db.post.getAllAccountPost);
+app.get('/api/post/:id/:pid', db.post.getOneAccountPost);
+app.post('/api/post', db.post.createPost);
+app.put('/api/post/:id/:pid', db.post.updatePost);
+app.delete('/api/post/:id/:pid', db.post.deletePost);
 
 // Image endpoints
+app.get('/api/image/:pid', db.image.getImages)
+app.get('/api/image/:pid/:imid', db.image.getOneImage)
+app.post('/api/image/:pid', db.image.postImage)
+app.put('/api/image/:id/:imid', db.image.updatePost)
+app.delete('/api/image/:pid', db.image.deleteAllImages)
+app.delete('/api/image/:pid/:imid', db.image.deleteOneImage)
 
 // Offer endpoints
 app.get('/offer', db.offer.getAllOffers)
