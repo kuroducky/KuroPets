@@ -1,3 +1,5 @@
+const pool = require('./queries')
+
 const searchPost = (request, response) => {
     var parameters = {};
 

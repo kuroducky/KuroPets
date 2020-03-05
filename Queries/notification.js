@@ -1,3 +1,4 @@
+const pool = require('./queries')
 
 const getAllNotifications = (request, response) => {
     pool.query('SELECT * FROM tbl_Notification', (error, results) => {
@@ -23,8 +24,8 @@ const getUserNotification = (request, response) => {
     const Aid = parseInt(request.params.accID)
     const Nid = parseInt(request.params.notifID)
 
-    pool.query('SELECT * FROM tbl_Notification WHERE accountID = $1 AND notificationID = $2', 
-    [Aid, Nid], 
+    pool.query('SELECT * FROM tbl_Notification WHERE accountID = $1 AND notificationID = $2',
+    [Aid, Nid],
     (error, results) => {
         if (error) {
             throw error
@@ -37,8 +38,8 @@ const createNotification = (request, response) => {
     const id = parseInt(request.params.id)
     const {type , timestamp} = request.body
 
-    pool.query('INSERT INTO tbl_Notification (notificationType, notificationTimestamp, accountID) VALUES ($1, $2, $3)', 
-    [type, timestamp, id], 
+    pool.query('INSERT INTO tbl_Notification (notificationType, notificationTimestamp, accountID) VALUES ($1, $2, $3)',
+    [type, timestamp, id],
     (error, results) => {
         if (error) {
             throw error
@@ -74,11 +75,11 @@ const deleteUserNotification = (request, response) => {
     })
 }
 
-module.exports = Notification;
-
-// app.get('/notification', db.notification.getAllNotifications)
-// app.get('/notification/:id', db.notification.getAllUserNotifications)
-// app.get('/notification/:accID/:notifID', db.notification.getUserNotification)
-// app.post('/notification/:id', db.notification.createNotification)
-// app.delete('/notification/:id', db.notification.deleteAllUserNotifications)
-// app.delete('/notification/:accID/:notifID', db.notification.deleteUserNotification)
+module.exports = {
+    getAllNotifications,
+    getAllUserNotifications,
+    getUserNotification,
+    createNotification,
+    deleteAllUserNotifications,
+    deleteUserNotification
+};

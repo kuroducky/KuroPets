@@ -1,6 +1,4 @@
-import { Pool } from "pg"
-import { response } from "express"
-import { parse } from "querystring"
+const pool = require('./queries')
 
 const getAllOffers = (request, response) => {
     pool.query('SELECT * FROM tbl_Offers',
@@ -111,12 +109,3 @@ module.exports = {
     deleteAllOffers,
     deleteOffer
 };
-
-// app.get('/offer', db.offer.getAllOffers)
-// app.get('/offer/:id', db.offer.getAllPostOffers)
-// app.get('/offer/:pid/:oid', db.offer.getPostOffer)
-// app.get('/user/:id/offer', db.offer.getAllUserOffers)
-// app.post('/offer/:id', db.offer.createOffer)
-// app.put('/offer/:pid/:oid', db.offer.updateOffer)
-// app.delete('/offer/:id', db.offer.deleteAllOffers)
-// app.delete('/offer/:pid/:oid', db.deleteOffer)
