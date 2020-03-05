@@ -22,7 +22,7 @@ const searchPost = (request, response) => {
         parameters.TypeOfService = request.body.TypeOfService;
 
     if (Object.keys(parameters).length = 0){
-        pool.query('SELECT * FROM tbl_post', (error, results) => {
+        pool.query('SELECT * FROM "tbl_post"', (error, results) => {
             if (error){
                 throw error;
             }
@@ -41,7 +41,7 @@ const searchPost = (request, response) => {
         }
         queryString = queryString.substring(4);
 
-        pool.query('SELECT * FROM tbl_post WHERE $1', [queryString], (error, results) => {
+        pool.query('SELECT * FROM "tbl_post" WHERE $1', [queryString], (error, results) => {
             if (error) {
                 throw error;
             }
@@ -60,7 +60,7 @@ const searchUser = (request, response) => {
         parameters.TypeOfService = request.body.TypeOfService;
 
     if (Object.keys(parameters).length = 0){
-        pool.query('SELECT * FROM tbl_user', (error, results) => {
+        pool.query('SELECT * FROM "tbl_user"', (error, results) => {
             if (error){
                 throw error;
             }
@@ -79,7 +79,7 @@ const searchUser = (request, response) => {
         }
         queryString = queryString.substring(4);
 
-        pool.query('SELECT * FROM tbl_user WHERE $1', [queryString], (error, results) => {
+        pool.query('SELECT * FROM "tbl_user" WHERE $1', [queryString], (error, results) => {
             if (error) {
                 throw error;
             }
