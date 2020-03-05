@@ -1,3 +1,5 @@
+const pool = require('./queries')
+
 const getUsers = (request, response) => {
     pool.query('SELECT * FROM tbl_account', (error, results) => {
         if (error) {

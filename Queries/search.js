@@ -86,11 +86,6 @@ const searchUser = (request, response) => {
     }
 }
 
-/*
-app.get('/api/search/post', db.searchPost)
-app.get('/api/search/user', db.searchUser)
-*/
-
 module.exports = {
     searchPost,
     searchUser

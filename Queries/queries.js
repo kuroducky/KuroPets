@@ -1,4 +1,5 @@
 const Pool = require('pg').Pool;
+
 module.exports = new Pool({
   user: 'postgres',
   host: '172.21.148.170',

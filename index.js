@@ -1,7 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const requireDir = require('require-dir')
-const pool = require('./queries')
 const db = requireDir('./Queries')
 
 const app = express()
@@ -25,8 +24,13 @@ app.post('/api/user', db.account.createUser)
 app.put('/api/user/:id', db.account.updateUser)
 app.delete('/api/user/:id', db.account.deleteUser)
 
+// Search Endpoints
+app.get('/api/search/post', db.search.searchPost)
+app.get('/api/search/user', db.search.searchUser)
 
+// Location endpoints
 app.get('/api/location/vet', db.location.getVets)
+app.get('/api/location/park', db.location.getParks)
 
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)
