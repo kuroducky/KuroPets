@@ -1,3 +1,5 @@
+const pool = require('./connect')
+
 const getAllChats = (request, response) => {
     pool.query('SELECT * FROM "tbl_Chat"', (error, results) => {
         if (error) {
@@ -47,13 +49,8 @@ const createChat = (request, response) => {
 }
 
 module.exports = {
-    getAllChats, 
+    getAllChats,
     getAllUserChats,
     getUserChat,
     createChat
 };
-
-// app.get('/chat', db.chat.getAllChats)
-// app.get('/chat/:id', db.chat.getAllUserChats)
-// app.get('/chat/:accID1/:accID2', db.chat.getUserChat)
-// app.post('/chat/:accID1/:accID2', db.chat.createChat)

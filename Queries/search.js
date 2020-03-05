@@ -1,3 +1,5 @@
+const pool = require('./connect')
+
 const searchPost = (request, response) => {
     var parameters = {};
 

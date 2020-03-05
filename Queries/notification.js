@@ -1,3 +1,4 @@
+const pool = require('./connect')
 
 const getAllNotifications = (request, response) => {
     pool.query('SELECT * FROM "tbl_Notification"', (error, results) => {
@@ -74,11 +75,11 @@ const deleteUserNotification = (request, response) => {
     })
 }
 
-module.exports = Notification;
-
-// app.get('/notification', db.notification.getAllNotifications)
-// app.get('/notification/:id', db.notification.getAllUserNotifications)
-// app.get('/notification/:accID/:notifID', db.notification.getUserNotification)
-// app.post('/notification/:id', db.notification.createNotification)
-// app.delete('/notification/:id', db.notification.deleteAllUserNotifications)
-// app.delete('/notification/:accID/:notifID', db.notification.deleteUserNotification)
+module.exports = {
+    getAllNotifications,
+    getAllUserNotifications,
+    getUserNotification,
+    createNotification,
+    deleteAllUserNotifications,
+    deleteUserNotification
+};

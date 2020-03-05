@@ -1,4 +1,3 @@
-
 const request = require('request');
 
 const vetUrl = 'https://data.gov.sg/api/action/datastore_search?resource_id=b2871270-4eef-44a3-be98-908e2a73b19f&limit=5';

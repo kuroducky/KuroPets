@@ -1,3 +1,5 @@
+const pool = require('./connect')
+
 const getAllRatings = (request, response) => {
     pool.query('SELECT * FROM "tbl_Rating"', (error, results) => {
         if (error) {
@@ -65,9 +67,3 @@ module.exports = {
     deleteAllUserRatings,
     deleteUserRating
 };
-
-// app.get('/rating', db.rating.getAllRatings)
-// app.get('/rating/:id', db.rating.getUserRatings)
-// app.post('/rating/:id', db.rating.createRating)
-// app.delete('/rating/:id', db.rating.deleteAllUserRatings)
-// app.delete('/rating/:rateeID/:ratingID', db.rating.deleteUserRating)
