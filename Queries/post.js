@@ -46,9 +46,9 @@ const getOneAccountPost = (req, res) =>
 const createPost = (req,res) =>
 {
     const accountID = parseInt(req.params.id);
-    const {postStatus, postTitle, postDescription, postLocation, postStartDate, postEndDate, postTypeOfPet, postService} = req.body
-    pool.query('INSERT INTO "tbl_Post"("postStatus", "postTitle", "postDescription", "postLocation", "postStartDate", "postEndDate", "postDate", "postTypeOfPet", "postService", "accountID") VALUES ($1, $2, $3, $4, $5, $6, current_timestamp, $7, $8,$9) RETURNING *;',
-    [postStatus, postTitle, postDescription, postLocation, postStartDate, postEndDate, postTypeOfPet, postService, accountID],
+    const {postTitle, postDescription, postLocation, postStartDate, postEndDate, postTypeOfPet, postService} = req.body
+    pool.query('INSERT INTO "tbl_Post"("postStatus", "postTitle", "postDescription", "postLocation", "postStartDate", "postEndDate", "postDate", "postTypeOfPet", "postService", "accountID") VALUES ($1, $2, $3, $4, $5, $6, current_timestamp, $7, $8, $9) RETURNING *;',
+    ['Pending Service', postTitle, postDescription, postLocation, postStartDate, postEndDate, postTypeOfPet, postService, accountID],
     (error,results) =>
     {
         console.log(results.rows);
