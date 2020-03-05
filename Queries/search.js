@@ -3,23 +3,23 @@ const pool = require('./connect')
 const searchPost = (req, res) => {
     var parameters = {};
 
-    if(req.body.postTitle !== undefined)
-        parameters.postTitle = req.body.postTitle;
+    if(req.query.postTitle !== undefined)
+        parameters.postTitle = req.query.postTitle;
 
-    if(req.body.postDescription !== undefined)
-        parameters.postDescription = req.body.postDescription;
+    if(req.query.postDescription !== undefined)
+        parameters.postDescription = req.query.postDescription;
 
-    if(req.body.postLocation !== undefined)
-        parameters.postLocation = req.body.postLocation;
+    if(req.query.postLocation !== undefined)
+        parameters.postLocation = req.query.postLocation;
 
-    if(req.body.periodOfCaretaking !== undefined)
-        parameters.periodOfCaretaking = req.body.periodOfCaretaking;
+    if(req.query.periodOfCaretaking !== undefined)
+        parameters.periodOfCaretaking = req.query.periodOfCaretaking;
 
-    if(req.body.TypeOfPet !== undefined)
-        parameters.TypeOfPet = req.body.TypeOfPet;
+    if(req.query.TypeOfPet !== undefined)
+        parameters.TypeOfPet = req.query.TypeOfPet;
 
-    if(req.body.TypeOfService !== undefined)
-        parameters.TypeOfService = req.body.TypeOfService;
+    if(req.query.TypeOfService !== undefined)
+        parameters.TypeOfService = req.query.TypeOfService;
 
     if (Object.keys(parameters).length == 0){
         pool.query('SELECT * FROM "tbl_Post"', (error, results) => {
@@ -36,10 +36,10 @@ const searchPost = (req, res) => {
                 queryString += ` AND "postEndDate" - "postStartDate" = ${parameters[key]}`;
             }
             else {
-                queryString += ` AND "${key}" ILIKE '%${parameters[key]}%'`;
+                queryString += ` AND "${key}" = ${parameters[key]}`;
             }
         }
-        queryString = queryString.substring(4);
+        queryString = queryString.substring(5);
         console.log(queryString)
 
         pool.query('SELECT * FROM "tbl_Post" WHERE $1', [queryString], (error, results) => {
@@ -52,7 +52,7 @@ const searchPost = (req, res) => {
 }
 
 const searchUser = (req, res) => {
-    if (req.body.accountName === undefined){
+    if (req.query.accountName === undefined){
         pool.query('SELECT * FROM "tbl_Account"', (error, results) => {
             if (error){
                 throw error;
@@ -61,7 +61,7 @@ const searchUser = (req, res) => {
         });
     }
     else {
-        pool.query('SELECT * FROM "tbl_Account" WHERE "accountName" ILIKE $1', [`%${req.body.accountName}%`], (error, results) => {
+        pool.query('SELECT * FROM "tbl_Account" WHERE "accountName" ILIKE $1', [`%${req.query.accountName}%`], (error, results) => {
             if (error) {
                 throw error;
             }
