@@ -28,6 +28,7 @@ const getOneImage = (req, res) =>
 
 const postImage = (req,res) =>
 {
+    const postID = parseInt(req.params.pid); 
     const {imageURL} = req.body;
 
     pool.query('INSERT INTO "tbl_Images" (imageURL) VALUES ($1) WHERE postID = $2'), [imageURL, postID], (error,results) =>

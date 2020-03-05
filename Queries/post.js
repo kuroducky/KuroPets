@@ -43,9 +43,10 @@ const getOneAccountPost = (req, res) =>
 
 const createPost = (req,res) =>
 {
+    console.log(req.params.id);
+    const accountID = parseInt(req.params.id)
     const {postStatus, postTitle, postDescription, postLocation, postStartDate, postEndDate, postDate, postTypeOfPet, postService} = req.body
-
-    pool.query('INSERT INTO "tbl_Post"("postStatus", "postTitle", "postDescription", "postLocation", "postStartDate", "postEndDate", "postDate", "postTypeOfPet", "postService") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9 WHERE accountID = $10', [postStatus, postTitle, postDescription, postLocation, postStartDate, postEndDate, postDate, postTypeOfPet, postService, accountID], (error,results) =>
+    pool.query('INSERT INTO "tbl_Post"("postStatus", "postTitle", "postDescription", "postLocation", "postStartDate", "postEndDate", "postDate", "postTypeOfPet", "postService") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) WHERE accountID = $10', [postStatus, postTitle, postDescription, postLocation, postStartDate, postEndDate, postDate, postTypeOfPet, postService, accountID], (error,results) =>
     {
         if(error)
             throw error;
