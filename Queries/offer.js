@@ -12,7 +12,7 @@ const getAllOffers = (request, response) => {
 
 const getAllPostOffers = (request, response) => {
     const id = parseInt(request.params.id)
-    pool.query('SELECT * FROM "tbl_Offers" WHERE postID = $1',
+    pool.query('SELECT * FROM "tbl_Offers" WHERE "postID" = $1',
     [id],
     (error, results) => {
         if(error){
@@ -25,7 +25,7 @@ const getAllPostOffers = (request, response) => {
 const getPostOffer = (request, response) => {
     const pid = parseInt(request.params.pid)
     const oid = parseInt(request.params.oid)
-    pool.query('SELECT * FROM "tbl_Offers" WHERE postID = $1 AND offerID = $2',
+    pool.query('SELECT * FROM "tbl_Offers" WHERE "postID" = $1 AND "offerID" = $2',
     [pid, oid],
     (error, results) => {
         if(error){
@@ -37,7 +37,7 @@ const getPostOffer = (request, response) => {
 
 const getAllUserOffers = (request, response) => {
     const id = parseInt(request.params.id)
-    pool.query('SELECT * FROM "tbl_Offers" WHERE accountID = $1',
+    pool.query('SELECT * FROM "tbl_Offers" WHERE "accountID" = $1',
     [id],
     (error, results) => {
         if(error){
@@ -50,7 +50,7 @@ const getAllUserOffers = (request, response) => {
 const createOffer = (request, response) => {
     const id = parseInt(request.params.id)
     const {accID, offerPrice, offerPayment} = request.body
-    pool.query('INSERT INTO "tbl_Offers" (postID, accountID, offerPrice, offerPaymentType, offerStatus) VALUES ($1, $2, $3, $4, "Pending"',
+    pool.query('INSERT INTO "tbl_Offers" ("postID", "accountID", "offerPrice", "offerPaymentType", "offerStatus") VALUES ($1, $2, $3, $4, "Pending"',
     [id, accID, offerPrice, offerPayment],
     (error, results) => {
         if(error){
@@ -64,7 +64,7 @@ const updateOffer = (request, response) => {
     const pid = parseInt(request.params.pid)
     const oid = parseInt(request.params.oid)
     const {accID, offerPrice, offerPayment, offerStatus} = request.body
-    pool.query('UPDATE "tbl_Offers" SET offerPrice = $1, offerPayment = $2, offerStatus = $3 WHERE postID = $4 AND offerID = $5 AND accountID = $6',
+    pool.query('UPDATE "tbl_Offers" SET "offerPrice" = $1, "offerPayment" = $2, "offerStatus" = $3 WHERE "postID" = $4 AND "offerID" = $5 AND "accountID" = $6',
     [offerPrice, offerPayment, offerStatus, pid, oid, accID],
     (error, results) => {
         if(error){
@@ -76,7 +76,7 @@ const updateOffer = (request, response) => {
 
 const deleteAllOffers = (request, response) => {
     const id = parseInt(request.params.id)
-    pool.query('DELETE FROM "tbl_Offers" WHERE postID = $1',
+    pool.query('DELETE FROM "tbl_Offers" WHERE "postID" = $1',
     [id],
     (error, results) => {
         if(error){
@@ -89,7 +89,7 @@ const deleteAllOffers = (request, response) => {
 const deleteOffer = (request, response) => {
     const pid = parseInt(request.params.pid)
     const oid = parseInt(request.params.oid)
-    pool.query('DELETE FROM "tbl_Offers" WHERE postID = $1 AND offerID = $2',
+    pool.query('DELETE FROM "tbl_Offers" WHERE "postID" = $1 AND "offerID" = $2',
     [pid, oid],
     (error, results) => {
         if(error){
