@@ -4,7 +4,7 @@ const requireDir = require('require-dir');
 const db = requireDir('./Queries');
 
 const app = express();
-const port = 3000;
+const port = 5000;
 
 app.use(bodyParser.json());
 app.use(
@@ -40,7 +40,7 @@ app.delete('/api/post/:id/:pid', db.post.deletePost);
 app.get('/api/image/:pid', db.image.getImages)
 app.get('/api/image/:pid/:imid', db.image.getOneImage)
 app.post('/api/image/:pid', db.image.postImage)
-app.put('/api/image/:id/:imid', db.image.updatePost)
+app.put('/api/image/:id/:imid', db.image.updateImage)
 app.delete('/api/image/:pid', db.image.deleteAllImages)
 app.delete('/api/image/:pid/:imid', db.image.deleteOneImage)
 
@@ -52,7 +52,7 @@ app.get('/user/:id/offer', db.offer.getAllUserOffers)
 app.post('/offer/:id', db.offer.createOffer)
 app.put('/offer/:pid/:oid', db.offer.updateOffer)
 app.delete('/offer/:id', db.offer.deleteAllOffers)
-app.delete('/offer/:pid/:oid', db.deleteOffer)
+app.delete('/offer/:pid/:oid', db.offer.deleteOffer)
 
 // Chat endpoints
 app.get('/chat', db.chat.getAllChats)
