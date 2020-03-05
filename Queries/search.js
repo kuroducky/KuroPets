@@ -50,7 +50,7 @@ const searchPost = (req, res) => {
     }
 }
 
-const searchUser = (res, res) => {
+const searchUser = (req, res) => {
     var parameters = {};
 
     if(req.body.accountName !== undefined)
@@ -60,7 +60,7 @@ const searchUser = (res, res) => {
         parameters.TypeOfService = request.body.TypeOfService;
 
     if (Object.keys(parameters).length = 0){
-        pool.query('SELECT * FROM "tbl_User"', (error, results) => {
+        pool.query('SELECT * FROM "tbl_Account"', (error, results) => {
             if (error){
                 throw error;
             }
@@ -79,7 +79,7 @@ const searchUser = (res, res) => {
         }
         queryString = queryString.substring(4);
 
-        pool.query('SELECT * FROM "tbl_User" WHERE $1', [queryString], (error, results) => {
+        pool.query('SELECT * FROM "tbl_Account" WHERE $1', [queryString], (error, results) => {
             if (error) {
                 throw error;
             }

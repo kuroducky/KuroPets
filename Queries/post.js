@@ -78,9 +78,9 @@ const deletePost = (req,res) =>
     const accountID = parseInt(req.params.id);
     const postID = parseInt(req.params.pid);
 
-    pool.query('DELETE FROM "tbl_Post WHERE "postID" = $1', [postID], (error, results) => {
+    pool.query('DELETE FROM "tbl_Post" WHERE "postID" = $1;', [postID], (error, results) => {
       if (error) {
-        throw error
+        throw error;
       }
       res.status(200).send(`PostID of ${postID}`)
     })
