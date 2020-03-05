@@ -1,6 +1,6 @@
 const pool = require('./connect')
 
-const searchPost = (request, response) => {
+const searchPost = (req, res) => {
     var parameters = {};
 
     if(req.body.postTitle !== undefined)
@@ -26,7 +26,7 @@ const searchPost = (request, response) => {
             if (error){
                 throw error;
             }
-            response.status(200).json(result.rows);
+            res.status(200).json(result.rows);
         });
     }
     else {
@@ -45,12 +45,12 @@ const searchPost = (request, response) => {
             if (error) {
                 throw error;
             }
-            response.status(200).json(results.rows);
+            res.status(200).json(results.rows);
         });
     }
 }
 
-const searchUser = (request, response) => {
+const searchUser = (res, res) => {
     var parameters = {};
 
     if(req.body.accountName !== undefined)
@@ -64,7 +64,7 @@ const searchUser = (request, response) => {
             if (error){
                 throw error;
             }
-            response.status(200).json(result.rows);
+            res.status(200).json(result.rows);
         });
     }
     else {
@@ -83,7 +83,7 @@ const searchUser = (request, response) => {
             if (error) {
                 throw error;
             }
-            response.status(200).json(results.rows);
+            res.status(200).json(results.rows);
         });
     }
 }
