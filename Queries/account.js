@@ -1,7 +1,7 @@
 const pool = require('./connect')
 
 const getUsers = (request, response) => {
-    pool.query('SELECT * FROM tbl_account', (error, results) => {
+    pool.query('SELECT * FROM "tbl_Account"', (error, results) => {
         if (error) {
             throw error;
         }
@@ -12,7 +12,7 @@ const getUsers = (request, response) => {
 const getUserById = (request, response) => {
     const id = parseInt(request.params.id);
 
-    pool.query('SELECT * FROM tbl_account WHERE accountID = $1', [id], (error, results) => {
+    pool.query('SELECT * FROM "tbl_Account" WHERE accountID = $1', [id], (error, results) => {
       if (error) {
         throw error;
       }
@@ -23,7 +23,7 @@ const getUserById = (request, response) => {
 const createUser = (request, response) => {
     const { name, password, email } = request.body;
 
-    pool.query('INSERT INTO tbl_account (accountName, accountPassword, accountPhone) VALUES ($1, $2, $3)', [name, password, phone], (error, results) => {
+    pool.query('INSERT INTO "tbl_Account" (accountName, accountPassword, accountPhone) VALUES ($1, $2, $3)', [name, password, phone], (error, results) => {
         if (error) {
             throw error;
         }
@@ -36,7 +36,7 @@ const updateUser = (request, response) => {
     const { name, password, phone } = request.body;
 
     pool.query(
-        'UPDATE tbl_account SET accountName = $1, accountPassword = $2, accountPhone = $3 WHERE accountID = $4',
+        'UPDATE "tbl_Account" SET accountName = $1, accountPassword = $2, accountPhone = $3 WHERE accountID = $4',
         [name, password, phone, id],
         (error, results) => {
             if (error) {
@@ -50,7 +50,7 @@ const updateUser = (request, response) => {
 const deleteUser = (request, response) => {
     const id = parseInt(request.params.id);
 
-    pool.query('DELETE FROM tbl_account WHERE accountID = $1', [id], (error, results) => {
+    pool.query('DELETE FROM "tbl_Account" WHERE accountID = $1', [id], (error, results) => {
         if (error) {
             throw error;
         }
