@@ -45,10 +45,11 @@ const getOneAccountPost = (req, res) =>
 
 const createPost = (req,res) =>
 {
-    console.log(req.params.id);
     const accountID = parseInt(req.params.id);
-    const {postStatus, postTitle, postDescription, postLocation, postStartDate, postEndDate, postDate, postTypeOfPet, postService} = req.body
-    pool.query('INSERT INTO "tbl_Post"("postStatus", "postTitle", "postDescription", "postLocation", "postStartDate", "postEndDate", "postDate", "postTypeOfPet", "postService", "accountID") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9,$10) RETURNING *;', [postStatus, postTitle, postDescription, postLocation, postStartDate, postEndDate, postDate, postTypeOfPet, postService, accountID], (error,results) =>
+    const {postStatus, postTitle, postDescription, postLocation, postStartDate, postEndDate, postTypeOfPet, postService} = req.body
+    pool.query('INSERT INTO "tbl_Post"("postStatus", "postTitle", "postDescription", "postLocation", "postStartDate", "postEndDate", "postDate", "postTypeOfPet", "postService", "accountID") VALUES ($1, $2, $3, $4, $5, $6, current_timestamp, $7, $8,$9) RETURNING *;',
+    [postStatus, postTitle, postDescription, postLocation, postStartDate, postEndDate, postTypeOfPet, postService, accountID],
+    (error,results) =>
     {
         console.log(results.rows);
 
@@ -63,9 +64,11 @@ const updatePost = (req,res) =>
     const accountID = parseInt(req.params.id)
     const postID = parseInt(req.params.pid)
 
-    const {postStatus, postTitle, postDescription, postLocation, postStartDate, postEndDate, postDate, postTypeOfPet, postService} = req.body;
+    const {postStatus, postTitle, postDescription, postLocation, postStartDate, postEndDate, postTypeOfPet, postService} = req.body;
 
-    pool.query('UPDATE "tbl_Post" SET "postStatus" = $1, "postTitle" = $2, "postDescription" = $3, "postLocation" = $4, "postStartDate" = $5, "postEndDate" = $6, "postDate" = $7, "postTypeOfPet" = $8, "postService" = $9 WHERE "accountID" = $10 AND "postID" = $11 RETURNING *;' , [postStatus, postTitle, postDescription, postLocation, postStartDate, postEndDate, postDate, postTypeOfPet, postService, accountID, postID], (error, results) =>
+    pool.query('UPDATE "tbl_Post" SET "postStatus" = $1, "postTitle" = $2, "postDescription" = $3, "postLocation" = $4, "postStartDate" = $5, "postEndDate" = $6, "postDate" = current_timestamp, "postTypeOfPet" = $7, "postService" = $8 WHERE "accountID" = $9 AND "postID" = $10 RETURNING *;',
+    [postStatus, postTitle, postDescription, postLocation, postStartDate, postEndDate, postTypeOfPet, postService, accountID, postID],
+    (error, results) =>
     {
         if(error)
             throw error;
