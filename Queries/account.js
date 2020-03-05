@@ -12,7 +12,7 @@ const getUsers = (request, response) => {
 const getUserById = (request, response) => {
     const id = parseInt(request.params.id);
 
-    pool.query('SELECT * FROM "tbl_Account" WHERE accountID = $1', [id], (error, results) => {
+    pool.query('SELECT * FROM "tbl_Account" WHERE "accountID" = $1', [id], (error, results) => {
       if (error) {
         throw error;
       }
