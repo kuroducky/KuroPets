@@ -1,6 +1,6 @@
 
 const getAllNotifications = (request, response) => {
-    pool.query('SELECT * FROM tbl_Notification', (error, results) => {
+    pool.query('SELECT * FROM "tbl_Notification"', (error, results) => {
         if (error) {
             throw error
         }
@@ -11,7 +11,7 @@ const getAllNotifications = (request, response) => {
 const getAllUserNotifications = (request, response) => {
     const id = parseInt(request.params.id)
 
-    pool.query('SELECT * FROM tbl_Notification WHERE accountID = $1', [id], (error, results) => {
+    pool.query('SELECT * FROM "tbl_Notification" WHERE accountID = $1', [id], (error, results) => {
         if (error) {
             throw error
         }
@@ -23,7 +23,7 @@ const getUserNotification = (request, response) => {
     const Aid = parseInt(request.params.accID)
     const Nid = parseInt(request.params.notifID)
 
-    pool.query('SELECT * FROM tbl_Notification WHERE accountID = $1 AND notificationID = $2', 
+    pool.query('SELECT * FROM "tbl_Notification" WHERE accountID = $1 AND notificationID = $2', 
     [Aid, Nid], 
     (error, results) => {
         if (error) {
@@ -37,7 +37,7 @@ const createNotification = (request, response) => {
     const id = parseInt(request.params.id)
     const {type , timestamp} = request.body
 
-    pool.query('INSERT INTO tbl_Notification (notificationType, notificationTimestamp, accountID) VALUES ($1, $2, $3)', 
+    pool.query('INSERT INTO "tbl_Notification" (notificationType, notificationTimestamp, accountID) VALUES ($1, $2, $3)', 
     [type, timestamp, id], 
     (error, results) => {
         if (error) {
@@ -50,7 +50,7 @@ const createNotification = (request, response) => {
 const deleteAllUserNotifications = (request, response) => {
     const id = parseInt(request.params.id)
 
-    pool.query('DELETE FROM tbl_Notification WHERE accountID = $1',
+    pool.query('DELETE FROM "tbl_Notification" WHERE accountID = $1',
     [id],
     (error, results) => {
         if(error){
@@ -64,7 +64,7 @@ const deleteUserNotification = (request, response) => {
     const Aid = parseInt(request.params.accID)
     const Nid = parseInt(request.params.notifID)
 
-    pool.query('DELETE FROM tbl_Notification WHERE accountID = $1 AND notificationID = $2',
+    pool.query('DELETE FROM "tbl_Notification" WHERE accountID = $1 AND notificationID = $2',
     [Aid, Nid],
     (error, results) => {
         if(error){
