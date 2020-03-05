@@ -22,7 +22,7 @@ const searchPost = (request, response) => {
         parameters.TypeOfService = request.body.TypeOfService;
 
     if (Object.keys(parameters).length = 0){
-        pool.query('SELECT * FROM "tbl_post"', (error, results) => {
+        pool.query('SELECT * FROM "tbl_Post"', (error, results) => {
             if (error){
                 throw error;
             }
@@ -33,15 +33,15 @@ const searchPost = (request, response) => {
         var queryString = '';
         for (const key in parameters){
             if (key = 'periodOfCaretaking'){
-                queryString += ` AND postEndDate - postStartDate = ${parameters[key]}`;
+                queryString += ` AND "postEndDate" - "postStartDate" = ${parameters[key]}`;
             }
             else {
-                queryString += ` AND ${key} = ${parameters[key]}`;
+                queryString += ` AND "${key}" = ${parameters[key]}`;
             }
         }
         queryString = queryString.substring(4);
 
-        pool.query('SELECT * FROM "tbl_post" WHERE $1', [queryString], (error, results) => {
+        pool.query('SELECT * FROM "tbl_Post" WHERE $1', [queryString], (error, results) => {
             if (error) {
                 throw error;
             }
@@ -60,7 +60,7 @@ const searchUser = (request, response) => {
         parameters.TypeOfService = request.body.TypeOfService;
 
     if (Object.keys(parameters).length = 0){
-        pool.query('SELECT * FROM "tbl_user"', (error, results) => {
+        pool.query('SELECT * FROM "tbl_User"', (error, results) => {
             if (error){
                 throw error;
             }
@@ -71,15 +71,15 @@ const searchUser = (request, response) => {
         var queryString = '';
         for (const key in parameters){
             if (key = 'periodOfCaretaking'){
-                queryString += ` AND postEndDate - postStartDate = ${parameters[key]}`;
+                queryString += ` AND "postEndDate" - "postStartDate" = ${parameters[key]}`;
             }
             else {
-                queryString += ` AND ${key} = ${parameters[key]}`;
+                queryString += ` AND "${key}" = ${parameters[key]}`;
             }
         }
         queryString = queryString.substring(4);
 
-        pool.query('SELECT * FROM "tbl_user" WHERE $1', [queryString], (error, results) => {
+        pool.query('SELECT * FROM "tbl_User" WHERE $1', [queryString], (error, results) => {
             if (error) {
                 throw error;
             }
