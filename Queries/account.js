@@ -21,7 +21,7 @@ const getUserById = (request, response) => {
 }
 
 const createUser = (request, response) => {
-    const { name, password, email } = request.body;
+    const { name, password, phone } = request.body;
 
     pool.query('INSERT INTO "tbl_Account" ("accountName", "accountPassword", "accountPhone") VALUES ($1, $2, $3)', [name, password, phone], (error, results) => {
         if (error) {
