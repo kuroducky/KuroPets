@@ -1,13 +1,24 @@
 const Pool = require('pg').Pool
 const pool = new Pool({
-  user: 'Darren',
+  user: 'postgres',
   host: 'localhost',
   database: 'kuropets_db',
-  password: '',
+  password: 'Kuroducky',
   port: 5432,
 })
+
+const getTables = (request, response) => {
+  pool.query('SELECT * FROM information_schema.tables', (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
+
 const getUsers = (request, response) => {
-  pool.query('SELECT * FROM tbl_account', (error, results) => {
+  pool.query('SELECT * FROM "tbl_Account"', (error, results) => {
     if (error) {
       throw error
     }
@@ -15,25 +26,19 @@ const getUsers = (request, response) => {
   })
 }
 
-const getUserById = (request, response) => {
-  const id = parseInt(request.params.id)
-
-  pool.query('SELECT * FROM users WHERE id = $1', [id], (error, results) => {
-    if (error) {
-      throw error
-    }
-    response.status(200).json(results.rows)
-  })
-}
 
 const createUser = (request, response) => {
-  const { name, email } = request.body
+  const {accountID, accountName, accountPassword, accountPhone } = request.body
 
-  pool.query('INSERT INTO users (name, email) VALUES ($1, $2)', [name, email], (error, results) => {
+  console.log(accountID);
+  console.log(accountName);
+  console.log(accountPassword);
+  console.log(accountPhone);
+  pool.query('INSERT INTO "tbl_Account" ("accountID", "accountName", "accountPassword", "accountPhone") VALUES ($1, $2, $3, $4)', [accountID, accountName, accountPassword, accountPhone], (error, results) => {
     if (error) {
       throw error
     }
-    response.status(201).send(`User added with ID: ${result.insertId}`)
+    response.status(201).send(`${results.accountName} added with ID: ${results.accountID}`);
   })
 }
 
@@ -66,8 +71,8 @@ const deleteUser = (request, response) => {
 
 module.exports = {
   getUsers,
-  getUserById,
   createUser,
   updateUser,
   deleteUser,
+  getTables
 }
