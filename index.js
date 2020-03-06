@@ -21,6 +21,7 @@ app.get('/', (req, res) => {
 app.get('/api/user', db.account.getUsers);
 app.get('/api/user/:id', db.account.getUserById);
 app.post('/api/user', db.account.createUser);
+app.post('/api/user/authenticate', db.account.authenticateUser);
 app.put('/api/user/:id', db.account.updateUser);
 app.delete('/api/user/:id', db.account.deleteUser);
 

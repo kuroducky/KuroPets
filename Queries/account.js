@@ -58,10 +58,30 @@ const deleteUser = (request, response) => {
     });
 }
 
+const authenticateUser = (request, response) => {
+    const { accountName, accountPassword } = request.body;
+
+    pool.query('SELECT * FROM "tbl_Account" WHERE "accountName" = $1 AND "accountPassword" = $2', [accountName, accountPassword], (error, results) => {
+        if (error)
+            throw error;
+        
+        var dict = {};
+        if (results.rows[0] === undefined){
+            dict.loginSuccess = false;
+        }
+        else {
+            dict.loginSuccess = true
+            dict.data = results.rows[0];
+        }
+        response.status(200).json(dict);
+    })
+}
+
 module.exports = {
     getUsers,
     getUserById,
     createUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    authenticateUser
 };
