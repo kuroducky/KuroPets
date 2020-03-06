@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const requireDir = require('require-dir');
-const db = requireDir('./Queries');
+const db = requireDir('./queries');
 
 const app = express();
 const port = 5000;

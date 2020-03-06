@@ -22,12 +22,27 @@ const getUserById = (request, response) => {
 
 const createUser = (request, response) => {
     const { accountName, accountPassword, accountPhone } = request.body;
+    var dict = {};
 
-    pool.query('INSERT INTO "tbl_Account" ("accountName", "accountPassword", "accountPhone") VALUES ($1, $2, $3) RETURNING *', [accountName, accountPassword, accountPhone], (error, results) => {
+    pool.query('SELECT * FROM "tbl_Account" WHERE "accountName" = $1', [accountName], (error, results) => {
         if (error) {
-            throw error;
+          throw error;
         }
-        response.status(200).send(`User added with ID: ${results.rows[0].accountID}`);
+        
+        if (results.rows[0] !== undefined){
+            dict.querySuccess = false;
+            response.status(400).json(dict);
+        }
+        else {
+            pool.query('INSERT INTO "tbl_Account" ("accountName", "accountPassword", "accountPhone") VALUES ($1, $2, $3) RETURNING *', [accountName, accountPassword, accountPhone], (error, results) => {
+                if (error) {
+                    throw error;
+                }
+                dict.querySuccess = true;
+                dict.data = results.rows[0];
+                response.status(200).json(dict);
+            });
+        }
     });
 }
 
