@@ -18,7 +18,7 @@ const postDetails = {
   startDate: "2020-03-07",
   endDate: "2020-03-09",
   user: {
-    accountID: "12347",
+    accountID: "12345",
     name: "Johnny Koh"
   }
 };

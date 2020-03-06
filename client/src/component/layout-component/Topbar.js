@@ -16,6 +16,7 @@ import {
   UserOutlined,
   FileTextOutlined
 } from "@ant-design/icons";
+import LoginButton from "./LoginButton";
 
 const { Header } = Layout;
 const { Search } = Input;
@@ -72,19 +73,34 @@ const Topbar = () => {
             border: "none"
           }}
         />
-
         {/* Create post button */}
-        <Button
-          type="primary"
-          size="medium"
-          style={{
-            float: "right",
-            marginTop: "16px",
-            padding: "0 20px 0 20px"
-          }}
-        >
-          <strong>Post</strong>
-        </Button>
+        {localStorage.getItem("user") ? (
+          <Button
+            type="primary"
+            size="medium"
+            style={{
+              float: "right",
+              marginTop: "16px",
+              padding: "0 20px 0 20px"
+            }}
+          >
+            <strong>Post</strong>
+          </Button>
+        ) : (
+          // <Button
+          //   type="primary"
+          //   size="medium"
+          //   style={{
+          //     float: "right",
+          //     marginTop: "16px",
+          //     padding: "0 20px 0 20px"
+          //   }}
+          // >
+          //   {" "}
+          //   <strong>Log in</strong>
+          // </Button>
+          <LoginButton />
+        )}
 
         {/* Chat Button, counter represents unopened chats KIV*/}
         <Tooltip title="Chat">
@@ -100,7 +116,6 @@ const Topbar = () => {
             </Badge>
           </span>
         </Tooltip>
-
         {/* Location services Button */}
         <Tooltip title="Location Services">
           <Button
