@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const requireDir = require('require-dir');
-const db = requireDir('./Queries');
+const db = requireDir('./queries');
 
 const app = express();
 const port = 5000;
@@ -21,6 +21,7 @@ app.get('/', (req, res) => {
 app.get('/api/user', db.account.getUsers);
 app.get('/api/user/:id', db.account.getUserById);
 app.post('/api/user', db.account.createUser);
+app.post('/api/user/authenticate', db.account.authenticateUser);
 app.put('/api/user/:id', db.account.updateUser);
 app.delete('/api/user/:id', db.account.deleteUser);
 

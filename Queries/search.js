@@ -12,43 +12,38 @@ const searchPost = (req, res) => {
     if(req.query.postLocation !== undefined)
         parameters.postLocation = req.query.postLocation;
 
-    if(req.query.periodOfCaretaking !== undefined)
-        parameters.periodOfCaretaking = req.query.periodOfCaretaking;
+    if(req.query.postTypeOfPet !== undefined)
+        parameters.postTypeOfPet = req.query.postTypeOfPet;
 
-    if(req.query.TypeOfPet !== undefined)
-        parameters.TypeOfPet = req.query.TypeOfPet;
+    if(req.query.postService !== undefined)
+        parameters.postService = req.query.postService;
 
-    if(req.query.TypeOfService !== undefined)
-        parameters.TypeOfService = req.query.TypeOfService;
 
-    if (Object.keys(parameters).length == 0){
-        pool.query('SELECT * FROM "tbl_Post"', (error, results) => {
-            if (error){
-                throw error;
-            }
-            res.status(200).json(results.rows);
-        });
-    }
-    else {
-        var queryString = '';
-        for (const key in parameters){
-            if (key == 'periodOfCaretaking'){
-                queryString += ` AND "postEndDate" - "postStartDate" = ${parameters[key]}`;
-            }
-            else {
-                queryString += ` AND "${key}" = ${parameters[key]}`;
-            }
+    pool.query('SELECT * FROM "tbl_Post"', (error, results) => {
+        if (error){
+            throw error;
         }
-        queryString = queryString.substring(5);
-        console.log(queryString)
 
-        pool.query('SELECT * FROM "tbl_Post" WHERE $1', [queryString], (error, results) => {
-            if (error) {
-                throw error;
-            }
+        if (Object.keys(parameters).length == 0 || results.rows[0] === undefined){
             res.status(200).json(results.rows);
-        });
-    }
+        }
+        else {
+            const reply = results.rows.filter(post => {
+                for (const key in parameters){
+                    var lowerCasePost = post[key].toLowerCase();
+                    if (!lowerCasePost.includes(parameters[key].toLowerCase())){
+                        return false;
+                    }
+                }
+
+                if(req.query.periodOfCaretaking !== undefined) {
+                    return post.postEndDate - post.postStartDate == req.query.periodOfCaretaking;
+                }
+                return true;
+            })
+            res.status(200).json(reply);
+        }
+    });
 }
 
 const searchUser = (req, res) => {
