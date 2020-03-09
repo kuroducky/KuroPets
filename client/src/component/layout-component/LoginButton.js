@@ -1,57 +1,108 @@
-import React, { Fragment } from "react";
-import { Button, Modal } from "antd";
+import React, { Fragment, useState } from "react";
+import { Form, Input, Button, Modal, Typography, message } from "antd";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { login } from "../../Auth";
 
-class LoginButton extends React.Component {
-  state = { visible: false };
-
-  showModal = () => {
-    this.setState({
-      visible: true
-    });
-  };
-
-  handleOk = e => {
-    console.log(e);
-    this.setState({
-      visible: false
-    });
-  };
-
-  handleCancel = e => {
-    console.log(e);
-    this.setState({
-      visible: false
-    });
-  };
-  render() {
-    return (
-      <Fragment>
-        <Button
-          type="primary"
-          size="medium"
-          style={{
-            float: "right",
-            marginTop: "16px",
-            padding: "0 20px 0 20px"
-          }}
-          onClick={this.showModal}
+const { Text } = Typography;
+const LoginForm = ({ visible, onLogin, onCancel }) => {
+  const [form] = Form.useForm();
+  return (
+    <Modal
+      visible={visible}
+      title="Login to KuroPets"
+      okText="Login"
+      cancelText="Cancel"
+      onCancel={onCancel}
+      onOk={() => {
+        form
+          .validateFields()
+          .then(values => {
+            form.resetFields();
+            onLogin(values);
+          })
+          .catch(info => {
+            console.log("Validate Failed:", info);
+          });
+      }}
+    >
+      <Form
+        form={form}
+        layout="vertical"
+        name="form_in_modal"
+        initialValues={{
+          modifier: "public"
+        }}
+      >
+        <Form.Item
+          name="username"
+          rules={[
+            {
+              required: true,
+              message: "Please input your Username!"
+            }
+          ]}
         >
-          {" "}
-          <strong>Log in</strong>
-        </Button>
-        <Modal
-          title="Log In"
-          visible={this.state.visible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
+          <Input
+            prefix={<UserOutlined className="site-form-item-icon" />}
+            placeholder="Username"
+          />
+        </Form.Item>
+        <Form.Item
+          name="password"
+          rules={[
+            {
+              required: true,
+              message: "Please input your Password!"
+            }
+          ]}
         >
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-        </Modal>
-      </Fragment>
-    );
-  }
-}
+          <Input
+            prefix={<LockOutlined className="site-form-item-icon" />}
+            type="password"
+            placeholder="Password"
+          />
+        </Form.Item>
+        <Text>Do not have an account? </Text>
+        <a href="/">Register now!</a>
+      </Form>
+    </Modal>
+  );
+};
+const LoginButton = props => {
+  const [visible, setVisible] = useState(false);
 
+  const onLogin = ({ username, password }) => {
+    let success = login(username, password);
+    if (success) {
+      props.history.push("/");
+      setVisible(false);
+    } else {
+      message.error("Incorrect Username or Password");
+    }
+  };
+  return (
+    <Fragment>
+      <Button
+        size="medium"
+        style={{
+          float: "right",
+          marginTop: "16px",
+          padding: "0 20px 0 20px"
+        }}
+        onClick={() => {
+          setVisible(true);
+        }}
+      >
+        <strong>Login</strong>
+      </Button>
+      <LoginForm
+        visible={visible}
+        onLogin={onLogin}
+        onCancel={() => {
+          setVisible(false);
+        }}
+      />
+    </Fragment>
+  );
+};
 export default LoginButton;
