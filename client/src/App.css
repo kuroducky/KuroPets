@@ -9,7 +9,7 @@
   pointer-events: none;
 }
 
-.ant-input {
+.ant-input-search > .ant-input {
   background-color: #f0f1f1;
 }
 

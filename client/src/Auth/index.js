@@ -2,7 +2,7 @@ const mockUsers = [
   {
     password: "password",
     accountID: "12345",
-    name: "Johnny Koh",
+    name: "Scrappy Tay",
     phone: "99790059"
   },
   {
@@ -21,7 +21,12 @@ export const login = (username, password) => {
   });
 
   if (user) {
-    localStorage.setItem("user", user);
+    localStorage.setItem("user", JSON.stringify(user));
+    console.log("login success");
+    return true;
+  } else {
+    console.log("login failed");
+    return false;
   }
 };
 

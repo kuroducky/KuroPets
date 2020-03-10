@@ -23,9 +23,9 @@ const getUserRatings = (request, response) => {
 
 const createRating = (request, response) => {
     const ratingID = parseInt(request.params.id)
-    const {raterID, rateeID, ratingValue, ratingFeedback} = request.body
-    pool.query('INSERT INTO "tbl_Rating" ("raterID", "rateeID", "ratingValue", "ratingFeedback") VALUES ($1, $2, $3, $4) RETURNING *;',
-    [raterID, rateeID, ratingValue, ratingFeedback],
+    const {raterID, rateeID, value, feedback} = request.body
+    pool.query('INSERT INTO "tbl_Rating" ("raterID", "rateeID", "value", "feedback") VALUES ($1, $2, $3, $4) RETURNING *;',
+    [raterID, rateeID, value, feedback],
     (error, results) => {
         if(error){
             throw error

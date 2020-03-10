@@ -25,7 +25,7 @@ const dummyPosts = [
     description: "lorum lorum haelp io jiin uoj kuh soijm oay pui",
     user: {
       accountID: "12346",
-      name: "Clarence Chua"
+      name: "Scrappy Tay"
     }
   },
   {
@@ -39,7 +39,7 @@ const dummyPosts = [
       "lorum lorum haelp io jiin uoj kuh soijm oay pui iio uun uhdifinu",
     user: {
       accountID: "12347",
-      name: "Chee Jon Bai"
+      name: "Sleepy Tay"
     }
   },
   {
@@ -52,7 +52,7 @@ const dummyPosts = [
     description: "lorum lorum haelu opo unpi io jiin uoj kuh soijm oay pui",
     user: {
       accountID: "12348",
-      name: "Leong Skippy"
+      name: "Skippy Tay"
     }
   },
   {

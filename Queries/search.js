@@ -3,20 +3,20 @@ const pool = require('./connect')
 const searchPost = (req, res) => {
     var parameters = {};
 
-    if(req.query.postTitle !== undefined)
-        parameters.postTitle = req.query.postTitle;
+    if(req.query.title !== undefined)
+        parameters.title = req.query.title;
 
-    if(req.query.postDescription !== undefined)
-        parameters.postDescription = req.query.postDescription;
+    if(req.query.description !== undefined)
+        parameters.description = req.query.description;
 
-    if(req.query.postLocation !== undefined)
-        parameters.postLocation = req.query.postLocation;
+    if(req.query.location !== undefined)
+        parameters.location = req.query.location;
 
-    if(req.query.postTypeOfPet !== undefined)
-        parameters.postTypeOfPet = req.query.postTypeOfPet;
+    if(req.query.typeOfPet !== undefined)
+        parameters.typeOfPet = req.query.typeOfPet;
 
-    if(req.query.postService !== undefined)
-        parameters.postService = req.query.postService;
+    if(req.query.service !== undefined)
+        parameters.service = req.query.service;
 
 
     pool.query('SELECT * FROM "tbl_Post"', (error, results) => {
@@ -37,7 +37,7 @@ const searchPost = (req, res) => {
                 }
 
                 if(req.query.periodOfCaretaking !== undefined) {
-                    return post.postEndDate - post.postStartDate == req.query.periodOfCaretaking;
+                    return post.endDate - post.startDate == req.query.periodOfCaretaking;
                 }
                 return true;
             })
@@ -47,7 +47,7 @@ const searchPost = (req, res) => {
 }
 
 const searchUser = (req, res) => {
-    if (req.query.accountName === undefined){
+    if (req.query.name === undefined){
         pool.query('SELECT * FROM "tbl_Account"', (error, results) => {
             if (error){
                 throw error;
@@ -56,7 +56,7 @@ const searchUser = (req, res) => {
         });
     }
     else {
-        pool.query('SELECT * FROM "tbl_Account" WHERE "accountName" ILIKE $1', [`%${req.query.accountName}%`], (error, results) => {
+        pool.query('SELECT * FROM "tbl_Account" WHERE "name" ILIKE $1', [`%${req.query.name}%`], (error, results) => {
             if (error) {
                 throw error;
             }

@@ -28,10 +28,10 @@ const getOneImage = (req, res) =>
 
 const postImage = (req,res) =>
 {
-    const {imageURL} = req.body;
+    const {url} = req.body;
     const postID = req.params.pid;
 
-    pool.query('INSERT INTO "tbl_Images" ("imageURL","postID") VALUES ($1,$2) RETURNING *; ', [imageURL,postID], (error,results) =>
+    pool.query('INSERT INTO "tbl_Images" ("url","postID") VALUES ($1,$2) RETURNING *; ', [url,postID], (error,results) =>
     {
         if (error)
             throw error;
@@ -46,9 +46,9 @@ const updateImage = (req,res) =>
     const postID = parseInt(req.params.pid);
     const imageID = parseInt(req.params.imid);
 
-    const {imageURL} = req.body;
+    const {url} = req.body;
 
-    pool.query('UPDATE "tbl_Images" SET "imageURL" = $1 WHERE ("postID" = $2 AND "imageID" = $3 )', [imageURL, postID, imageID], (error,results) =>
+    pool.query('UPDATE "tbl_Images" SET "url" = $1 WHERE ("postID" = $2 AND "imageID" = $3 )', [url, postID, imageID], (error,results) =>
     {
         if (error)
             throw error;
