@@ -19,7 +19,7 @@ const getPost = (req, res) =>
             {
                 if(error)
                     throw error;
-                results.rows.forEach(image => row.images.push(image.imageURL));
+                results.rows.forEach(image => row.images.push(image.url));
                 posts.push(row);
                 count++;
                 if (count == total){
@@ -51,7 +51,7 @@ const getAllAccountPost = (req,res) =>
             {
                 if(error)
                     throw error;
-                results.rows.forEach(image => row.images.push(image.imageURL));
+                results.rows.forEach(image => row.images.push(image.url));
                 posts.push(row);
                 count++;
                 if (count == total){
@@ -80,7 +80,7 @@ const getOneAccountPost = (req, res) =>
             if(error)
                 throw error;
             post[0].images = [];
-            results.rows.forEach(image => post[0].images.push(image.imageURL));
+            results.rows.forEach(image => post[0].images.push(image.url));
             res.status(200).json(post[0]);
         })
     })
@@ -90,32 +90,38 @@ const createPost = (req,res) =>
 {
     const accountID = parseInt(req.params.id);
     const {title, description, location, startDate, endDate, typeOfPet, service} = req.body
-    pool.query('INSERT INTO "tbl_Post"("status", "title", "description", "location", "startDate", "endDate", "timestamp", "postTypeOfPet", "postService", "accountID") VALUES ($1, $2, $3, $4, $5, $6, current_timestamp, $7, $8, $9) RETURNING *;',
+    pool.query('INSERT INTO "tbl_Post"("status", "title", "description", "location", "startDate", "endDate", "timestamp", "typeOfPet", "service", "accountID") VALUES ($1, $2, $3, $4, $5, $6, current_timestamp, $7, $8, $9) RETURNING *;',
     ['Pending Service', title, description, location, startDate, endDate, typeOfPet, service, accountID],
     (error,results) =>
     {
         if(error)
             throw error;
 
-        var postID = results.rows[0].postID;
         var images = req.body.images;
-        var imageTotal = images.length;
-        var count = 0;
+        var msg = results.rows[0];
+        msg.images = []
+        if (images === undefined || images.length == 0){
+            res.status(200).json(msg);
+        }
+        else {
+            var postID = msg.postID;
+            var imageTotal = images.length;
+            var count = 0;
 
-        results.rows[0].images = []
-        images.forEach(imageURL => {
-            pool.query('INSERT INTO "tbl_Images" ("imageURL","postID") VALUES ($1,$2) RETURNING *; ', [imageURL,postID], (error,imgResults) =>
-            {
-                if (error)
-                    throw error;
-                
-                count++;
-                results.rows[0].images.push(imageURL);
-                if (count == imageTotal){
-                    res.status(200).json(results.rows[0])
-                }
+            images.forEach(url => {
+                pool.query('INSERT INTO "tbl_Images" ("url","postID") VALUES ($1,$2) RETURNING *; ', [url,postID], (error,imgResults) =>
+                {
+                    if (error)
+                        throw error;
+                    
+                    count++;
+                    msg.images.push(url);
+                    if (count == imageTotal){
+                        res.status(200).json(msg)
+                    }
+                })
             })
-        })
+        }
     })
 }
 
@@ -126,7 +132,7 @@ const updatePost = (req,res) =>
 
     const {status, title, description, location, startDate, endDate, typeOfPet, service} = req.body;
 
-    pool.query('UPDATE "tbl_Post" SET "status" = $1, "title" = $2, "description" = $3, "location" = $4, "startDate" = $5, "endDate" = $6, "timestamp" = current_timestamp, "postTypeOfPet" = $7, "postService" = $8 WHERE "accountID" = $9 AND "postID" = $10 RETURNING *;',
+    pool.query('UPDATE "tbl_Post" SET "status" = $1, "title" = $2, "description" = $3, "location" = $4, "startDate" = $5, "endDate" = $6, "timestamp" = current_timestamp, "typeOfPet" = $7, "service" = $8 WHERE "accountID" = $9 AND "postID" = $10 RETURNING *;',
     [status, title, description, location, startDate, endDate, typeOfPet, service, accountID, postID],
     (error, results) =>
     {
