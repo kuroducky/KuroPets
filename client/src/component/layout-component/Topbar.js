@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import {
   Layout,
   Input,
@@ -10,19 +10,22 @@ import {
   Typography
 } from "antd";
 
+import { Link } from "react-router-dom";
 import {
   MessageFilled,
   EnvironmentFilled,
   UserOutlined,
-  FileTextOutlined
+  FileTextOutlined,
+  LogoutOutlined
 } from "@ant-design/icons";
-import LoginButton from "./LoginButton";
 
+import LoginButton from "./LoginButton";
+import { logout } from "../../Auth";
 const { Header } = Layout;
 const { Search } = Input;
 const { Text } = Typography;
 
-const Topbar = () => {
+const Topbar = props => {
   const logoStyles = {
     width: "120px",
     background: "#f0f1f1",
@@ -40,19 +43,35 @@ const Topbar = () => {
     paddingLeft: "5%",
     borderBottom: "1px solid #f0f0f0"
   };
+
+  const logOutUser = () => {
+    logout();
+    props.history.push("/");
+  };
+  let currentUser = JSON.parse(localStorage.getItem("user"));
   const userMenu = (
     <Menu>
       <Menu.Item>
         <span>
           <UserOutlined />
         </span>
-        <Text strong>UserName</Text>
+        {localStorage.getItem("user") ? (
+          <Text strong>{currentUser.name}</Text>
+        ) : (
+          ""
+        )}
       </Menu.Item>
       <Menu.Item>
         <span>
           <FileTextOutlined />
         </span>
         <Text>My Posts</Text>
+      </Menu.Item>
+      <Menu.Item onClick={logOutUser}>
+        <span>
+          <LogoutOutlined />
+        </span>
+        <Text> Logout</Text>
       </Menu.Item>
     </Menu>
   );
@@ -63,6 +82,7 @@ const Topbar = () => {
         {/* we will add our app logo here */}
         <div className="logo" style={logoStyles} />
         <Search
+          className="search"
           size="large"
           placeholder="Search posts..."
           onSearch={value => console.log(value)}
@@ -75,70 +95,66 @@ const Topbar = () => {
         />
         {/* Create post button */}
         {localStorage.getItem("user") ? (
-          <Button
-            type="primary"
-            size="medium"
-            style={{
-              float: "right",
-              marginTop: "16px",
-              padding: "0 20px 0 20px"
-            }}
-          >
-            <strong>Post</strong>
-          </Button>
+          <Link to="/post">
+            <Button
+              type="primary"
+              size="medium"
+              style={{
+                float: "right",
+                marginTop: "16px",
+                padding: "0 20px 0 20px"
+              }}
+            >
+              <strong>Post</strong>
+            </Button>
+          </Link>
         ) : (
-          // <Button
-          //   type="primary"
-          //   size="medium"
-          //   style={{
-          //     float: "right",
-          //     marginTop: "16px",
-          //     padding: "0 20px 0 20px"
-          //   }}
-          // >
-          //   {" "}
-          //   <strong>Log in</strong>
-          // </Button>
-          <LoginButton />
+          <LoginButton {...props} />
         )}
 
         {/* Chat Button, counter represents unopened chats KIV*/}
-        <Tooltip title="Chat">
-          <span
-            style={{
-              float: "right",
-              marginTop: "0px",
-              marginRight: "50px"
-            }}
-          >
-            <Badge count={5}>
-              <Button shape="circle" icon={<MessageFilled />} />
-            </Badge>
-          </span>
-        </Tooltip>
-        {/* Location services Button */}
-        <Tooltip title="Location Services">
-          <Button
-            style={{
-              float: "right",
-              marginTop: "16px",
-              marginRight: "15px"
-            }}
-            shape="circle"
-            icon={<EnvironmentFilled />}
-          />
-        </Tooltip>
-        <Dropdown overlay={userMenu}>
-          <Button
-            style={{
-              float: "right",
-              marginTop: "16px",
-              marginRight: "15px"
-            }}
-            shape="circle"
-            icon={<UserOutlined />}
-          />
-        </Dropdown>
+        {localStorage.getItem("user") ? (
+          <Fragment>
+            <Tooltip title="Chat">
+              <span
+                style={{
+                  float: "right",
+                  marginTop: "0px",
+                  marginRight: "50px"
+                }}
+              >
+                <Badge count={5}>
+                  <Button shape="circle" icon={<MessageFilled />} />
+                </Badge>
+              </span>
+            </Tooltip>
+            {/* Location services Button */}
+            <Tooltip title="Location Services">
+              <Button
+                style={{
+                  float: "right",
+                  marginTop: "16px",
+                  marginRight: "15px"
+                }}
+                shape="circle"
+                icon={<EnvironmentFilled />}
+              />
+            </Tooltip>
+            <Dropdown overlay={userMenu}>
+              <Button
+                style={{
+                  float: "right",
+                  marginTop: "16px",
+                  marginRight: "15px"
+                }}
+                shape="circle"
+                icon={<UserOutlined />}
+              />
+            </Dropdown>
+          </Fragment>
+        ) : (
+          ""
+        )}
       </Header>
     </Layout>
   );
