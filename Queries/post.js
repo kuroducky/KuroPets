@@ -2,21 +2,40 @@ const pool = require('./connect')
 
 const getPost = (req, res) =>
 {
+    var count = 0;
+    var total;
+    var posts = [];
+
     pool.query('SELECT * FROM "tbl_Post"', (error, results) =>
     {
         if(error)
         {
             throw error;
         }
-        res.status(200).json(results.rows);
-    })
+        total = results.rows.length;
+        results.rows.forEach(row => {
+            row.images = [];
+            pool.query('SELECT * FROM "tbl_Images" WHERE "postID" = $1;', [row.postID], (error,results) =>
+            {
+                if(error)
+                    throw error;
+                results.rows.forEach(image => row.images.push(image.imageURL));
+                posts.push(row);
+                count++;
+                if (count == total){
+                    res.status(200).json(posts);
+                }
+            })
+        });
+    });
 }
 
 const getAllAccountPost = (req,res) =>
 {
     const accountID = parseInt(req.params.id);
-
-    console.log(accountID);
+    var count = 0;
+    var total;
+    var posts = [];
 
     pool.query('SELECT * FROM "tbl_Post" WHERE "accountID" = $1' , [accountID], (error, results) =>
 
@@ -25,7 +44,21 @@ const getAllAccountPost = (req,res) =>
         {
             throw error;
         }
-        res.status(200).json(results.rows)
+        total = results.rows.length;
+        results.rows.forEach(row => {
+            row.images = [];
+            pool.query('SELECT * FROM "tbl_Images" WHERE "postID" = $1;', [row.postID], (error,results) =>
+            {
+                if(error)
+                    throw error;
+                results.rows.forEach(image => row.images.push(image.imageURL));
+                posts.push(row);
+                count++;
+                if (count == total){
+                    res.status(200).json(posts);
+                }
+            })
+        });
     })
 }
 
@@ -33,13 +66,23 @@ const getOneAccountPost = (req, res) =>
 {
     const accountID = parseInt(req.params.id)
     const postID = parseInt(req.params.pid)
+    var post = [];
+
     pool.query('SELECT * FROM "tbl_Post" WHERE "accountID" = $1 AND "postID" = $2' , [accountID, postID], (error,results) =>
     {
         if(error)
         {
             throw error;
         }
-        res.status(200).json(results.rows);
+        post.push(results.rows[0]);
+        pool.query('SELECT * FROM "tbl_Images" WHERE "postID" = $1;', [postID], (error,results) =>
+        {
+            if(error)
+                throw error;
+            post[0].images = [];
+            results.rows.forEach(image => post[0].images.push(image.imageURL));
+            res.status(200).json(post[0]);
+        })
     })
 }
 
@@ -51,11 +94,9 @@ const createPost = (req,res) =>
     ['Pending Service', postTitle, postDescription, postLocation, postStartDate, postEndDate, postTypeOfPet, postService, accountID],
     (error,results) =>
     {
-        console.log(results.rows);
-
         if(error)
             throw error;
-        res.status(201).send(`${results.rows[0].postTitle} added by ${results.rows[0].accountID}`);
+        res.status(201).json(results.rows[0]);
     })
 }
 
@@ -72,7 +113,7 @@ const updatePost = (req,res) =>
     {
         if(error)
             throw error;
-        res.status(201).send(`${results.rows[0].postID} updated by ${results.rows[0].accountID}`)
+        res.status(201).json(results.rows[0]);
     })
 }
 
@@ -82,10 +123,17 @@ const deletePost = (req,res) =>
     const postID = parseInt(req.params.pid);
 
     pool.query('DELETE FROM "tbl_Post" WHERE "postID" = $1;', [postID], (error, results) => {
-      if (error) {
-        throw error;
-      }
-      res.status(200).send(`PostID of ${postID}`)
+        if (error) {
+            throw error;
+        }
+
+        pool.query('DELETE FROM "tbl_Images" WHERE "postID" = $1', [postID], (error,results) =>
+        {
+            if (error)
+                throw error;
+
+            res.status(200).send(`PostID of ${postID}`)
+        })
     })
 }
 
