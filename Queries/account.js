@@ -21,10 +21,10 @@ const getUserById = (request, response) => {
 }
 
 const createUser = (request, response) => {
-    const { accountName, accountPassword, accountPhone } = request.body;
+    const { name, password, phone } = request.body;
     var dict = {};
 
-    pool.query('SELECT * FROM "tbl_Account" WHERE "accountName" = $1', [accountName], (error, results) => {
+    pool.query('SELECT * FROM "tbl_Account" WHERE "name" = $1', [name], (error, results) => {
         if (error) {
           throw error;
         }
@@ -34,7 +34,7 @@ const createUser = (request, response) => {
             response.status(400).json(dict);
         }
         else {
-            pool.query('INSERT INTO "tbl_Account" ("accountName", "accountPassword", "accountPhone") VALUES ($1, $2, $3) RETURNING *', [accountName, accountPassword, accountPhone], (error, results) => {
+            pool.query('INSERT INTO "tbl_Account" ("name", "password", "phone") VALUES ($1, $2, $3) RETURNING *', [name, password, phone], (error, results) => {
                 if (error) {
                     throw error;
                 }
@@ -48,11 +48,11 @@ const createUser = (request, response) => {
 
 const updateUser = (request, response) => {
     const id = parseInt(request.params.id);
-    const { accountName, accountPassword, accountPhone } = request.body;
+    const { name, password, phone } = request.body;
 
     pool.query(
-        'UPDATE "tbl_Account" SET "accountName" = $1, "accountPassword" = $2, "accountPhone" = $3 WHERE "accountID" = $4 RETURNING *',
-        [accountName, accountPassword, accountPhone, id],
+        'UPDATE "tbl_Account" SET "name" = $1, "password" = $2, "phone" = $3 WHERE "accountID" = $4 RETURNING *',
+        [name, password, phone, id],
         (error, results) => {
             if (error) {
                 throw error;
@@ -74,9 +74,9 @@ const deleteUser = (request, response) => {
 }
 
 const authenticateUser = (request, response) => {
-    const { accountName, accountPassword } = request.body;
+    const { name, password } = request.body;
 
-    pool.query('SELECT * FROM "tbl_Account" WHERE "accountName" = $1 AND "accountPassword" = $2', [accountName, accountPassword], (error, results) => {
+    pool.query('SELECT * FROM "tbl_Account" WHERE "name" = $1 AND "password" = $2', [name, password], (error, results) => {
         if (error)
             throw error;
         

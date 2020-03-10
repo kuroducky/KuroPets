@@ -89,9 +89,9 @@ const getOneAccountPost = (req, res) =>
 const createPost = (req,res) =>
 {
     const accountID = parseInt(req.params.id);
-    const {postTitle, postDescription, postLocation, postStartDate, postEndDate, postTypeOfPet, postService} = req.body
-    pool.query('INSERT INTO "tbl_Post"("postStatus", "postTitle", "postDescription", "postLocation", "postStartDate", "postEndDate", "postDate", "postTypeOfPet", "postService", "accountID") VALUES ($1, $2, $3, $4, $5, $6, current_timestamp, $7, $8, $9) RETURNING *;',
-    ['Pending Service', postTitle, postDescription, postLocation, postStartDate, postEndDate, postTypeOfPet, postService, accountID],
+    const {title, description, location, startDate, endDate, typeOfPet, service} = req.body
+    pool.query('INSERT INTO "tbl_Post"("status", "title", "description", "location", "startDate", "endDate", "timestamp", "postTypeOfPet", "postService", "accountID") VALUES ($1, $2, $3, $4, $5, $6, current_timestamp, $7, $8, $9) RETURNING *;',
+    ['Pending Service', title, description, location, startDate, endDate, typeOfPet, service, accountID],
     (error,results) =>
     {
         if(error)
@@ -124,10 +124,10 @@ const updatePost = (req,res) =>
     const accountID = parseInt(req.params.id)
     const postID = parseInt(req.params.pid)
 
-    const {postStatus, postTitle, postDescription, postLocation, postStartDate, postEndDate, postTypeOfPet, postService} = req.body;
+    const {status, title, description, location, startDate, endDate, typeOfPet, service} = req.body;
 
-    pool.query('UPDATE "tbl_Post" SET "postStatus" = $1, "postTitle" = $2, "postDescription" = $3, "postLocation" = $4, "postStartDate" = $5, "postEndDate" = $6, "postDate" = current_timestamp, "postTypeOfPet" = $7, "postService" = $8 WHERE "accountID" = $9 AND "postID" = $10 RETURNING *;',
-    [postStatus, postTitle, postDescription, postLocation, postStartDate, postEndDate, postTypeOfPet, postService, accountID, postID],
+    pool.query('UPDATE "tbl_Post" SET "status" = $1, "title" = $2, "description" = $3, "location" = $4, "startDate" = $5, "endDate" = $6, "timestamp" = current_timestamp, "postTypeOfPet" = $7, "postService" = $8 WHERE "accountID" = $9 AND "postID" = $10 RETURNING *;',
+    [status, title, description, location, startDate, endDate, typeOfPet, service, accountID, postID],
     (error, results) =>
     {
         if(error)
