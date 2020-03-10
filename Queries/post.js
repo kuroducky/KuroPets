@@ -96,7 +96,26 @@ const createPost = (req,res) =>
     {
         if(error)
             throw error;
-        res.status(201).json(results.rows[0]);
+
+        var postID = results.rows[0].postID;
+        var images = req.body.images;
+        var imageTotal = images.length;
+        var count = 0;
+
+        results.rows[0].images = []
+        images.forEach(imageURL => {
+            pool.query('INSERT INTO "tbl_Images" ("imageURL","postID") VALUES ($1,$2) RETURNING *; ', [imageURL,postID], (error,imgResults) =>
+            {
+                if (error)
+                    throw error;
+                
+                count++;
+                results.rows[0].images.push(imageURL);
+                if (count == imageTotal){
+                    res.status(200).json(results.rows[0])
+                }
+            })
+        })
     })
 }
 
