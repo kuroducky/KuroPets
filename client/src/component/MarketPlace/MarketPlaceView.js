@@ -28,7 +28,7 @@ const MarketPlaceView = ({ posts }) => {
   }
   return (
     <div>
-      <h1>MarketPlace</h1>
+      <Title level={2}>Marketplace</Title>
       {rows.map((posts, i) => (
         <Row
           key={i}

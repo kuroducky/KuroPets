@@ -36,6 +36,9 @@ class PostCreation extends React.Component {
   };
   onSubmitImage = url => {
     console.log("new image: ", url);
+    this.setState(prevState => ({
+      images: [...prevState.images, url]
+    }));
   };
 
   onSubmitForm = values => {
@@ -50,13 +53,16 @@ class PostCreation extends React.Component {
             minHeight: 380
           }}
         >
-          <Title style={{ marginBottom: "0px" }} level={3}>
+          <Title style={{ marginBottom: "0px" }} level={2}>
             What help do you need?
           </Title>
           Create a post and put it on our Marketplace.
           <Row style={{ marginTop: "20px" }} gutter={16}>
             <Col span={10}>
-              <ImageUpload onSubmitImage={this.onSubmitImage} />
+              <ImageUpload
+                images={this.state.images}
+                onSubmitImage={this.onSubmitImage}
+              />
             </Col>
             <Col span={14}>
               <div
