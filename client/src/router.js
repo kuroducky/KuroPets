@@ -5,6 +5,7 @@ import Topbar from "./component/layout-component/Topbar";
 import MarketPlace from "./component/MarketPlace";
 import Post from "./component/Post";
 import PostCreation from "./component/PostCreation";
+import Chat from "./component/Chat";
 
 const Router = () => (
   <BrowserRouter>
@@ -37,6 +38,16 @@ const Router = () => (
           <Fragment>
             <Topbar {...props} />
             <Post {...props} />
+          </Fragment>
+        )}
+      />
+      <Route
+        path="/chat"
+        exact
+        render={props => (
+          <Fragment>
+            <Topbar {...props} />
+            <Chat {...props} />
           </Fragment>
         )}
       />
