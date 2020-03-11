@@ -17,23 +17,17 @@ const { TextArea } = Input;
 const mainPageStyles = {
   marginLeft: "5%",
   marginRight: "5%",
-  marginTop: 120,
+  marginTop: 60,
   padding: "2px 22px 0px 22px"
 };
 class PostCreation extends React.Component {
-  state = {
-    images: []
-    // title: "",
-    // description: "",
-    // location: "",
-    // dateTime: "",
-    // status: "", // "pending offer", "pending service", "service completed"
-    // typeOfPet: "",
-    // typeOfService: "", // "Walking". "Grooming", "Vet", "Others"
-    // startDate: "",
-    // endDate: "",
-    // user: {}
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      images: []
+    };
+    this.onSubmitForm = this.onSubmitForm.bind(this);
+  }
   onSubmitImage = url => {
     console.log("new image: ", url);
     this.setState(prevState => ({
@@ -41,9 +35,34 @@ class PostCreation extends React.Component {
     }));
   };
 
-  onSubmitForm = values => {
+  async onSubmitForm(values) {
+    const { images } = this.state;
+    const user = JSON.parse(localStorage.getItem("user"));
+    const { accountID } = user;
+    values.startDate = values.startEndDate[0].format("YYYY-MM-DDTHH:mm:ss"); // 2020-02-22T16:00:00.000Z
+    values.endDate = values.startEndDate[1].format("YYYY-MM-DDTHH:mm:ss");
+    values.images = images;
+    // values.accountID = user.accountID;
+    delete values.startEndDate;
     console.log(values);
-  };
+
+    // POST request
+    const response = await fetch(
+      `http://172.21.148.170/api/post/${accountID}`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(values)
+      }
+    );
+
+    const content = await response.json();
+
+    console.log(content);
+  }
   render() {
     return (
       <Content style={mainPageStyles}>
@@ -87,10 +106,10 @@ class PostCreation extends React.Component {
                   <Form.Item name={"location"} label="Location">
                     <Input />
                   </Form.Item>
-                  <Form.Item name={"tyoeOfPet"} label="Type Of Pet">
+                  <Form.Item name={"typeOfPet"} label="Type Of Pet">
                     <Input />
                   </Form.Item>
-                  <Form.Item name={"typeOfService"} label="Type Of Service">
+                  <Form.Item name={"service"} label="Type Of Service">
                     <Input />
                   </Form.Item>
                   <Form.Item name={"startEndDate"} label="Start and End Date">

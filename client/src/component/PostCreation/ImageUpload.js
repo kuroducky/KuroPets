@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import FittedImage from "react-fitted-image";
 import { Carousel, Typography, Button, Form, Input } from "antd";
 
@@ -13,13 +13,22 @@ class ImageUpload extends React.Component {
   render() {
     const { images } = this.props;
     return (
-      <Fragment>
+      <div
+        style={{
+          minHeight: 400,
+          padding: "0 22px 0px 22px",
+          marginBottom: "50px",
+          boxShadow:
+            "0 3px 10px 0 rgba(44,44,45,.07), inset 0 0 0 1px rgba(44,44,45,.07)",
+          borderRadius: "8px"
+        }}
+      >
         <br />
         <Title style={{ marginBottom: "0px" }} level={4}>
           Image Upload
         </Title>
         You can choose to upload images to provide more information
-        <div style={{ borderRadius: "8px", width: "600px", height: "550px" }}>
+        <div style={{ borderRadius: "8px", width: "100%", height: "550px" }}>
           <br />
           <Carousel>
             {images.length === 0 ? (
@@ -55,14 +64,15 @@ class ImageUpload extends React.Component {
               <Input placeholder="enter image URL..." />
             </Form.Item>
             <Form.Item wrapperCol={{ span: 12 }}>
-              <Button block type="primary" htmlType="submit">
-                <strong>Add Image</strong>{" "}
-              </Button>
+              <div style={{ marginBottom: "15px" }}>
+                <Button block type="primary" htmlType="submit">
+                  <strong>Add Image</strong>{" "}
+                </Button>
+              </div>
             </Form.Item>
           </Form>
-          <div style={{ float: "left" }}></div>hello
         </div>
-      </Fragment>
+      </div>
     );
   }
 }
