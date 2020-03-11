@@ -40,6 +40,7 @@ const getPost = (req, res) =>
                         .then(results =>
                             {
                                 row.user.push(results)
+                                posts.push(row);
                                 row.images = [];
                                 pool
                                     .query('SELECT * FROM "tbl_Images" WHERE "postID" = $1;', [row.postID])
