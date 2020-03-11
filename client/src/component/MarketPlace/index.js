@@ -13,7 +13,7 @@ const mainPageStyles = {
   borderRadius: "8px",
   padding: "2px 22px 0px 22px"
 };
-const MarketPlace = () => {
+const MarketPlace = props => {
   return (
     <Content style={mainPageStyles}>
       <div
@@ -24,7 +24,7 @@ const MarketPlace = () => {
       >
         {/* conditional render Marketplace & View my own posts */}
 
-        <MarketPlaceControl />
+        <MarketPlaceControl {...props} />
 
         {/* need to figure how to use loading components also well but later */}
       </div>

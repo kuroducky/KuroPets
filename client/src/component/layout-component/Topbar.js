@@ -49,6 +49,11 @@ const Topbar = props => {
     props.history.push("/");
   };
   let currentUser = JSON.parse(localStorage.getItem("user"));
+
+  const onSearchSubmit = value => {
+    const keywords = value.split(" ");
+    props.onSearchSubmit(keywords);
+  };
   const userMenu = (
     <Menu>
       <Menu.Item>
@@ -85,7 +90,7 @@ const Topbar = props => {
           className="search"
           size="large"
           placeholder="Search posts..."
-          onSearch={value => console.log(value)}
+          onSearch={onSearchSubmit}
           style={{
             width: 800,
             marginLeft: "60px",

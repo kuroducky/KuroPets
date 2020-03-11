@@ -84,17 +84,18 @@ const dummyPosts = [
   }
 ];
 
+// props: {keywords: []}
 class MarkPlaceControl extends React.Component {
   state = {
-    posts: dummyPosts,
-    keywords: []
+    posts: dummyPosts
   };
-  async componentDidMount() {
-    const response = await fetch(`http://172.21.148.170/api/post`);
-    const json = await response.json();
-    console.log(json);
-  }
+  // async componentDidMount() {
+  //   const response = await fetch(`http://172.21.148.170/api/post`);
+  //   const json = await response.json();
+  //   console.log(json);
+  // }
   render() {
+    console.log("from marketplace: ", this.props.keywords);
     const { posts } = this.state;
     return (
       <div>
