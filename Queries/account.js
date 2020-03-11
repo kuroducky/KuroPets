@@ -22,12 +22,27 @@ const getUserById = (request, response) => {
 
 const createUser = (request, response) => {
     const { name, password, phone } = request.body;
+    var dict = {};
 
-    pool.query('INSERT INTO "tbl_Account" ("accountName", "accountPassword", "accountPhone") VALUES ($1, $2, $3)', [name, password, phone], (error, results) => {
+    pool.query('SELECT * FROM "tbl_Account" WHERE "name" = $1', [name], (error, results) => {
         if (error) {
-            throw error;
+          throw error;
         }
-        response.status(200).send(`User added with ID: ${result.rows}`);
+        
+        if (results.rows[0] !== undefined){
+            dict.querySuccess = false;
+            response.status(400).json(dict);
+        }
+        else {
+            pool.query('INSERT INTO "tbl_Account" ("name", "password", "phone") VALUES ($1, $2, $3) RETURNING *', [name, password, phone], (error, results) => {
+                if (error) {
+                    throw error;
+                }
+                dict.querySuccess = true;
+                dict.data = results.rows[0];
+                response.status(200).json(dict);
+            });
+        }
     });
 }
 
@@ -36,7 +51,7 @@ const updateUser = (request, response) => {
     const { name, password, phone } = request.body;
 
     pool.query(
-        'UPDATE "tbl_Account" SET "accountName" = $1, "accountPassword" = $2, "accountPhone" = $3 WHERE "accountID" = $4',
+        'UPDATE "tbl_Account" SET "name" = $1, "password" = $2, "phone" = $3 WHERE "accountID" = $4 RETURNING *',
         [name, password, phone, id],
         (error, results) => {
             if (error) {
@@ -58,10 +73,30 @@ const deleteUser = (request, response) => {
     });
 }
 
+const authenticateUser = (request, response) => {
+    const { name, password } = request.body;
+
+    pool.query('SELECT * FROM "tbl_Account" WHERE "name" = $1 AND "password" = $2', [name, password], (error, results) => {
+        if (error)
+            throw error;
+        
+        var dict = {};
+        if (results.rows[0] === undefined){
+            dict.loginSuccess = false;
+        }
+        else {
+            dict.loginSuccess = true
+            dict.data = results.rows[0];
+        }
+        response.status(200).json(dict);
+    })
+}
+
 module.exports = {
     getUsers,
     getUserById,
     createUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    authenticateUser
 };

@@ -49,23 +49,23 @@ const getAllUserOffers = (request, response) => {
 
 const createOffer = (request, response) => {
     const id = parseInt(request.params.id)
-    const {accID, offerPrice, offerPayment} = request.body
-    pool.query('INSERT INTO "tbl_Offers" ("postID", "accountID", "offerPrice", "offerPaymentType", "offerStatus") VALUES ($1, $2, $3, $4, "Pending"',
-    [id, accID, offerPrice, offerPayment],
+    const {accountID, price, paymentType} = request.body
+    pool.query('INSERT INTO "tbl_Offers" ("postID", "accountID", "price", "paymentType", "status") VALUES ($1, $2, $3, $4, \'Pending\') RETURNING *',
+    [id, accountID, price, paymentType],
     (error, results) => {
         if(error){
             throw error
         }
-        response.status(200).send(`Offer created with ID: ${results.insertID}`)
+        response.status(200).send(`Offer created with ID: ${results.rows[0].offerID}`)
     })
 }
 
 const updateOffer = (request, response) => {
     const pid = parseInt(request.params.pid)
     const oid = parseInt(request.params.oid)
-    const {accID, offerPrice, offerPayment, offerStatus} = request.body
-    pool.query('UPDATE "tbl_Offers" SET "offerPrice" = $1, "offerPayment" = $2, "offerStatus" = $3 WHERE "postID" = $4 AND "offerID" = $5 AND "accountID" = $6',
-    [offerPrice, offerPayment, offerStatus, pid, oid, accID],
+    const {price, paymentType, status} = request.body
+    pool.query('UPDATE "tbl_Offers" SET "price" = $1, "paymentType" = $2, "status" = $3 WHERE "postID" = $4 AND "offerID" = $5 RETURNING *',
+    [price, paymentType, status, pid, oid],
     (error, results) => {
         if(error){
             throw error

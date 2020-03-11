@@ -11,7 +11,7 @@ const getAllRatings = (request, response) => {
 
 const getUserRatings = (request, response) => {
     const id = parseInt(request.params.id)
-    pool.query('SELECT * FROM "tbl_Rating" WHERE "rateeID" = $1',
+    pool.query('SELECT * FROM "tbl_Rating" WHERE "ratingID" = $1',
     [id],
     (error, results) =>{
         if (error){
@@ -22,15 +22,15 @@ const getUserRatings = (request, response) => {
 }
 
 const createRating = (request, response) => {
-    const rateeId = parseInt(request.params.id)
-    const {raterID, rating, feedback} = request.body
-    pool.query('INSERT INTO "tbl_Rating" ("raterID", "rateeID", "rating", "feedback") VALUES ($1, $2, $3, $4)',
-    [raterID, rateeID, rating, feedback],
+    const ratingID = parseInt(request.params.id)
+    const {raterID, rateeID, value, feedback} = request.body
+    pool.query('INSERT INTO "tbl_Rating" ("raterID", "rateeID", "value", "feedback") VALUES ($1, $2, $3, $4) RETURNING *;',
+    [raterID, rateeID, value, feedback],
     (error, results) => {
         if(error){
             throw error
         }
-        response.status(200).send(`Rating given with ID: ${result.insertID}`)
+        response.status(200).send(`Rating given with ID: ${ratingID}`)
     })
 }
 
@@ -49,7 +49,7 @@ const deleteAllUserRatings = (request, response) => {
 const deleteUserRating = (request, response) => {
     const rateeID = parseInt(request.params.rateeID)
     const ratingID = parseInt(request.params.ratingID)
-    pool.query('DELETE FROM "tbl_Rating" where rateeID = $1 AND "ratingID" = $2',
+    pool.query('DELETE FROM "tbl_Rating" where "rateeID" = $1 AND "ratingID" = $2',
     [rateeID, ratingID],
     (error, results) => {
         if(error){

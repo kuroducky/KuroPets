@@ -36,15 +36,15 @@ const getUserNotification = (request, response) => {
 
 const createNotification = (request, response) => {
     const id = parseInt(request.params.id)
-    const {type , timestamp} = request.body
+    const { type } = request.body
 
-    pool.query('INSERT INTO "tbl_Notification" ("notificationType", "notificationTimestamp", "accountID") VALUES ($1, $2, $3)', 
-    [type, timestamp, id], 
+    pool.query('INSERT INTO "tbl_Notification" ("type", "timestamp", "accountID") VALUES ($1, current_timestamp, $2) RETURNING *', 
+    [type, id], 
     (error, results) => {
         if (error) {
             throw error
         }
-        response.status(201).send(`Notification added with ID: ${result.insertId}`)
+        response.status(201).send(`Notification added with ID: ${results.rows[0].notificationID}`)
     })
 }
 

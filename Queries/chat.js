@@ -37,14 +37,13 @@ const getUserChat = (request, response) => {
 const createChat = (request, response) => {
     const id1 = parseInt(request.params.accID1)
     const id2 = parseInt(request.params.accID2)
-    const {chatMessage, chatTimestamp} = request.body
-    pool.query('INSERT INTO "tbl_Chat" ("sendeeID", "senderID", "chatMessages", "chatTime") VALUES ($1, $2, $3, $4)',
-    [id1, id2, chatMessage, chatTimestamp],
+    pool.query('INSERT INTO "tbl_Chat" ("sendeeID", "senderID", "messages", "timestamp") VALUES ($1, $2, $3, current_timestamp) RETURNING *',
+    [id1, id2, `{${request.body.messages}}`],
     (error, results) => {
         if(error){
             throw error
         }
-        response.status(200).send(`Chat created with ID: ${results.chatID}`)
+        response.status(200).json(results.rows[0])
     })
 }
 
