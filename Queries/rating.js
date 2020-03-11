@@ -17,7 +17,7 @@ const getUserRatings = (request, response) => {
         if (error){
             throw error
         }
-        response.status(200).json(result.rows)
+        response.status(200).json(results.rows)
     })
 }
 
