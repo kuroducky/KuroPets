@@ -28,7 +28,7 @@ const createUser = (request, response) => {
         if (error) {
           throw error;
         }
-        
+
         if (results.rows[0] !== undefined){
             dict.querySuccess = false;
             response.status(400).json(dict);
@@ -79,7 +79,7 @@ const authenticateUser = (request, response) => {
     pool.query('SELECT * FROM "tbl_Account" WHERE "name" = $1 AND "password" = $2', [name, password], (error, results) => {
         if (error)
             throw error;
-        
+
         var dict = {};
         if (results.rows[0] === undefined){
             dict.loginSuccess = false;
