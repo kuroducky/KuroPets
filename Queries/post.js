@@ -11,13 +11,12 @@ const getPost = (req, res) => {
     }
     total = results.rows.length;
     results.rows.forEach(row => {
-      row.user = [];
       pool.query(
-        'SELECT “accountID", "name", "phone" FROM “tbl_Account” WHERE "postID" = $1;',
-        [row.postID],
+        'SELECT "accountID", "name", "phone" FROM "tbl_Account" WHERE "accountID" = $1;',
+        [row.accountID],
         (error, results) => {
           if (error) throw error;
-          row.user.push(results);
+          row.user = results.rows[0];
           posts.push(row);
           row.images = [];
           pool.query(
@@ -83,14 +82,13 @@ const getAllAccountPost = (req, res) => {
       }
       total = results.rows.length;
       results.rows.forEach(row => {
-        JSON.stringify(row.user);
         row.images = [];
         pool.query(
-          'SELECT “accountID", "name", "phone" FROM “tbl_Account” WHERE "postID" = $1;',
-          [row.postID],
+          'SELECT "accountID", "name", "phone" FROM "tbl_Account" WHERE "accountID" = $1;',
+          [row.accountID],
           (error, results) => {
             if (error) throw error;
-            row.user.push(results);
+            row.user = results.rows[0];
             posts.push(row);
             row.images = [];
             pool.query(
