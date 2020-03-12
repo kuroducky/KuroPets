@@ -36,10 +36,11 @@ const getPost = (req, res) =>
                 results.rows.forEach(row => {
                     row.user = [];
                     pool
-                        .query('SELECT "accountID", "name", "phone" FROM "tbl_Account" WHERE "postID" = $1;', [row.postID])
+                        .query('SELECT "accountID", "name", "phone" FROM "tbl_Account" WHERE "postID" = $1 RETURNING *;', [row.postID])
                         .then(results =>
                             {
-                                row.user.push(results)
+                                row.user.push(results);
+                                console.log(results);
                                 posts.push(row);
                                 row.images = [];
                                 pool
