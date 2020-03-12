@@ -21,7 +21,6 @@ const chatDetails = {
 
 class ChatControl extends React.Component {
   state = {
-    id: this.props.match.params.id,
     chatDetails: chatDetails
   };
 

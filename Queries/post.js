@@ -40,20 +40,18 @@ const getPost = (req, res) =>
                         .then(results =>
                             {
                                 row.user.push(results);
-                                console.log(results);
-                                posts.push(row);
                                 row.images = [];
                                 pool
                                     .query('SELECT * FROM "tbl_Images" WHERE "postID" = $1;', [row.postID])
                                     .then(results => {
                                         results.rows.forEach(image => row.images.push(image.url));
-                                        posts.push(row);
-                                        count++;
-                                        if (count == total){
-                                            res.status(200).json(posts);
-                                        }
                                     })
                                     .catch(error => console.error(error.stack))
+                                posts.push(row);
+                                count++;
+                                if (count == total){
+                                    res.status(200).json(posts);
+                                }
                             })
                         .catch(error => console.error(error.stack))
                 })

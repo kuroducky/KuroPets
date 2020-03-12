@@ -1,4 +1,5 @@
-import React from "react";import { Button, Row, Col, Carousel, Typography, Avatar, Tooltip } from "antd";
+import React from "react";
+import { Button, Row, Col, Carousel, Typography, Avatar, Tooltip } from "antd";
 import FittedImage from "react-fitted-image";
 import {
   UserOutlined,
@@ -16,7 +17,7 @@ import {
 import { ChatkitProvider, TokenProvider } from '@pusher/chatkit-client-react';
 import './ChatApp.css';
 import Chat from './Chat';
-import UserList from './UserList';
+import UserListControl from './UserListControl';
 import chatkitLogo from './chatkit-logo.svg';
 
 const { Fragment } = React;
@@ -39,7 +40,7 @@ const ChatView = ({ chatDetails }) => {
                   tokenProvider={tokenProvider}
                   userId={userId}
                 >
-                  <UserList userId={userId}/>
+                  <UserListControl userId={userId} otherId={otherId}/>
                   <Chat otherUserId={otherId}/>
                 </ChatkitProvider>
             </div>
