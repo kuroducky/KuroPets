@@ -1,27 +1,10 @@
 import React from "react";
-import { Button, Row, Col, Carousel, Typography, Avatar, Tooltip } from "antd";
-import FittedImage from "react-fitted-image";
-import {
-  UserOutlined,
-  EnvironmentOutlined,
-  InfoCircleOutlined,
-  QqOutlined,
-  CalendarOutlined,
-  DeleteTwoTone,
-  CheckCircleTwoTone,
-  EditTwoTone,
-  SmileOutlined
-} from "@ant-design/icons";
 
-
-import { ChatkitProvider, TokenProvider } from '@pusher/chatkit-client-react';
+import { ChatkitProvider } from '@pusher/chatkit-client-react';
 import './ChatApp.css';
 import Chat from './Chat';
 import UserListControl from './UserListControl';
-import chatkitLogo from './chatkit-logo.svg';
 
-const { Fragment } = React;
-const { Text, Title } = Typography;
 const ChatView = ({ chatDetails }) => {
   const {
     instanceLocator,

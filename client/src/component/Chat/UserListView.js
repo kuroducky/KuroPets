@@ -7,19 +7,21 @@ const UserListView = ({ userListDetails }) => {
     const {
         userId,
         otherId,
-        userList
+        userList,
+        update
     } = userListDetails;
 
     const items = [];
     userList.forEach(user => {
         let className = "UserList__container__list__item"
-        if (otherId == user.id){
+        if (otherId === user.id){
             className += " UserList__container__list__item--selected";
         }
 
         items.push(
             <li className={className}>
-              <Link to={`/chat?userId=${userId}&otherId=${user.id}`}>
+            <p>{otherId}</p>
+              <Link onClick={update} to={`/chat/${userId}/${user.id}`}>
                   <div>
                     <img
                       src={defaultAvatar}

@@ -42,7 +42,7 @@ const Router = () => (
         )}
       />
       <Route
-        path="/chat"
+        path="/chat/:userId/:otherId"
         exact
         render={props => (
           <Fragment>
