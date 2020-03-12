@@ -6,57 +6,57 @@ const getPost = (req, res) =>
     var total;
     var posts = [];
 
-    // pool.query('SELECT * FROM "tbl_Post"', (error, results) =>
-    // {
-    //     if(error)
-    //     {
-    //         throw error;
-    //     }
-    //     total = results.rows.length;
-    //     results.rows.forEach(row => {
-    //         row.images = [];
-    //         pool.query('SELECT * FROM "tbl_Images" WHERE "postID" = $1;', [row.postID], (error,results) =>
-    //         {
-    //             if(error)
-    //                 throw error;
-    //             results.rows.forEach(image => row.images.push(image.url));
-    //             posts.push(row);
-    //             count++;
-    //             if (count == total){
-    //                 res.status(200).json(posts);
-    //             }
-    //         })
-    //     });
-    // });
-    pool
-        .query('SELECT * FROM "tbl_Post"')
-        .then(results =>
+    pool.query('SELECT * FROM "tbl_Post"', (error, results) =>
+    {
+        if(error)
+        {
+            throw error;
+        }
+        total = results.rows.length;
+        results.rows.forEach(row => {
+            row.images = [];
+            pool.query('SELECT * FROM "tbl_Images" WHERE "postID" = $1;', [row.postID], (error,results) =>
             {
-                total = results.rows.length;
-                results.rows.forEach(row => {
-                    row.user = [];
-                    pool
-                        .query('SELECT "accountID", "name", "phone" FROM "tbl_Account" WHERE "postID" = $1 RETURNING *;', [row.postID])
-                        .then(results =>
-                            {
-                                row.user.push(results);
-                                row.images = [];
-                                pool
-                                    .query('SELECT * FROM "tbl_Images" WHERE "postID" = $1;', [row.postID])
-                                    .then(results => {
-                                        results.rows.forEach(image => row.images.push(image.url));
-                                    })
-                                    .catch(error => console.error(error.stack))
-                                posts.push(row);
-                                count++;
-                                if (count == total){
-                                    res.status(200).json(posts);
-                                }
-                            })
-                        .catch(error => console.error(error.stack))
-                })
+                if(error)
+                    throw error;
+                results.rows.forEach(image => row.images.push(image.url));
+                posts.push(row);
+                count++;
+                if (count == total){
+                    res.status(200).json(posts);
+                }
             })
-        .catch(error => console.error(error.stack))
+        });
+    });
+    // pool
+        // .query('SELECT * FROM "tbl_Post"')
+        // .then(results =>
+        //     {
+        //         total = results.rows.length;
+        //         results.rows.forEach(row => {
+        //             row.user = [];
+        //             pool
+        //                 .query('SELECT "accountID", "name", "phone" FROM "tbl_Account" WHERE "postID" = $1;', [row.postID])
+        //                 .then(results =>
+        //                     {
+        //                         row.user.push(results);
+        //                         row.images = [];
+        //                         pool
+        //                             .query('SELECT * FROM "tbl_Images" WHERE "postID" = $1;', [row.postID])
+        //                             .then(results => {
+        //                                 results.rows.forEach(image => row.images.push(image.url));
+        //                             })
+        //                             .catch(error => console.error(error.stack))
+        //                         posts.push(row);
+        //                         count++;
+        //                         if (count == total){
+        //                             res.status(200).json(posts);
+        //                         }
+        //                     })
+        //                 .catch(error => console.error(error.stack))
+        //         })
+        //     })
+        // .catch(error => console.error(error.stack))
 }
 
 const getAllAccountPost = (req,res) =>
