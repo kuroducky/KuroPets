@@ -83,14 +83,25 @@ const getAllAccountPost = (req, res) => {
       }
       total = results.rows.length;
       results.rows.forEach(row => {
+        JSON.stringify(row.user);
         row.images = [];
         pool.query(
-          'SELECT * FROM "tbl_Images" WHERE "postID" = $1;',
+          'SELECT “accountID", "name", "phone" FROM “tbl_Account” WHERE "postID" = $1;',
           [row.postID],
           (error, results) => {
             if (error) throw error;
-            results.rows.forEach(image => row.images.push(image.url));
+            row.user.push(results);
             posts.push(row);
+            row.images = [];
+            pool.query(
+              'SELECT * FROM "tbl_Images" WHERE "postID" = $1;',
+              [row.postID],
+              (error, results) => {
+                if (error) throw error;
+                results.rows.forEach(image => row.images.push(image.url));
+                posts.push(row);
+              }
+            );
             count++;
             if (count == total) {
               res.status(200).json(posts);
