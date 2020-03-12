@@ -67,15 +67,15 @@ const getPost = (req, res) => {
   // .catch(error => console.error(error.stack))
 };
 
-const getAllAccountPost = (req, res) => {
-  const accountID = parseInt(req.params.id);
+const getOnePost = (req, res) => {
+  const postID = parseInt(req.params.id);
   var count = 0;
   var total;
   var posts = [];
 
   pool.query(
-    'SELECT * FROM "tbl_Post" WHERE "accountID" = $1',
-    [accountID],
+    'SELECT * FROM "tbl_Post" WHERE "postID" = $1',
+    [postID],
     (error, results) => {
       if (error) {
         throw error;
@@ -258,7 +258,7 @@ const deletePost = (req, res) => {
 
 module.exports = {
   getPost,
-  getAllAccountPost,
+  getOnePost,
   getOneAccountPost,
   createPost,
   updatePost,
