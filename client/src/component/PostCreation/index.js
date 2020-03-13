@@ -27,14 +27,18 @@ class PostCreation extends React.Component {
       images: []
     };
     this.onSubmitForm = this.onSubmitForm.bind(this);
+    this.form = React.createRef();
   }
   onSubmitImage = url => {
-    console.log("new image: ", url);
     this.setState(prevState => ({
       images: [...prevState.images, url]
     }));
   };
-
+  onDeleteImage = index => {
+    const images = [...this.state.images];
+    images.splice(index, 1);
+    this.setState({ images: images });
+  };
   async onSubmitForm(values) {
     const { images } = this.state;
     const user = JSON.parse(localStorage.getItem("user"));
@@ -44,7 +48,6 @@ class PostCreation extends React.Component {
     values.images = images;
     // values.accountID = user.accountID;
     delete values.startEndDate;
-    console.log(values);
 
     // POST request
     const response = await fetch(
@@ -62,8 +65,14 @@ class PostCreation extends React.Component {
     const content = await response.json();
 
     console.log(content);
+    this.form.current.resetFields();
+    // this.props.form.resetFields();
+    this.setState({ images: [] });
   }
   render() {
+    const validateMessages = {
+      required: "This field is required!"
+    };
     return (
       <Content style={mainPageStyles}>
         <div
@@ -81,6 +90,7 @@ class PostCreation extends React.Component {
               <ImageUpload
                 images={this.state.images}
                 onSubmitImage={this.onSubmitImage}
+                onDeleteImage={this.onDeleteImage}
               />
             </Col>
             <Col span={14}>
@@ -95,12 +105,22 @@ class PostCreation extends React.Component {
                 }}
               >
                 <Form
+                  validateMessages={validateMessages}
                   size={"large"}
                   layout={"vertical"}
                   name="new-post"
                   onFinish={this.onSubmitForm}
+                  ref={this.form}
                 >
-                  <Form.Item name={"title"} label="Title">
+                  <Form.Item
+                    rules={[
+                      {
+                        required: true
+                      }
+                    ]}
+                    name={"title"}
+                    label="Title"
+                  >
                     <Input />
                   </Form.Item>
                   <Form.Item name={"location"} label="Location">
@@ -112,7 +132,15 @@ class PostCreation extends React.Component {
                   <Form.Item name={"service"} label="Type Of Service">
                     <Input />
                   </Form.Item>
-                  <Form.Item name={"startEndDate"} label="Start and End Date">
+                  <Form.Item
+                    rules={[
+                      {
+                        required: true
+                      }
+                    ]}
+                    name={"startEndDate"}
+                    label="Start and End Date"
+                  >
                     <RangePicker size={"large"} />
                   </Form.Item>
                   <Form.Item name={"description"} label="Description">

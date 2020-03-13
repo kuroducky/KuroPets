@@ -1,14 +1,19 @@
 import React from "react";
 import FittedImage from "react-fitted-image";
-import { Carousel, Typography, Button, Form, Input } from "antd";
-
+import { Carousel, Typography, Button, Form, Input, List } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
 const { Title } = Typography;
 class ImageUpload extends React.Component {
+  constructor(props) {
+    super(props);
+    this.form = React.createRef();
+  }
   onAddImage = value => {
     const { image } = value;
     const { onSubmitImage } = this.props;
     console.log();
     onSubmitImage(image);
+    this.form.current.resetFields();
   };
   render() {
     const { images } = this.props;
@@ -59,7 +64,12 @@ class ImageUpload extends React.Component {
           </Carousel>
         </div>
         <div>
-          <Form onFinish={this.onAddImage} size={"large"} layout={"vertical"}>
+          <Form
+            ref={this.form}
+            onFinish={this.onAddImage}
+            size={"large"}
+            layout={"vertical"}
+          >
             <Form.Item name={"image"}>
               <Input placeholder="enter image URL..." />
             </Form.Item>
@@ -72,6 +82,21 @@ class ImageUpload extends React.Component {
             </Form.Item>
           </Form>
         </div>
+        <List size="small" bordered={false}>
+          {images.map((im, i) => {
+            return (
+              <List.Item>
+                Image {i + 1}{" "}
+                <DeleteOutlined
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    this.props.onDeleteImage(i);
+                  }}
+                />{" "}
+              </List.Item>
+            );
+          })}
+        </List>{" "}
       </div>
     );
   }
