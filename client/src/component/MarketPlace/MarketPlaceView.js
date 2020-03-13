@@ -26,6 +26,15 @@ const MarketPlaceView = ({ posts }) => {
       rows.push(posts.slice(i, i + 4));
     }
   }
+  const truncateString = (str, num) => {
+    // If the length of str is less than or equal to num
+    // just return str--don't truncate it.
+    if (str.length <= num) {
+      return str;
+    }
+    // Return str truncated with '...' concatenated to the end of str.
+    return str.slice(0, num) + "...";
+  };
   return (
     <div>
       <Title level={2}>Marketplace</Title>
@@ -64,7 +73,10 @@ const MarketPlaceView = ({ posts }) => {
                   >
                     {/* <Img style={{ maxHeight: "350px" }} src={post.img} /> */}
                   </div>
-                  <Meta title={post.title} description={post.description} />
+                  <Meta
+                    title={post.title}
+                    description={truncateString(post.description, 50)}
+                  />
                 </Card>
               </Link>
             </Col>

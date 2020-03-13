@@ -12,10 +12,11 @@ import {
   EditTwoTone,
   SmileOutlined
 } from "@ant-design/icons";
+import MakeOfferButton from "./MakeOfferButton";
 
 const { Fragment } = React;
 const { Text, Title } = Typography;
-const PostView = ({ postDetails }) => {
+const PostView = props => {
   const {
     description,
     user,
@@ -27,8 +28,8 @@ const PostView = ({ postDetails }) => {
     typeOfService,
     startDate,
     endDate
-  } = postDetails;
-
+  } = props.postDetails;
+  const sessionUser = JSON.parse(localStorage.getItem("user"));
   return (
     <Row style={{ marginBottom: "20px" }}>
       <Col span={12}>
@@ -67,7 +68,8 @@ const PostView = ({ postDetails }) => {
             </Col>
             <Col style={{ paddingTop: "2px" }} span={16}>
               {/* checks if is post creator or caretaker */}{" "}
-              {true ? (
+              {sessionUser != null &&
+              sessionUser.accountID === user.accountID ? (
                 <Button
                   style={{ float: "right", width: "220px" }}
                   size="large"
@@ -76,13 +78,7 @@ const PostView = ({ postDetails }) => {
                   <strong>View Offers</strong>
                 </Button>
               ) : (
-                <Button
-                  style={{ float: "right", width: "220px" }}
-                  size="large"
-                  type="primary"
-                >
-                  <strong>Make Offer</strong>
-                </Button>
+                <MakeOfferButton {...props} />
               )}
               <Button
                 style={{ marginRight: "15px", float: "right", width: "220px" }}
@@ -129,7 +125,9 @@ const PostView = ({ postDetails }) => {
         </div>
         {/* check post.status == "pending service" and user
          == post create then show this button */}
-        {true ? (
+        {sessionUser != null &&
+        sessionUser.accountID === user.accountID &&
+        status === "Pending Service" ? (
           <Tooltip title="Confirm Service Complete">
             <Button
               style={{
@@ -144,7 +142,9 @@ const PostView = ({ postDetails }) => {
           " "
         )}
 
-        {true /* if user is the post creator*/ ? (
+        {sessionUser != null &&
+        sessionUser.accountID ===
+          user.accountID /* if user is the post creator*/ ? (
           <Fragment>
             <Tooltip title="Delete Post">
               <Button

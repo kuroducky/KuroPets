@@ -18,8 +18,8 @@ const postDetails = {
   startDate: "2020-03-07",
   endDate: "2020-03-09",
   user: {
-    accountID: "12345",
-    name: "Johnny Koh"
+    accountID: "20",
+    name: "Scrappy Tay"
   }
 };
 class PostControl extends React.Component {

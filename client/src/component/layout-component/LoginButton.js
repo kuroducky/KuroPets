@@ -74,7 +74,7 @@ const LoginButton = props => {
   const onLogin = ({ username, password }) => {
     let success = login(username, password);
     if (success) {
-      props.history.push("/");
+      window.location.reload();
       setVisible(false);
     } else {
       message.error("Incorrect Username or Password");
