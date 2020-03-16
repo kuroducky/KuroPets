@@ -34,7 +34,8 @@ const createUser = (request, response) => {
             response.status(400).json(dict);
         }
         else {
-            pool.query('INSERT INTO "tbl_Account" ("name", "password", "phone") VALUES ($1, $2, $3) RETURNING *', [name, password, phone], (error, results) => {
+            pool.query('INSERT INTO "tbl_Account" ("name", "password", "phone", "rating", "totalNumRatings") VALUES ($1, $2, $3, $4, $5) RETURNING *',
+            [name, password, phone, 0, 0], (error, results) => {
                 if (error) {
                     throw error;
                 }
@@ -46,31 +47,25 @@ const createUser = (request, response) => {
     });
 }
 
-const updateUser = (request, response) => {
-    const id = parseInt(request.params.id);
-    const { name, password, phone } = request.body;
+const rateUser = (req, res) => {
+    const aid = req.params.id;
+    const rating = req.body.rating;
 
-    pool.query(
-        'UPDATE "tbl_Account" SET "name" = $1, "password" = $2, "phone" = $3 WHERE "accountID" = $4 RETURNING *',
-        [name, password, phone, id],
-        (error, results) => {
-            if (error) {
-                throw error;
-            }
-            response.status(200).send(`User modified with ID: ${id}`);
-        }
-    );
-}
-
-const deleteUser = (request, response) => {
-    const id = parseInt(request.params.id);
-
-    pool.query('DELETE FROM "tbl_Account" WHERE "accountID" = $1', [id], (error, results) => {
-        if (error) {
-            throw error;
-        }
-        response.status(200).send(`User deleted with ID: ${id}`);
-    });
+    if (!Number.isInteger(rating) || rating < 1 || rating > 5){
+        res.status(400).json(null);
+    }
+    else {
+        pool.query('SELECT * FROM "tbl_Account" WHERE "accountID" = $1', [aid], (err, results) => {
+            if (err) throw err;
+            const user = results.rows[0];
+            user.rating = (user.rating * user.totalNumRatings + rating)/(user.totalNumRatings + 1);
+            user.totalNumRatings++;
+            pool.query('UPDATE "tbl_Account" SET "rating" = $1, "totalNumRatings"=$2', [user.rating, user.totalNumRatings], (err, results) => {
+                if (err) throw err;
+                res.status(200).json(user);
+            })
+        })
+    }
 }
 
 const authenticateUser = (request, response) => {
@@ -92,11 +87,39 @@ const authenticateUser = (request, response) => {
     })
 }
 
+const updateUser = (request, response) => {
+    const id = parseInt(request.params.id);
+    const { name, password, phone, rating, totalNumRatings } = request.body;
+
+    pool.query(
+        'UPDATE "tbl_Account" SET "name" = $1, "password" = $2, "phone" = $3, "rating" = $4, "totalNumRatings" = $5 WHERE "accountID" = $6 RETURNING *',
+        [name, password, phone, rating, totalNumRatings, id],
+        (error, results) => {
+            if (error) {
+                throw error;
+            }
+            response.status(200).json(results.rows[0]);
+        }
+    );
+}
+
+const deleteUser = (request, response) => {
+    const id = parseInt(request.params.id);
+
+    pool.query('DELETE FROM "tbl_Account" WHERE "accountID" = $1', [id], (error, results) => {
+        if (error) {
+            throw error;
+        }
+        response.status(200).send(`User deleted with ID: ${id}`);
+    });
+}
+
 module.exports = {
     getUsers,
     getUserById,
     createUser,
+    rateUser,
+    authenticateUser,
     updateUser,
-    deleteUser,
-    authenticateUser
+    deleteUser
 };
