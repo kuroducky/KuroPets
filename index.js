@@ -30,6 +30,7 @@ app.get("/", (req, res) => {
 app.get("/api/user", db.account.getUsers);
 app.get("/api/user/:id", db.account.getUserById);
 app.post("/api/user", db.account.createUser);
+app.post("/api/user/:id/rate", db.account.rateUser);
 app.post("/api/user/authenticate", db.account.authenticateUser);
 app.put("/api/user/:id", db.account.updateUser);
 app.delete("/api/user/:id", db.account.deleteUser);
@@ -40,11 +41,11 @@ app.get("/api/search/user", db.search.searchUser);
 
 // Post endpoints
 app.get("/api/post", db.post.getPost);
-app.get("/api/post/:id", db.post.getOnePost);
-app.get("/api/post/:id/:pid", db.post.getOneAccountPost);
-app.post("/api/post/:id", db.post.createPost);
-app.put("/api/post/:id/:pid", db.post.updatePost);
-app.delete("/api/post/:id/:pid", db.post.deletePost);
+app.get("/api/post/:pid", db.post.getOnePost);
+app.get("/api/user/:aid/post", db.post.getOneAccountPost);
+app.post("/api/post/", db.post.createPost);
+app.put("/api/post/:pid", db.post.updatePost);
+app.delete("/api/post/:pid", db.post.deletePost);
 
 // Image endpoints
 app.get("/api/image/:pid", db.image.getImages);
@@ -71,11 +72,11 @@ app.get("/api/chat/:accID1/:accID2", db.chat.getUserChat);
 app.post("/api/chat/:accID1/:accID2", db.chat.createChat);
 
 // Rating endpoints
-app.get("/api/rating", db.rating.getAllRatings);
-app.get("/api/rating/:id", db.rating.getUserRatings);
-app.post("/api/rating/:id", db.rating.createRating);
-app.delete("/api/rating/:id", db.rating.deleteAllUserRatings);
-app.delete("/api/rating/:rateeID/:ratingID", db.rating.deleteUserRating);
+// app.get("/api/rating", db.rating.getAllRatings);
+// app.get("/api/rating/:id", db.rating.getUserRatings);
+// app.post("/api/rating/:id", db.rating.createRating);
+// app.delete("/api/rating/:id", db.rating.deleteAllUserRatings);
+// app.delete("/api/rating/:rateeID/:ratingID", db.rating.deleteUserRating);
 
 // Notification endpoints
 app.get("/api/notification", db.notification.getAllNotifications);

@@ -1,109 +1,94 @@
 const pool = require("./connect");
 
 const getPost = (req, res) => {
-  var count = 0;
-  var total;
-  var posts = [];
+  let posts = [];
+  let length;
 
-  pool.query('SELECT * FROM "tbl_Post"', (error, results) => {
-    if (error) {
-      throw error;
-    }
-    total = results.rows.length;
-    results.rows.forEach(row => {
-      pool.query(
-        'SELECT "accountID", "name", "phone" FROM "tbl_Account" WHERE "accountID" = $1;',
-        [row.accountID],
-        (error, results) => {
-          if (error) throw error;
+  pool.query('SELECT * FROM "tbl_Post"', (err, results) => {
+    if (err) throw err;
+    length = results.rows.length;
+
+    if (length == 0)
+      res.status(400).json(posts);
+    else {
+      results.rows.forEach(row => {
+        pool.query('SELECT "accountID", "name", "phone", "rating", "totalNumRatings" FROM "tbl_Account" WHERE "accountID" = $1', [row.accountID], (err, results) => {
+          if (err) throw err;
           row.user = results.rows[0];
-          posts.push(row);
           row.images = [];
-          pool.query(
-            'SELECT * FROM "tbl_Images" WHERE "postID" = $1;',
-            [row.postID],
-            (error, results) => {
-              if (error) throw error;
-              results.rows.forEach(image => row.images.push(image.url));
-              posts.push(row);
+
+          pool.query('SELECT "url" FROM "tbl_Images" WHERE "postID" = $1', [row.postID], (err, results) => {
+            if (err) throw err;
+            results.rows.forEach(image => { row.images.push(image.url) });
+            posts.push(row);
+            if (posts.length == length) {
+              res.status(200).json(posts);
             }
-          );
-          count++;
-          if (count == total) {
-            res.status(200).json(posts);
-          }
-        }
-      );
-    });
-  });
-  // pool
-  // .query('SELECT * FROM "tbl_Post"')
-  // .then(results =>
-  //     {
-  //         total = results.rows.length;
-  //         results.rows.forEach(row => {
-  //             row.user = [];
-  //             pool
-  //                 .query('SELECT "accountID", "name", "phone" FROM "tbl_Account" WHERE "postID" = $1;', [row.postID])
-  //                 .then(results =>
-  //                     {
-  //                         row.user.push(results);
-  //                         row.images = [];
-  //                         pool
-  //                             .query('SELECT * FROM "tbl_Images" WHERE "postID" = $1;', [row.postID])
-  //                             .then(results => {
-  //                                 results.rows.forEach(image => row.images.push(image.url));
-  //                             })
-  //                             .catch(error => console.error(error.stack))
-  //                         posts.push(row);
-  //                         count++;
-  //                         if (count == total){
-  //                             res.status(200).json(posts);
-  //                         }
-  //                     })
-  //                 .catch(error => console.error(error.stack))
-  //         })
-  //     })
-  // .catch(error => console.error(error.stack))
+          })
+        })
+      })
+    }
+  })
 };
 
 const getOnePost = (req, res) => {
-  const postID = parseInt(req.params.id);
-  var count = 0;
-  var total;
-  var posts = [];
+  const postID = parseInt(req.params.pid);
+  let post = {};
+
+  pool.query('SELECT * FROM "tbl_Post" WHERE "postID" = $1', [postID], (err, results) => {
+    if (err) throw err;
+    length = results.rows.length;
+
+    if (length == 0)
+      res.status(400).json(post);
+    else {
+      post = results.rows[0];
+
+      pool.query('SELECT "accountID", "name", "phone", "rating", "totalNumRatings" FROM "tbl_Account" WHERE "accountID" = $1', [post.accountID], (err, results) => {
+        if (err) throw err;
+        post.user = results.rows[0];
+        post.images = [];
+
+        pool.query('SELECT "url" FROM "tbl_Images" WHERE "postID" = $1', [post.postID], (err, results) => {
+          if (err) throw err;
+          results.rows.forEach(image => { post.images.push(image.url) });
+          res.status(200).json(post);
+        })
+      })
+    }
+  })
+}
+
+const getOneAccountPost = (req, res) => {
+  const accountID = parseInt(req.params.aid);
+  let posts = [];
+  let length;
 
   pool.query(
-    'SELECT * FROM "tbl_Post" WHERE "postID" = $1',
-    [postID],
+    'SELECT * FROM "tbl_Post" WHERE "accountID" = $1',
+    [accountID],
     (error, results) => {
       if (error) {
         throw error;
       }
-      total = results.rows.length;
+      length = results.rows.length;
       results.rows.forEach(row => {
-        row.images = [];
         pool.query(
-          'SELECT "accountID", "name", "phone" FROM "tbl_Account" WHERE "accountID" = $1;',
-          [row.accountID],
+          'SELECT "accountID", "name", "phone", "rating", "totalNumRatings" FROM "tbl_Account" WHERE "accountID" = $1;',
+          [accountID],
           (error, results) => {
             if (error) throw error;
+            
             row.user = results.rows[0];
-            posts.push(row);
             row.images = [];
-            pool.query(
-              'SELECT * FROM "tbl_Images" WHERE "postID" = $1;',
-              [row.postID],
-              (error, results) => {
-                if (error) throw error;
-                results.rows.forEach(image => row.images.push(image.url));
-                posts.push(row);
+            pool.query('SELECT "url" FROM "tbl_Images" WHERE "postID" = $1', [row.postID], (err, results) => {
+              if (err) throw err;
+              results.rows.forEach(image => {row.images.push(image.url)});
+              posts.push(row);
+              if (posts.length == length){
+                res.status(200).json(posts);
               }
-            );
-            count++;
-            if (count == total) {
-              res.status(200).json(posts);
-            }
+            })
           }
         );
       });
@@ -111,35 +96,7 @@ const getOnePost = (req, res) => {
   );
 };
 
-const getOneAccountPost = (req, res) => {
-  const accountID = parseInt(req.params.id);
-  const postID = parseInt(req.params.pid);
-  var post = [];
-
-  pool.query(
-    'SELECT * FROM "tbl_Post" WHERE "accountID" = $1 AND "postID" = $2',
-    [accountID, postID],
-    (error, results) => {
-      if (error) {
-        throw error;
-      }
-      post.push(results.rows[0]);
-      pool.query(
-        'SELECT * FROM "tbl_Images" WHERE "postID" = $1;',
-        [postID],
-        (error, results) => {
-          if (error) throw error;
-          post[0].images = [];
-          results.rows.forEach(image => post[0].images.push(image.url));
-          res.status(200).json(post[0]);
-        }
-      );
-    }
-  );
-};
-
 const createPost = (req, res) => {
-  const accountID = parseInt(req.params.id);
   const {
     title,
     description,
@@ -147,7 +104,8 @@ const createPost = (req, res) => {
     startDate,
     endDate,
     typeOfPet,
-    service
+    service,
+    accountID
   } = req.body;
   pool.query(
     'INSERT INTO "tbl_Post"("status", "title", "description", "location", "startDate", "endDate", "timestamp", "typeOfPet", "service", "accountID") VALUES ($1, $2, $3, $4, $5, $6, current_timestamp, $7, $8, $9) RETURNING *;',
@@ -196,7 +154,6 @@ const createPost = (req, res) => {
 };
 
 const updatePost = (req, res) => {
-  const accountID = parseInt(req.params.id);
   const postID = parseInt(req.params.pid);
 
   const {
@@ -232,7 +189,6 @@ const updatePost = (req, res) => {
 };
 
 const deletePost = (req, res) => {
-  const accountID = parseInt(req.params.id);
   const postID = parseInt(req.params.pid);
 
   pool.query(
@@ -264,18 +220,3 @@ module.exports = {
   updatePost,
   deletePost
 };
-
-// // GET
-// /api/post - Get all posts
-// /api/post/{accountID} - Gets all posts by a specific user
-// /api/post/{accountID}/{postID} - Gets a specific post
-
-// //POST
-// /api/post/{accountID} - Creates a new post
-
-// //PUT
-// /api/post/{accountID}/{postID} - Updates a post from a user
-
-// //DELETE
-// /api/post/{accountID} - Deletes all posts from a user
-// /api/post/{accountID}/{postID} - Deletes a specific post from a user
