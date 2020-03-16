@@ -28,10 +28,9 @@ const { Text } = Typography;
 const Topbar = props => {
   const logoStyles = {
     width: "120px",
-    background: "#f0f1f1",
     height: "31px",
     float: "left",
-    margin: "16px 28px 16px 0"
+    margin: "-3px 28px 16px 0"
   };
 
   const headerStyles = {
@@ -85,7 +84,15 @@ const Topbar = props => {
     <Layout>
       <Header style={headerStyles}>
         {/* we will add our app logo here */}
-        <div className="logo" style={logoStyles} />
+        <div className="logo" style={logoStyles}>
+          <a href="/">
+            <img
+              style={{ maxHeight: "180px", maxWidth: "180px" }}
+              src="/kuropets.png"
+              alt="kuropets"
+            />
+          </a>
+        </div>
         <Search
           className="search"
           size="large"

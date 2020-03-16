@@ -1,17 +1,7 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Modal,
-  Form,
-  Input,
-  Radio,
-  Typography,
-  message,
-  InputNumber
-} from "antd";
+import { Button, Modal, Form, Radio, message, InputNumber } from "antd";
 import { DollarCircleOutlined, MobileOutlined } from "@ant-design/icons";
 
-const { Title } = Typography;
 const CollectionCreateForm = ({ visible, onCreate, onCancel }) => {
   const [form] = Form.useForm();
   return (

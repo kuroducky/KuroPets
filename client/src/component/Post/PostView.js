@@ -13,6 +13,7 @@ import {
   SmileOutlined
 } from "@ant-design/icons";
 import MakeOfferButton from "./MakeOfferButton";
+import ViewOfferButton from "./ViewOfferButton";
 
 const { Fragment } = React;
 const { Text, Title } = Typography;
@@ -70,13 +71,7 @@ const PostView = props => {
               {/* checks if is post creator or caretaker */}{" "}
               {sessionUser != null &&
               sessionUser.accountID === user.accountID ? (
-                <Button
-                  style={{ float: "right", width: "220px" }}
-                  size="large"
-                  type="primary"
-                >
-                  <strong>View Offers</strong>
-                </Button>
+                <ViewOfferButton {...props} />
               ) : (
                 <MakeOfferButton {...props} />
               )}
