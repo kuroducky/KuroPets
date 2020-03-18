@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, Modal, Row, Col, Typography, Avatar, Rate } from "antd";
 import {
   UserOutlined,
@@ -49,7 +49,7 @@ const data = [
 const acceptOffer = id => {
   console.log("accepted offer from: ", id);
 };
-const ContentView = ({ visible, onCancel }) => {
+const ContentView = ({ visible, onCancel, offers }) => {
   return (
     <Modal
       visible={visible}
@@ -144,28 +144,42 @@ const ContentView = ({ visible, onCancel }) => {
   );
 };
 
-const ViewOfferButton = () => {
-  const [visible, setVisible] = useState(false);
-
-  return (
-    <div>
-      <Button
-        style={{ float: "right", width: "220px" }}
-        size="large"
-        type="primary"
-        onClick={() => {
-          setVisible(true);
-        }}
-      >
-        <strong>View Offers</strong>
-      </Button>
-      <ContentView
-        visible={visible}
-        onCancel={() => {
-          setVisible(false);
-        }}
-      />
-    </div>
-  );
-};
+class ViewOfferButton extends React.Component {
+  state = {
+    visible: false,
+    offers: []
+  };
+  async componentDidMount() {
+    const response = await fetch(
+      `http://172.21.148.170/api/offer/${this.props.postID}`
+    );
+    const json = await response.json();
+    console.log("offers", json);
+    this.setState({ offers: json });
+  }
+  render() {
+    return (
+      <div>
+        <Button
+          style={{ float: "right", width: "220px" }}
+          size="large"
+          type="primary"
+          onClick={() => {
+            this.setState({ visible: true });
+          }}
+        >
+          <strong>View Offers</strong>
+        </Button>
+        <ContentView
+          {...this.props}
+          offers={this.state.offers}
+          visible={this.state.visible}
+          onCancel={() => {
+            this.setState({ visible: false });
+          }}
+        />
+      </div>
+    );
+  }
+}
 export default ViewOfferButton;
