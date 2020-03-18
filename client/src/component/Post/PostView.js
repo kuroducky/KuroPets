@@ -26,7 +26,7 @@ const PostView = props => {
     location,
     status,
     typeOfPet,
-    typeOfService,
+    service,
     startDate,
     endDate
   } = props.postDetails;
@@ -107,7 +107,7 @@ const PostView = props => {
           </Text>{" "}
           <br />
           <Text>
-            <SmileOutlined /> Type of Service: <strong>{typeOfService}</strong>
+            <SmileOutlined /> Type of Service: <strong>{service}</strong>
           </Text>{" "}
           <br />
           <Text>

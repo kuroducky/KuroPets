@@ -81,11 +81,22 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel }) => {
   );
 };
 
-const MakeOfferButton = () => {
+const MakeOfferButton = ({ postID }) => {
   const [visible, setVisible] = useState(false);
 
-  const onCreate = values => {
-    console.log("Received values of form: ", values);
+  const onCreate = async values => {
+    values.accountID = JSON.parse(localStorage.getItem("user")).accountID;
+    const response = await fetch(`http://172.21.148.170/api/offer/${postID}`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(values)
+    });
+
+    const content = await response.json();
+    console.log("Received values of form: ", content);
     setVisible(false);
   };
 

@@ -35,6 +35,7 @@ const MarketPlaceView = ({ posts }) => {
     // Return str truncated with '...' concatenated to the end of str.
     return str.slice(0, num) + "...";
   };
+
   return (
     <div>
       <Title level={2}>Marketplace</Title>
@@ -62,7 +63,9 @@ const MarketPlaceView = ({ posts }) => {
                   <Text type="secondary"> 1 minute ago</Text> <br />
                   <div
                     style={{
-                      backgroundImage: `url('${post.images[0]}')`,
+                      backgroundImage: `url('${
+                        post.images[0] ? post.images[0] : "/placeholder-lg.png"
+                      }')`,
                       backgroundSize: "cover",
                       backgroundPosition: "center",
                       width: "310px",
