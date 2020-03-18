@@ -36,8 +36,8 @@ app.put("/api/user/:id", db.account.updateUser);
 app.delete("/api/user/:id", db.account.deleteUser);
 
 // Search endpoints
-app.get("/api/search/post", db.search.searchPost);
-app.get("/api/search/user", db.search.searchUser);
+// app.get("/api/search/post", db.search.searchPost);
+// app.get("/api/search/user", db.search.searchUser);
 
 // Post endpoints
 app.get("/api/post", db.post.getPost);

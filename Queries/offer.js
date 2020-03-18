@@ -1,24 +1,64 @@
 const pool = require('./connect')
 
 const getAllOffers = (request, response) => {
+    let length;
+    let offers = [];
+
     pool.query('SELECT * FROM "tbl_Offers"',
     (error, results) => {
         if(error){
             throw error
         }
-        response.status(200).json(results.rows)
-    })
+        length = results.rows.length;
+
+        if (length == 0){
+            response.status(400).json(offers);
+        }
+        else {
+            results.rows.forEach(row => {
+                pool.query('SELECT "accountID", "name", "phone", "rating", "totalNumRatings" FROM "tbl_Account" WHERE "accountID" = $1', [row.accountID], (err, results) => {
+                    if (err) throw err;
+                    row.user = results.rows[0];
+                    offers.push(row);
+    
+                    if (offers.length == length){
+                        response.status(200).json(offers);
+                    }
+                });
+            })
+        }
+    });
 }
 
 const getAllPostOffers = (request, response) => {
     const id = parseInt(request.params.id)
+    let length;
+    let offers = [];
+
     pool.query('SELECT * FROM "tbl_Offers" WHERE "postID" = $1',
     [id],
     (error, results) => {
         if(error){
             throw error
         }
-        response.status(200).json(results.rows)
+
+        length = results.rows.length;
+        if (length == 0){
+            response.status(400).json(offers);
+        }
+        else {
+            results.rows.forEach(row => {
+                pool.query('SELECT "accountID", "name", "phone", "rating", "totalNumRatings" FROM "tbl_Account" WHERE "accountID" = $1', [row.accountID], (err, results) => {
+                    if (err) throw err;
+                    row.user = results.rows[0];
+                    offers.push(row);
+    
+                    if (offers.length == length){
+                        response.status(200).json(offers);
+                    }
+                });
+            })
+        }
     })
 }
 
@@ -31,19 +71,48 @@ const getPostOffer = (request, response) => {
         if(error){
             throw error
         }
-        response.status(200).json(results.rows)
+        if (results.rows.length == 0){
+            response.send(400).json(null);
+        }
+        else {
+            let offer = results.rows[0];
+            pool.query('SELECT "accountID", "name", "phone", "rating", "totalNumRatings" FROM "tbl_Account" WHERE "accountID" = $1', [offer.accountID], (err, results) => {
+                if (err) throw err;
+                offer.user = results.rows[0];
+                response.status(200).json(offer);
+            });
+        }
     })
 }
 
 const getAllUserOffers = (request, response) => {
     const id = parseInt(request.params.id)
+    let length;
+    let offers =[];
+
     pool.query('SELECT * FROM "tbl_Offers" WHERE "accountID" = $1',
     [id],
     (error, results) => {
         if(error){
             throw error
         }
-        response.status(200).json(results.rows)
+        length = results.rows.length;
+        if (length == 0){
+            response.status(400).json(offers)
+        }
+        else {
+            results.rows.forEach(row => {
+                pool.query('SELECT "accountID", "name", "phone", "rating", "totalNumRatings" FROM "tbl_Account" WHERE "accountID" = $1', [row.accountID], (err, results) => {
+                    if (err) throw err;
+                    row.user = results.rows[0];
+                    offers.push(row);
+    
+                    if (offers.length == length){
+                        response.status(200).json(offers);
+                    }
+                });
+            })
+        }
     })
 }
 
