@@ -58,7 +58,7 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel }) => {
         </Form.Item>
         <Form.Item
           label={"Payment Method"}
-          name="payment"
+          name="paymentType"
           className="collection-create-form_last-form-item"
           rules={[
             {
@@ -86,6 +86,7 @@ const MakeOfferButton = ({ postID }) => {
 
   const onCreate = async values => {
     values.accountID = JSON.parse(localStorage.getItem("user")).accountID;
+    console.log(values);
     const response = await fetch(`http://172.21.148.170/api/offer/${postID}`, {
       method: "POST",
       headers: {
@@ -95,8 +96,9 @@ const MakeOfferButton = ({ postID }) => {
       body: JSON.stringify(values)
     });
 
-    const content = await response.json();
-    console.log("Received values of form: ", content);
+    // const content = await response.json();'
+    message.success("Offer received!");
+    console.log("Received values of form: ", response);
     setVisible(false);
   };
 

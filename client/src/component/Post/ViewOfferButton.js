@@ -69,7 +69,7 @@ const ContentView = ({ visible, onCancel, offers }) => {
           padding: "8px 24px"
         }}
       >
-        {data.map((offer, key) => {
+        {offers.map((offer, key) => {
           return (
             <div
               key={key}
@@ -104,20 +104,26 @@ const ContentView = ({ visible, onCancel, offers }) => {
                     <strong>${offer.price.toFixed(2)}</strong>
                   </span>{" "}
                   <br /> <WalletOutlined /> Payments:{" "}
-                  {offer.payment.map((p, i) => {
-                    if (i === 1)
-                      return (
-                        <strong>
-                          , {p.replace(/^\w/, c => c.toUpperCase())}{" "}
-                        </strong>
-                      );
-                    else
-                      return (
-                        <strong>
-                          {p.replace(/^\w/, c => c.toUpperCase())}{" "}
-                        </strong>
-                      );
-                  })}
+                  {offer.paymentType
+                    ? offer.paymentType.split(",").map((p, i) => {
+                        if (i === 1)
+                          return (
+                            <span key={i}>
+                              <strong>
+                                , {p.replace(/^\w/, c => c.toUpperCase())}{" "}
+                              </strong>
+                            </span>
+                          );
+                        else
+                          return (
+                            <span key={i}>
+                              <strong>
+                                {p.replace(/^\w/, c => c.toUpperCase())}{" "}
+                              </strong>
+                            </span>
+                          );
+                      })
+                    : ""}
                 </Col>
                 <Col span={6}>
                   <Button

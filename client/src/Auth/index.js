@@ -10,11 +10,16 @@ export const login = async (username, password) => {
   });
 
   const content = await response.json();
-  delete content.data.password;
-  const { data } = content;
-  if (!localStorage.getItem("user")) {
-    localStorage.setItem("user", JSON.stringify(data));
+  console.log(content);
+  const { loginSuccess } = content;
+  if (loginSuccess) {
+    delete content.data.password;
+    const { data } = content;
+    if (!localStorage.getItem("user")) {
+      localStorage.setItem("user", JSON.stringify(data));
+    }
   }
+
   return content.loginSuccess;
 };
 

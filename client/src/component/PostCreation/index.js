@@ -7,7 +7,8 @@ import {
   Form,
   Input,
   Button,
-  DatePicker
+  DatePicker,
+  message
 } from "antd";
 import ImageUpload from "./ImageUpload";
 const { Content } = Layout;
@@ -64,6 +65,7 @@ class PostCreation extends React.Component {
 
     console.log(content);
     this.form.current.resetFields();
+    message.success("Post created!");
     // this.props.form.resetFields();
     this.setState({ images: [] });
   }
