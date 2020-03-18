@@ -5,6 +5,7 @@ import Topbar from "./component/layout-component/Topbar";
 import MarketPlace from "./component/MarketPlace";
 import Post from "./component/Post";
 import PostCreation from "./component/PostCreation";
+import Register from "./component/Register";
 import Chat from "./component/Chat";
 
 class Router extends React.Component {
@@ -47,6 +48,16 @@ class Router extends React.Component {
               <Fragment>
                 <Topbar {...props} />
                 <Post {...props} />
+              </Fragment>
+            )}
+          />
+          <Route
+            path="/register"
+            exact
+            render={props => (
+              <Fragment>
+                <Topbar {...props} />
+                <Register {...props} />
               </Fragment>
             )}
           />

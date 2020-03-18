@@ -63,7 +63,7 @@ const LoginForm = ({ visible, onLogin, onCancel }) => {
           />
         </Form.Item>
         <Text>Do not have an account? </Text>
-        <a href="/">Register now!</a>
+        <a href="/register">Register now!</a>
       </Form>
     </Modal>
   );
@@ -71,8 +71,8 @@ const LoginForm = ({ visible, onLogin, onCancel }) => {
 const LoginButton = props => {
   const [visible, setVisible] = useState(false);
 
-  const onLogin = ({ username, password }) => {
-    let success = login(username, password);
+  const onLogin = async ({ username, password }) => {
+    let success = await login(username, password);
     if (success) {
       window.location.reload();
       setVisible(false);

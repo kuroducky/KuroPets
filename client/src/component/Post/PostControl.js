@@ -27,10 +27,17 @@ class PostControl extends React.Component {
     id: this.props.match.params.id,
     postDetails: postDetails
   };
-
+  async componentDidMount() {
+    const response = await fetch(
+      `http://172.21.148.170/api/post/${this.state.id}`
+    );
+    const json = await response.json();
+    console.log(json);
+    this.setState({ postDetails: json });
+  }
   render() {
     const { postDetails } = this.state;
-    return <PostView postDetails={postDetails} />;
+    return <PostView postID={this.state.id} postDetails={postDetails} />;
   }
 }
 
