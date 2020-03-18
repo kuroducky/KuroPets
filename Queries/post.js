@@ -11,7 +11,8 @@ const getPost = (req, res) => {
     if (length == 0)
       res.status(400).json(posts);
     else {
-      results.rows.forEach(row => {
+      for (let i=0; i<length; i++){
+        let row = results.rows[i];
         pool.query('SELECT "accountID", "name", "phone", "rating", "totalNumRatings" FROM "tbl_Account" WHERE "accountID" = $1', [row.accountID], (err, results) => {
           if (err) throw err;
           row.user = results.rows[0];
@@ -20,13 +21,18 @@ const getPost = (req, res) => {
           pool.query('SELECT "url" FROM "tbl_Images" WHERE "postID" = $1', [row.postID], (err, results) => {
             if (err) throw err;
             results.rows.forEach(image => { row.images.push(image.url) });
-            posts.push(row);
-            if (posts.length == length) {
-              res.status(200).json(posts);
+            
+            if (req.query.title === undefined || row.title.toLowerCase().includes(req.query.title.toLowerCase()))
+              posts.push(row);
+            if (i == length-1) {
+              if (posts.length > 0)
+                res.status(200).json(posts);
+              else
+                res.status(400).json(posts);
             }
           })
         })
-      })
+      }
     }
   })
 };
