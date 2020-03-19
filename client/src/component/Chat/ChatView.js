@@ -5,29 +5,50 @@ import "./ChatApp.css";
 import Chat from "./Chat";
 import UserListControl from "./UserListControl";
 
-const ChatView = props => {
-  const { instanceLocator, tokenProvider, userId, otherId } = props.chatDetails;
+class ChatView extends React.Component {
+  state = {
+      userId : this.props.chatDetails.userId,
+      otherId : this.props.chatDetails.otherId,
+      msgCount : 0
+  };
 
-  return (
-    <div className="ChatApp">
-      {userId && otherId ? (
-        <>
-          <div className="ChatApp__chatwindow">
-            <ChatkitProvider
-              instanceLocator={instanceLocator}
-              tokenProvider={tokenProvider}
-              userId={userId}
-            >
-              <UserListControl {...props} userId={userId} otherId={otherId} />
-              <Chat otherUserId={otherId} />
-            </ChatkitProvider>
-          </div>
-        </>
-      ) : (
-        <h1>Make sure you have userId and otherId set in the query!</h1>
-      )}
-    </div>
-  );
+  updateSelectedUser = () => {
+    const otherId = this.props.match.params;
+    this.setState(otherId);
+    this.setState({
+      msgCount : 0
+    })
+  }
+
+  saveMsgCount = (count) => {
+    this.setState({
+      msgCount : count
+    })
+  }
+
+  render(){
+    const { userId, otherId } = this.state;
+    return (
+      <div className="ChatApp">
+        {userId && otherId ? (
+          <>
+            <div className="ChatApp__chatwindow">
+              <ChatkitProvider
+                instanceLocator={this.props.chatDetails.instanceLocator}
+                tokenProvider={this.props.chatDetails.tokenProvider}
+                userId={userId}
+              >
+                <UserListControl {...this.state} chatList={this.props.chatList} updateSelectedUser={this.updateSelectedUser} />
+                <Chat otherUserId={otherId} msgCount={this.state.msgCount} saveMsgCount={this.saveMsgCount} />
+              </ChatkitProvider>
+            </div>
+          </>
+        ) : (
+          <h1>Make sure you have userId and otherId set in the query!</h1>
+        )}
+      </div>
+    );
+  };
 };
 
 export default ChatView;
