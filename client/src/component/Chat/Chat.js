@@ -24,21 +24,18 @@ function Chat(props) {
       return;
     }
     props.chatkit.sendSimpleMessage({ text: pendingMessage })
+    props.saveMsgCount(props.msgCount + 1);
     setPendingMessage('');
   };
-
+  
   useEffect(() => {
     messageList.current.scrollTop = messageList.current.scrollHeight;
   });
 
-  // TODO: Show messages from Chatkit
   const messages = props.chatkit.messages.map(m => ({
     id: m.id,
     isOwnMessage: m.sender.id === props.chatkit.currentUser.id,
     createdAt: m.createdAt,
-    // This will only work with simple messages.
-    // To learn more about displaying multi-part messages see
-    // https://pusher.com/docs/chatkit/reference/javascript#messages
     textContent: m.parts[0].payload.content,
   }));
 
@@ -58,7 +55,7 @@ function Chat(props) {
         </div>
       </div>
       <div className="Chat__messages" ref={messageList}>
-        {messages.map(m => (
+        {messages.slice(props.chatkit.messages.length - props.msgCount).map(m => (
           <Message key={m.id} {...m} />
         ))}
       </div>

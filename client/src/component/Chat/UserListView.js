@@ -4,29 +4,31 @@ import "./UserList.css";
 import defaultAvatar from "./default-avatar.png";
 
 class UserListView extends React.Component {
-  state = {
-    otherId: this.props.userListDetails.otherId
-  };
-  updateSelectedUser = () => {
-    const otherId = this.props.match.params;
-    this.setState(otherId);
-  };
+
   render() {
-    const { userId, userList } = this.props.userListDetails;
-    const { otherId } = this.state;
+    const { userId, otherId, chatList } = this.props;
+    let userName;
     const items = [];
-    userList.forEach(user => {
+    chatList.forEach(user => {
+      if (userId === user.otherId){
+        [user.id, user.otherId] = [user.otherId, user.id];
+        [user.name, user.otherName] = [user.otherName, user.name];
+      }
+
+      if (userName == undefined){
+        userName = user.name;
+      }
+
       let className = "UserList__container__list__item";
-      if (otherId === user.id) {
+      if (otherId === user.otherId) {
         className += " UserList__container__list__item--selected";
       }
 
       items.push(
         <li className={className}>
-          <p>{otherId}</p>
           <Link
-            onClick={this.updateSelectedUser}
-            to={`/chat/${userId}/${user.id}`}
+            onClick={this.props.updateSelectedUser}
+            to={`/chat/${userId}/${user.otherId}`}
           >
             <div>
               <img
@@ -37,15 +39,15 @@ class UserListView extends React.Component {
             </div>
             <div className="UserList__container__list__item__content">
               <p className="UserList__container__list__item__content__name">
-                {user.name}
+                {user.otherName}
               </p>
-              <p className="UserList__container__list__item__content__text">
+              {/* <p className="UserList__container__list__item__content__text">
                 {user.text}
-              </p>
+              </p> */}
             </div>
-            <div className="UserList__container__list__item__time">
+            {/* <div className="UserList__container__list__item__time">
               {user.time}
-            </div>
+            </div> */}
           </Link>
         </li>
       );
@@ -58,7 +60,7 @@ class UserListView extends React.Component {
             className="UserList__titlebar__avatar"
             alt="avatar"
           />
-          <span className="UserList__titlebar__logged-in-as">{userId}</span>
+          <span className="UserList__titlebar__logged-in-as">{userName}</span>
         </div>
         <div className="UserList__container">
           <ul className="UserList__container__list">{items}</ul>
