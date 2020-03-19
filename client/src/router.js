@@ -7,7 +7,7 @@ import Post from "./component/Post";
 import PostCreation from "./component/PostCreation";
 import Register from "./component/Register";
 import Chat from "./component/Chat";
-
+import Profile from "./component/Profile";
 class Router extends React.Component {
   state = {
     keywords: []
@@ -58,6 +58,16 @@ class Router extends React.Component {
               <Fragment>
                 <Topbar {...props} />
                 <Register {...props} />
+              </Fragment>
+            )}
+          />
+          <Route
+            path="/user/:id"
+            exact
+            render={props => (
+              <Fragment>
+                <Topbar onSearchSubmit={this.onSearchSubmit} {...props} />
+                <Profile {...props} />
               </Fragment>
             )}
           />

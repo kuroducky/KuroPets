@@ -15,20 +15,6 @@ import MarkplaceView from "./MarketPlaceView";
 //       name: "Johnny Koh"
 //     }
 //   },
-//   //   //postID: 1
-//   // status: "Pending Service "
-//   // title: "A cat's penis"
-//   // description: " My cat penis quite big and sharp!"
-//   // startDate: "2018-01-22T16:00:00.000Z"
-//   // endDate: "2018-02-22T16:00:00.000Z"
-//   // timestamp: "2018-01-19T16:00:00.000Z"
-//   // typeOfPet: "Catty Kitten"
-//   // service: "Groom her cock!"
-//   // location: "Doggy Style"
-//   // accountID: 1
-//   // images: Array(2)
-//   // 0: null
-//   // 1: null
 //   {
 //     postID: 1235,
 //     title: "Help me take care of my dog for 5 days",

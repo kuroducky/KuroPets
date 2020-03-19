@@ -55,7 +55,11 @@ const Topbar = props => {
   };
   const userMenu = (
     <Menu>
-      <Menu.Item>
+      <Menu.Item
+        onClick={() => {
+          props.history.push(`/user/${currentUser.accountID}`);
+        }}
+      >
         <span>
           <UserOutlined />
         </span>
@@ -65,7 +69,11 @@ const Topbar = props => {
           ""
         )}
       </Menu.Item>
-      <Menu.Item>
+      <Menu.Item
+        onClick={() => {
+          props.history.push(`/user/${currentUser.accountID}`);
+        }}
+      >
         <span>
           <FileTextOutlined />
         </span>
