@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Col, Avatar, Row, Typography } from "antd";
+import { Card, Col, Avatar, Row, Typography, Empty } from "antd";
 import { Link } from "react-router-dom";
 import { UserOutlined } from "@ant-design/icons";
 const { Text, Title } = Typography;
@@ -39,53 +39,59 @@ const MarketPlaceView = ({ posts }) => {
   return (
     <div>
       <Title level={2}>Marketplace</Title>
-      {rows.map((posts, i) => (
-        <Row
-          key={i}
-          style={{
-            marginTop: "20px"
-          }}
-          gutter={16}
-        >
-          {posts.map((post, i) => (
-            <Col key={i} span={6}>
-              <Link to={`/post/${post.postID}`}>
-                <Card hoverable bordered={false}>
-                  <Title style={{ marginBottom: "5px" }} level={4} strong>
-                    <Avatar
+      {rows.length == 0 ? (
+        <Empty />
+      ) : (
+        rows.map((posts, i) => (
+          <Row
+            key={i}
+            style={{
+              marginTop: "20px"
+            }}
+            gutter={16}
+          >
+            {posts.map((post, i) => (
+              <Col key={i} span={6}>
+                <Link to={`/post/${post.postID}`}>
+                  <Card hoverable bordered={false}>
+                    <Title style={{ marginBottom: "5px" }} level={4} strong>
+                      <Avatar
+                        style={{
+                          marginRight: "6px"
+                        }}
+                        icon={<UserOutlined />}
+                      />
+                      {post.user.name}{" "}
+                    </Title>
+                    <Text type="secondary"> 1 minute ago</Text> <br />
+                    <div
                       style={{
-                        marginRight: "6px"
+                        backgroundImage: `url('${
+                          post.images[0]
+                            ? post.images[0]
+                            : "/placeholder-lg.png"
+                        }')`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                        width: "310px",
+                        height: "310px",
+                        borderRadius: "8px",
+                        margin: "10px 0 20px 0"
                       }}
-                      icon={<UserOutlined />}
+                    >
+                      {/* <Img style={{ maxHeight: "350px" }} src={post.img} /> */}
+                    </div>
+                    <Meta
+                      title={post.title}
+                      description={truncateString(post.description, 50)}
                     />
-                    {post.user.name}{" "}
-                  </Title>
-                  <Text type="secondary"> 1 minute ago</Text> <br />
-                  <div
-                    style={{
-                      backgroundImage: `url('${
-                        post.images[0] ? post.images[0] : "/placeholder-lg.png"
-                      }')`,
-                      backgroundSize: "cover",
-                      backgroundPosition: "center",
-                      width: "310px",
-                      height: "310px",
-                      borderRadius: "8px",
-                      margin: "10px 0 20px 0"
-                    }}
-                  >
-                    {/* <Img style={{ maxHeight: "350px" }} src={post.img} /> */}
-                  </div>
-                  <Meta
-                    title={post.title}
-                    description={truncateString(post.description, 50)}
-                  />
-                </Card>
-              </Link>
-            </Col>
-          ))}
-        </Row>
-      ))}
+                  </Card>
+                </Link>
+              </Col>
+            ))}
+          </Row>
+        ))
+      )}
       {/*  */}
     </div>
   );

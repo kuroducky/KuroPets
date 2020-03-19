@@ -36,7 +36,7 @@ class Router extends React.Component {
             exact
             render={props => (
               <Fragment>
-                <Topbar {...props} />
+                <Topbar onSearchSubmit={this.onSearchSubmit} {...props} />
                 <PostCreation {...props} />
               </Fragment>
             )}
@@ -46,7 +46,7 @@ class Router extends React.Component {
             exact
             render={props => (
               <Fragment>
-                <Topbar {...props} />
+                <Topbar onSearchSubmit={this.onSearchSubmit} {...props} />
                 <Post {...props} />
               </Fragment>
             )}
@@ -56,7 +56,7 @@ class Router extends React.Component {
             exact
             render={props => (
               <Fragment>
-                <Topbar {...props} />
+                <Topbar onSearchSubmit={this.onSearchSubmit} {...props} />
                 <Register {...props} />
               </Fragment>
             )}
@@ -76,7 +76,7 @@ class Router extends React.Component {
             exact
             render={props => (
               <Fragment>
-                <Topbar {...props} />
+                <Topbar onSearchSubmit={this.onSearchSubmit} {...props} />
                 <Chat {...props} />
               </Fragment>
             )}

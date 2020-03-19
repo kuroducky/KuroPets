@@ -75,10 +75,28 @@ class MarkPlaceControl extends React.Component {
   state = {
     posts: []
   };
-  async componentDidMount() {
-    const response = await fetch(`http://172.21.148.170/api/post`);
+  async componentDidUpdate() {
+    const { keywords } = this.props;
+    let queryString = "";
+    if (keywords.length > 0) {
+      queryString = `/?title=${keywords[0]}`;
+    }
+    const response = await fetch(
+      `http://172.21.148.170/api/post${queryString}`
+    );
     const json = await response.json();
-    console.log(json);
+    this.setState({ posts: json });
+  }
+  async componentDidMount() {
+    const { keywords } = this.props;
+    let queryString = "";
+    if (keywords.length > 0) {
+      queryString = `/?title=${keywords[0]}`;
+    }
+    const response = await fetch(
+      `http://172.21.148.170/api/post${queryString}`
+    );
+    const json = await response.json();
     this.setState({ posts: json });
   }
   render() {

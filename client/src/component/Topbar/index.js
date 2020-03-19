@@ -52,6 +52,7 @@ const Topbar = props => {
   const onSearchSubmit = value => {
     const keywords = value.split(" ");
     props.onSearchSubmit(keywords);
+    props.history.push("/");
   };
   const userMenu = (
     <Menu>

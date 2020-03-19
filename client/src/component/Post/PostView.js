@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Button, Row, Col, Carousel, Typography, Avatar, Tooltip } from "antd";
 import FittedImage from "react-fitted-image";
 import {
@@ -55,16 +56,18 @@ const PostView = props => {
         <div style={{ minHeight: "470px", paddingBottom: "10px" }}>
           <Row>
             <Col span={8}>
-              <Title level={2}>
-                <Avatar
-                  size="large"
-                  style={{
-                    marginRight: "6px"
-                  }}
-                  icon={<UserOutlined />}
-                />
-                {user.name}{" "}
-              </Title>
+              <Link to={`/user/${user.accountID}`}>
+                <Title level={2}>
+                  <Avatar
+                    size="large"
+                    style={{
+                      marginRight: "6px"
+                    }}
+                    icon={<UserOutlined />}
+                  />
+                  {user.name}{" "}
+                </Title>
+              </Link>
               <Text type="secondary"> 1 minute ago</Text> <br />
             </Col>
             <Col style={{ paddingTop: "2px" }} span={16}>
