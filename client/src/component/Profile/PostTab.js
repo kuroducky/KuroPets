@@ -81,12 +81,13 @@ const { Title } = Typography;
 //   }
 // ];
 
-const viewPost = id => {
-  console.log("accepted offer from: ", id);
-};
 class PostTab extends React.Component {
   state = {
     posts: []
+  };
+
+  viewPost = id => {
+    this.props.history.push(`/post/${id}`);
   };
   async componentDidMount() {
     const { id } = this.props.match.params;
@@ -154,7 +155,7 @@ class PostTab extends React.Component {
                     // size="large"
                     type="primary"
                     onClick={() => {
-                      viewPost(post.postID);
+                      this.viewPost(post.postID);
                     }}
                   >
                     <strong>View Full Post</strong>

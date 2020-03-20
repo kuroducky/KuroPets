@@ -15,7 +15,7 @@ import {
 } from "@ant-design/icons";
 import MakeOfferButton from "./MakeOfferButton";
 import ViewOfferButton from "./ViewOfferButton";
-
+import EditPostButton from "./EditPostButton";
 const { Fragment } = React;
 const { Text, Title } = Typography;
 const PostView = props => {
@@ -154,16 +154,8 @@ const PostView = props => {
                 icon={<DeleteTwoTone twoToneColor="#EF2917" />}
               />
             </Tooltip>
-            <Tooltip title="Edit Post">
-              <Button
-                style={{
-                  float: "right",
-                  marginRight: "15px"
-                }}
-                shape="circle"
-                icon={<EditTwoTone />}
-              />
-            </Tooltip>
+
+            <EditPostButton {...props} />
           </Fragment>
         ) : (
           ""
