@@ -5,18 +5,29 @@ import "./ChatApp.css";
 import Chat from "./Chat";
 import UserListControl from "./UserListControl";
 
+const findMsgCount = (chatList, otherId) => {
+  let chat;
+  for (let i=0; i<chatList.length; i++){
+    chat = chatList[i];
+    if (otherId === chat.id || otherId === chat.userId){
+      return chat.msgCount;
+    }
+  }
+  return 0;
+}
+
 class ChatView extends React.Component {
   state = {
       userId : this.props.chatDetails.userId,
       otherId : this.props.chatDetails.otherId,
-      msgCount : 0
+      msgCount : 10 //findMsgCount(this.props.chatList, this.props.chatDetails.otherId)
   };
 
   updateSelectedUser = () => {
     const otherId = this.props.match.params;
-    this.setState(otherId);
     this.setState({
-      msgCount : 0
+      otherId : otherId,
+      //msgCount : findMsgCount(this.props.chatList, otherId)
     })
   }
 
@@ -38,8 +49,9 @@ class ChatView extends React.Component {
                 tokenProvider={this.props.chatDetails.tokenProvider}
                 userId={userId}
               >
+                <p>{otherId}</p>
                 <UserListControl {...this.state} chatList={this.props.chatList} updateSelectedUser={this.updateSelectedUser} />
-                <Chat otherUserId={otherId} msgCount={this.state.msgCount} saveMsgCount={this.saveMsgCount} />
+                <Chat otherUserId={otherId} msgCount={this.state.msgCount} />
               </ChatkitProvider>
             </div>
           </>

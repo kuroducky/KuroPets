@@ -170,7 +170,8 @@ const updatePost = (req, res) => {
     startDate,
     endDate,
     typeOfPet,
-    service
+    service,
+    accountID
   } = req.body;
 
   pool.query(

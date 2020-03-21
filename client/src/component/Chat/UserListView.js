@@ -15,7 +15,7 @@ class UserListView extends React.Component {
         [user.name, user.otherName] = [user.otherName, user.name];
       }
 
-      if (userName == undefined){
+      if (userName === undefined){
         userName = user.name;
       }
 
