@@ -132,7 +132,7 @@ const createOffer = (request, response) => {
 const updateOffer = (request, response) => {
     const pid = parseInt(request.params.pid)
     const oid = parseInt(request.params.oid)
-    const {price, paymentType, status} = request.body
+    const {price, paymentType, status} = request.body   
     pool.query('UPDATE "tbl_Offers" SET "price" = $1, "paymentType" = $2, "status" = $3 WHERE "postID" = $4 AND "offerID" = $5 RETURNING *',
     [price, paymentType, status, pid, oid],
     (error, results) => {

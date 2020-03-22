@@ -14,43 +14,45 @@ class UserListView extends React.Component {
         [user.id, user.otherId] = [user.otherId, user.id];
         [user.name, user.otherName] = [user.otherName, user.name];
       }
-
-      if (userName === undefined){
-        userName = user.name;
+      
+      if (userId === user.id){
+        if (userName === undefined){
+          userName = user.name;
+        }
+  
+        let className = "UserList__container__list__item";
+        if (otherId === user.otherId) {
+          className += " UserList__container__list__item--selected";
+        }
+  
+        items.push(
+          <li className={className}>
+            <Link
+              onClick={this.props.updateSelectedUser}
+              to={`/chat/${userId}/${user.otherId}`}
+            >
+              <div>
+                <img
+                  src={defaultAvatar}
+                  className="UserList__container__list__item__avatar"
+                  alt="avatar"
+                />
+              </div>
+              <div className="UserList__container__list__item__content">
+                <p className="UserList__container__list__item__content__name">
+                  {user.otherName}
+                </p>
+                {/* <p className="UserList__container__list__item__content__text">
+                  {user.text}
+                </p> */}
+              </div>
+              {/* <div className="UserList__container__list__item__time">
+                {user.time}
+              </div> */}
+            </Link>
+          </li>
+        );
       }
-
-      let className = "UserList__container__list__item";
-      if (otherId === user.otherId) {
-        className += " UserList__container__list__item--selected";
-      }
-
-      items.push(
-        <li className={className}>
-          <Link
-            onClick={this.props.updateSelectedUser}
-            to={`/chat/${userId}/${user.otherId}`}
-          >
-            <div>
-              <img
-                src={defaultAvatar}
-                className="UserList__container__list__item__avatar"
-                alt="avatar"
-              />
-            </div>
-            <div className="UserList__container__list__item__content">
-              <p className="UserList__container__list__item__content__name">
-                {user.otherName}
-              </p>
-              {/* <p className="UserList__container__list__item__content__text">
-                {user.text}
-              </p> */}
-            </div>
-            {/* <div className="UserList__container__list__item__time">
-              {user.time}
-            </div> */}
-          </Link>
-        </li>
-      );
     });
     return (
       <div className="UserList">

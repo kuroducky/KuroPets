@@ -5,40 +5,34 @@ import "./ChatApp.css";
 import Chat from "./Chat";
 import UserListControl from "./UserListControl";
 
-const findMsgCount = (chatList, otherId) => {
-  let chat;
-  for (let i=0; i<chatList.length; i++){
-    chat = chatList[i];
-    if (otherId === chat.id || otherId === chat.userId){
-      return chat.msgCount;
-    }
-  }
-  return 0;
-}
-
 class ChatView extends React.Component {
   state = {
       userId : this.props.chatDetails.userId,
       otherId : this.props.chatDetails.otherId,
-      msgCount : 10 //findMsgCount(this.props.chatList, this.props.chatDetails.otherId)
+      msgCount : this.props.findMsgCount(this.props.match.params.otherId)
   };
 
-  updateSelectedUser = () => {
-    const otherId = this.props.match.params;
-    this.setState({
-      otherId : otherId,
-      //msgCount : findMsgCount(this.props.chatList, otherId)
-    })
-  }
-
-  saveMsgCount = (count) => {
+  saveMsgCount = (count, otherId=null) => {
+    if (otherId != null){     // Changing chat
+      count = this.props.findMsgCount(otherId);
+    }
+    else {                    // Same chat, posting more messages
+      otherId = this.state.otherId
+      this.props.setMsgCount(otherId, count);
+    }
     this.setState({
       msgCount : count
-    })
+    });
+  }
+
+  updateSelectedUser = () => {
+    const otherId = this.props.match.params.otherId;
+    this.setState({ otherId : otherId });
+    this.saveMsgCount(0, otherId);
   }
 
   render(){
-    const { userId, otherId } = this.state;
+    const { userId, otherId, msgCount } = this.state;
     return (
       <div className="ChatApp">
         {userId && otherId ? (
@@ -49,9 +43,8 @@ class ChatView extends React.Component {
                 tokenProvider={this.props.chatDetails.tokenProvider}
                 userId={userId}
               >
-                <p>{otherId}</p>
                 <UserListControl {...this.state} chatList={this.props.chatList} updateSelectedUser={this.updateSelectedUser} />
-                <Chat otherUserId={otherId} msgCount={this.state.msgCount} />
+                <Chat otherUserId={otherId} msgCount={msgCount} saveMsgCount={this.saveMsgCount} />
               </ChatkitProvider>
             </div>
           </>

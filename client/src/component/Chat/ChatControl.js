@@ -9,13 +9,13 @@ const tokenProvider = new TokenProvider({
     "https://us1.pusherplatform.io/services/chatkit_token_provider/v1/19de5151-cc5c-4cc3-8a4b-9ae8f8bced6b/token"
 });
 
-const chatList = [
+let chatList = [
   {
     id: "bob",
     name: "Bob",
     otherId: "alice",
     otherName: "Alice",
-    msgCount : 3,
+    msgCount : 2,
     // text: "Goodbye",
     // byUser: true,
     // time: "10.00 AM"
@@ -25,11 +25,33 @@ const chatList = [
     name: "Carol",
     otherId: "alice",
     otherName: "Alice",
-    msgCount : 5,
+    msgCount : 1,
     // text: "Carol : Heyo",
     // time: "Yesterday"
   }
 ];
+
+const findMsgCount = (otherId) => {
+  let chat;
+  for (let i=0; i<chatList.length; i++){
+    chat = chatList[i];
+    if (otherId === chat.id || otherId === chat.otherId){
+      return chat.msgCount;
+    }
+  }
+  return 0;
+}
+
+const setMsgCount = (otherId, count) => {
+  let chat;
+  for (let i=0; i<chatList.length; i++){
+    chat = chatList[i];
+    if (otherId === chat.id || otherId === chat.otherId){
+      chat.msgCount = count;
+      return;
+    }
+  }
+}
 
 class ChatControl extends React.Component {
   state = {
@@ -44,7 +66,7 @@ class ChatControl extends React.Component {
 
   render() {
     const { chatDetails, chatList } = this.state;
-    return <ChatView chatDetails={chatDetails} chatList={chatList} {...this.props} />;
+    return <ChatView {...this.props} chatDetails={chatDetails} chatList={chatList} findMsgCount={findMsgCount} setMsgCount={setMsgCount} />;
   }
 }
 

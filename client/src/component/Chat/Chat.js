@@ -55,11 +55,9 @@ function Chat(props) {
         </div>
       </div>
       <div className="Chat__messages" ref={messageList}>
-        {messages.map(m => (
+        {messages.slice(-props.msgCount).map(m => (
           <Message key={m.id} {...m} />
         ))}
-        {<p>{props.chatkit.messages.length}</p>}
-        {<p>{props.msgCount}</p>}
       </div>
       <div className="Chat__compose">
         <input
