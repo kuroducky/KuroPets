@@ -31,6 +31,7 @@ const PostView = props => {
     startDate,
     endDate
   } = props.postDetails;
+  const { updatePost } = props;
   const sessionUser = JSON.parse(localStorage.getItem("user"));
   return (
     <Row style={{ marginBottom: "20px" }}>
@@ -146,6 +147,15 @@ const PostView = props => {
           <Fragment>
             <Tooltip title="Delete Post">
               <Button
+                onClick={() => {
+                  const { postID } = props.postDetails;
+                  fetch("http://172.21.148.170/api/post/" + postID, {
+                    method: "DELETE"
+                  }).then(res => {
+                    console.log(res);
+                    props.history.push("/");
+                  });
+                }}
                 style={{
                   float: "right",
                   marginRight: "15px"

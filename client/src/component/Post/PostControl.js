@@ -1,6 +1,6 @@
 import React from "react";
 import PostView from "./PostView";
-
+import moment from "moment";
 const postDetails = {
   postID: 12345,
   title: "Help me feed my turtles",
@@ -27,17 +27,61 @@ class PostControl extends React.Component {
     id: this.props.match.params.id,
     postDetails: postDetails
   };
+  updatePost = async values => {
+    console.log("upd: ", values);
+    console.log(values);
+    const response = await fetch(
+      `http://172.21.148.170/api/post/${this.state.postDetails.postID}`,
+      {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(values)
+      }
+    );
+
+    const content = await response.json();
+    content.user = this.state.postDetails.user;
+    content.images = this.state.postDetails.images;
+    console.log("newData:", content);
+    console.log("old", this.state.postDetails);
+    this.setState({ postDetails: content });
+    // this.setState((prevState, props) => {
+    //   return {postDetails: {...prevState.postDetails}};
+    // })
+    this.forceUpdate();
+  };
+  async componentDidUpdate(prevProps, prevState) {
+    if (prevState.postDetails !== this.state.postDetails) {
+      const response = await fetch(
+        `http://172.21.148.170/api/post/${this.state.id}`
+      );
+      const json = await response.json();
+      this.setState({ postDetails: json });
+    }
+  }
   async componentDidMount() {
+    console.log("fetching post data...");
     const response = await fetch(
       `http://172.21.148.170/api/post/${this.state.id}`
     );
     const json = await response.json();
     console.log(json);
+    console.log("fetched data is here...");
     this.setState({ postDetails: json });
   }
   render() {
     const { postDetails } = this.state;
-    return <PostView postID={this.state.id} postDetails={postDetails} />;
+    return (
+      <PostView
+        postID={this.state.id}
+        updatePost={this.updatePost}
+        postDetails={postDetails}
+        {...this.props}
+      />
+    );
   }
 }
 
