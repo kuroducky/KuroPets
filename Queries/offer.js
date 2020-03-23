@@ -102,14 +102,18 @@ const getAllUserOffers = (request, response) => {
         }
         else {
             results.rows.forEach(row => {
-                pool.query('SELECT "accountID", "name", "phone", "rating", "totalNumRatings" FROM "tbl_Account" WHERE "accountID" = $1', [row.accountID], (err, results) => {
+                pool.query('SELECT "postID", "title", "description" FROM "tbl_Post" WHERE "postID" = $1', [row.postID], (err, results) => {
                     if (err) throw err;
-                    row.user = results.rows[0];
-                    offers.push(row);
-    
-                    if (offers.length == length){
-                        response.status(200).json(offers);
-                    }
+                    row.post = results.rows[0];
+                    row.post.images = []
+                    pool.query('SELECT "url" FROM "tbl_Images" WHERE "postID" = $1', [row.postID], (err, results) => {
+                        if (err) throw err;
+                        results.rows.forEach(img => row.post.images.push(img.url));
+                        offers.push(row);
+                        if (offers.length == length){
+                            response.status(200).json(offers);
+                        }
+                    })
                 });
             })
         }

@@ -56,6 +56,7 @@ class UserListView extends React.Component {
     });
     return (
       <div className="UserList">
+      <p>{userId}</p>
         <div className="UserList__titlebar">
           <img
             src={defaultAvatar}

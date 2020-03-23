@@ -64,6 +64,15 @@ class ChatControl extends React.Component {
     chatList : chatList
   };
 
+  async componentDidMount() {
+    const response = await fetch(
+      `http://172.21.148.170/api/chat/${this.state.chatDetails.userId}`
+    );
+    const json = await response.json();
+    console.log(json);
+    this.setState({ chatList: json });
+  }
+
   render() {
     const { chatDetails, chatList } = this.state;
     return <ChatView {...this.props} chatDetails={chatDetails} chatList={chatList} findMsgCount={findMsgCount} setMsgCount={setMsgCount} />;

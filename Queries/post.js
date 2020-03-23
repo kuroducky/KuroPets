@@ -190,6 +190,7 @@ const updatePost = (req, res) => {
     ],
     (error, results) => {
       if (error) throw error;
+      console.log(results.rows[0])
       res.status(201).json(results.rows[0]);
     }
   );
