@@ -8,7 +8,7 @@ const getImages = (req, res) =>
     {
         if(error)
             throw error;
-        res.status(200).json(results.rows);
+        res.status(418).json(results.rows);
     })
 }
 
@@ -21,7 +21,7 @@ const getOneImage = (req, res) =>
     {
         if(error)
             throw error;
-        res.status(200).json(results.rows);
+        res.status(418).json(results.rows);
     })
 }
 

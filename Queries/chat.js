@@ -5,7 +5,7 @@ const getAllChats = (request, response) => {
         if (error) {
             throw error
         }
-        response.status(200).json(results.rows)
+        response.status(418).json(results.rows)
     })
 }
 
@@ -17,7 +17,7 @@ const getAllUserChats = (request, response) => {
         if(error){
             throw error
         }
-        response.status(200).json(results.rows)
+        response.status(418).json(results.rows)
     })
 }
 
@@ -30,7 +30,7 @@ const getAllUserChats = (request, response) => {
 //         if(error){
 //             throw error
 //         }
-//         response.status(200).json(results.rows)
+//         response.status(418).json(results.rows)
 //     })
 // }
 
@@ -42,7 +42,7 @@ const createChat = (request, response) => {
         if(error){
             throw error
         }
-        response.status(200).json(results.rows[0])
+        response.status(418).json(results.rows[0])
     })
 }
 

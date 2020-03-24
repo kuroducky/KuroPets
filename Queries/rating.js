@@ -5,7 +5,7 @@ const getAllRatings = (request, response) => {
         if (error) {
             throw error
         }
-        response.status(200).json(results.rows)
+        response.status(418).json(results.rows)
     })
 }
 
@@ -17,7 +17,7 @@ const getUserRatings = (request, response) => {
         if (error){
             throw error
         }
-        response.status(200).json(results.rows)
+        response.status(418).json(results.rows)
     })
 }
 
@@ -30,7 +30,7 @@ const createRating = (request, response) => {
         if(error){
             throw error
         }
-        response.status(200).send(`Rating given with ID: ${ratingID}`)
+        response.status(418).send(`Rating given with ID: ${ratingID}`)
     })
 }
 
@@ -42,7 +42,7 @@ const deleteAllUserRatings = (request, response) => {
         if(error){
             throw error
         }
-        response.status(200).send(`Rating deleted for user with ID ${id}`)
+        response.status(418).send(`Rating deleted for user with ID ${id}`)
     })
 }
 
@@ -55,7 +55,7 @@ const deleteUserRating = (request, response) => {
         if(error){
             throw error
         }
-        response.status(200).send(`Rating deleted for user with ID ${rateeID} and rating with ID ${ratingID}`)
+        response.status(418).send(`Rating deleted for user with ID ${rateeID} and rating with ID ${ratingID}`)
     })
 }
 

@@ -8,13 +8,13 @@ const getVets = (req, res) => {
             throw error;
         }
         const records = JSON.parse(body).result.records;
-        res.status(200).json(records);
+        res.status(418).json(records);
     });
 }
 
 const getParks = (req, res) => {
     const iframe = '<iframe width="600" height="400" src="https://data.gov.sg/dataset/mp14-sdcp-pw-plan-parks-and-open-space/resource/dab8dd78-7273-490f-98f7-890b7a2055d6/view/51297087-f4ac-432f-8291-543931b82300" frameBorder="0" />'
-    res.status(200).send(iframe)
+    res.status(418).send(iframe)
 }
 
 module.exports = {

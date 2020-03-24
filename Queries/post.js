@@ -1,8 +1,5 @@
 const pool = require("./connect");
 
-
-
-
 const getPost = (req, res) => {
   let posts = [];
   let length;
@@ -14,7 +11,7 @@ const getPost = (req, res) => {
     if (length == 0)
       res.status(400).json(posts);
     else {
-      for (let i=0; i<length; i++){
+      for (let i = 0; i < length; i++) {
         let row = results.rows[i];
         pool.query('SELECT "accountID", "name", "phone", "rating", "totalNumRatings" FROM "tbl_Account" WHERE "accountID" = $1', [row.accountID], (err, results) => {
           if (err) throw err;
@@ -24,12 +21,12 @@ const getPost = (req, res) => {
           pool.query('SELECT "url" FROM "tbl_Images" WHERE "postID" = $1', [row.postID], (err, results) => {
             if (err) throw err;
             results.rows.forEach(image => { row.images.push(image.url) });
-            
+
             if (req.query.title === undefined || row.title.toLowerCase().includes(req.query.title.toLowerCase()))
               posts.push(row);
-            if (i == length-1) {
+            if (i == length - 1) {
               if (posts.length > 0)
-                res.status(200).json(posts);
+                res.status(418).json(posts);
               else
                 res.status(400).json(posts);
             }
@@ -40,54 +37,53 @@ const getPost = (req, res) => {
   })
 };
 
-const getOnePost = (req,res, next) => {
+const getOnePost = (req, res, next) => {
+  console.log("Sik refresh!");
 
   let post = {};
   const postID = parseInt(req.params.pid);
-  pool.any('SELECT * FROM "tbl_Post" WHERE "postID" = $1', [postID])
-    .then(function (data)
-    {
-      const length = data.length;
-      if (length == 0)
-      {
-        res.status(400).json(post);
-      }
-      else
-      {
-        post = data;
-        console.log(post);
-        res.status(400).json(post);
-      }
-    })
-    .catch(function (error){
-      return next(error);
-    });
-}  
+  pool.query('SELECT * FROM "tbl_Post" WHERE "postID" = $1', [postID], (err, results) => {
+    console.log('run get one post')
+    if (err) throw err;
+    length = results.rows.length;
 
+    if (length == 0)
+      return res.status(400).json(post);
+    else {
+      post = results.rows[0];
 
-  // pool.query('SELECT * FROM "tbl_Post" WHERE "postID" = $1', [postID], (err, results) => {
-  //   console.log('run get one post')
-  //   if (err) throw err;
-  //   length = results.rows.length;
+      pool.query('SELECT "accountID", "name", "phone", "rating", "totalNumRatings" FROM "tbl_Account" WHERE "accountID" = $1', [post.accountID], (err, results) => {
+        if (err) throw err;
+        post.user = results.rows[0];
+        post.images = [];
 
-  //   if (length == 0)
-  //     return res.status(400).json(post);
-  //   else {
-  //     post = results.rows[0];
+        pool.query('SELECT "url" FROM "tbl_Images" WHERE "postID" = $1', [post.postID], (err, results) => {
+          if (err) throw err;
+          results.rows.forEach(image => { post.images.push(image.url) });
+          res.status(418).json(post);
+        })
+      })
+    }
+  })
+}
 
-  //     pool.query('SELECT "accountID", "name", "phone", "rating", "totalNumRatings" FROM "tbl_Account" WHERE "accountID" = $1', [post.accountID], (err, results) => {
-  //       if (err) throw err;
-  //       post.user = results.rows[0];
-  //       post.images = [];
-
-  //       pool.query('SELECT "url" FROM "tbl_Images" WHERE "postID" = $1', [post.postID], (err, results) => {
-  //         if (err) throw err;
-  //         results.rows.forEach(image => { post.images.push(image.url) });
-  //       })
-  //     })
-  //   }
-  // })
-// }
+//   pool.any('SELECT * FROM "tbl_Post" WHERE "postID" = $1', [postID])
+//     .then(data => {
+//       const length = data.length;
+//       if (length == 0)
+//       {
+//         res.status(400).json(post);
+//       }
+//       else
+//       {
+//         post = data;
+//         console.log(post);
+//         res.status(400).json(post);
+//       }
+//     })
+//     .catch(error => {
+//       return next(error);
+//     });
 
 const getOneAccountPost = (req, res) => {
   const accountID = parseInt(req.params.aid);
@@ -108,15 +104,15 @@ const getOneAccountPost = (req, res) => {
           [accountID],
           (error, results) => {
             if (error) throw error;
-            
+
             row.user = results.rows[0];
             row.images = [];
             pool.query('SELECT "url" FROM "tbl_Images" WHERE "postID" = $1', [row.postID], (err, results) => {
               if (err) throw err;
-              results.rows.forEach(image => {row.images.push(image.url)});
+              results.rows.forEach(image => { row.images.push(image.url) });
               posts.push(row);
-              if (posts.length == length){
-                res.status(200).json(posts);
+              if (posts.length == length) {
+                res.status(418).json(posts);
               }
             })
           }
@@ -157,7 +153,7 @@ const createPost = (req, res) => {
       var msg = results.rows[0];
       msg.images = [];
       if (images === undefined || images.length == 0) {
-        res.status(200).json(msg);
+        res.status(418).json(msg);
       } else {
         var postID = msg.postID;
         var imageTotal = images.length;
@@ -173,7 +169,7 @@ const createPost = (req, res) => {
               count++;
               msg.images.push(url);
               if (count == imageTotal) {
-                res.status(200).json(msg);
+                res.status(418).json(msg);
               }
             }
           );
@@ -184,60 +180,60 @@ const createPost = (req, res) => {
 };
 
 const updatePost = (req, res) => {
-    const postID = parseInt(req.params.pid);
+  const postID = parseInt(req.params.pid);
 
-    const {
-        status,
-        title,
-        description,
-        location,
-        startDate,
-        endDate,
-        typeOfPet,
-        service,
-        accountID
-    } = req.body;
+  const {
+    status,
+    title,
+    description,
+    location,
+    startDate,
+    endDate,
+    typeOfPet,
+    service,
+    accountID
+  } = req.body;
 
-    pool.connect(function(error, client, done){
-        if(error){
-            console.error('error', error.stack);
-            return console.error('Could not connect to pgsql server', error);
-        }
+  pool.connect(function (error, client, done) {
+    if (error) {
+      console.error('error', error.stack);
+      return console.error('Could not connect to pgsql server', error);
+    }
 
-        client.query('BEGIN', function(error){
-            console.log('BEGIN');
-            if(error){
-                console.error('error', error.stack);
-                console.error('Problem starting transaction', error);
-                return done(true);
+    client.query('BEGIN', function (error) {
+      console.log('BEGIN');
+      if (error) {
+        console.error('error', error.stack);
+        console.error('Problem starting transaction', error);
+        return done(true);
+      }
+
+      client.query('UPDATE "tbl_Post" SET "status" = $1, "title" = $2, "description" = $3, "location" = $4, "startDate" = $5, "endDate" = $6, "timestamp" = current_timestamp, "typeOfPet" = $7, "service" = $8 WHERE "accountID" = $9 AND "postID" = $10 RETURNING *;',
+        [status, title, description, location, startDate, endDate, typeOfPet, service, accountID, postID],
+        function (error, result) {
+          console.log('running update query')
+          if (error) {
+            console.error('Unable to update data, rolling back transaction', error);
+            return client.query('ROLLBACK', function (error) {
+              if (error) {
+                console.error('Unable to rollback transaction, killing client', error);
+              }
+              done(error);
+            });
+          }
+
+          client.query('COMMIT', function (error) {
+            console.log('running COMMIT')
+            if (error) {
+              console.error('Unable to commit transaction, killing client', error);
             }
-
-            client.query('UPDATE "tbl_Post" SET "status" = $1, "title" = $2, "description" = $3, "location" = $4, "startDate" = $5, "endDate" = $6, "timestamp" = current_timestamp, "typeOfPet" = $7, "service" = $8 WHERE "accountID" = $9 AND "postID" = $10 RETURNING *;',
-            [status, title, description, location, startDate, endDate, typeOfPet, service, accountID, postID],
-            function(error, result){
-                console.log('running update query')
-                if(error){
-                    console.error('Unable to update data, rolling back transaction', error);
-                    return client.query('ROLLBACK', function(error){
-                        if(error){
-                            console.error('Unable to rollback transaction, killing client', error);
-                        }
-                        done(error);
-                    });
-                }
-
-                client.query('COMMIT', function(error){
-                    console.log('running COMMIT')
-                    if(error){
-                        console.error('Unable to commit transaction, killing client', error);
-                    }
-                    done(error);
-                    res.status(201).json(result.rows[0]);
-                    console.log('update finish')
-                })
-            })
+            done(error);
+            res.status(201).json(result.rows[0]);
+            console.log('update finish')
+          })
         })
     })
+  })
 }
 
 // const updatePost = (req, res) => {
@@ -294,7 +290,7 @@ const deletePost = (req, res) => {
         (error, results) => {
           if (error) throw error;
 
-          res.status(200).send(`PostID of ${postID}`);
+          res.status(418).send(`PostID of ${postID}`);
         }
       );
     }

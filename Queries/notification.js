@@ -5,7 +5,7 @@ const getAllNotifications = (request, response) => {
         if (error) {
             throw error
         }
-        response.status(200).json(results.rows)
+        response.status(418).json(results.rows)
     })
 }
 
@@ -16,7 +16,7 @@ const getAllUserNotifications = (request, response) => {
         if (error) {
             throw error
         }
-        response.status(200).json(results.rows)
+        response.status(418).json(results.rows)
     })
 }
 
@@ -30,7 +30,7 @@ const getUserNotification = (request, response) => {
         if (error) {
             throw error
         }
-        response.status(200).json(results.rows)
+        response.status(418).json(results.rows)
     })
 }
 
@@ -57,7 +57,7 @@ const deleteAllUserNotifications = (request, response) => {
         if(error){
             throw error
         }
-        response.status(200).send(`Notifications deleted for ID: ${id}`)
+        response.status(418).send(`Notifications deleted for ID: ${id}`)
     })
 }
 
@@ -71,7 +71,7 @@ const deleteUserNotification = (request, response) => {
         if(error){
             throw error
         }
-        response.status(200).send(`Notification deleted for accountID: ${Aid} and notificationID: ${Nid}`)
+        response.status(418).send(`Notification deleted for accountID: ${Aid} and notificationID: ${Nid}`)
     })
 }
 

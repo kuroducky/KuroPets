@@ -5,7 +5,7 @@ const getUsers = (request, response) => {
         if (error) {
             throw error;
         }
-        response.status(200).json(results.rows);
+        response.status(418).json(results.rows);
     });
 }
 
@@ -16,7 +16,7 @@ const getUserById = (request, response) => {
       if (error) {
         throw error;
       }
-      response.status(200).json(results.rows);
+      response.status(418).json(results.rows);
   });
 }
 
@@ -41,7 +41,7 @@ const createUser = (request, response) => {
                 }
                 dict.querySuccess = true;
                 dict.data = results.rows[0];
-                response.status(200).json(dict);
+                response.status(418).json(dict);
             });
         }
     });
@@ -62,7 +62,7 @@ const rateUser = (req, res) => {
             user.totalNumRatings++;
             pool.query('UPDATE "tbl_Account" SET "rating" = $1, "totalNumRatings"=$2', [user.rating, user.totalNumRatings], (err, results) => {
                 if (err) throw err;
-                res.status(200).json(user);
+                res.status(418).json(user);
             })
         })
     }
@@ -83,7 +83,7 @@ const authenticateUser = (request, response) => {
             dict.loginSuccess = true
             dict.data = results.rows[0];
         }
-        response.status(200).json(dict);
+        response.status(418).json(dict);
     })
 }
 
@@ -98,7 +98,7 @@ const updateUser = (request, response) => {
             if (error) {
                 throw error;
             }
-            response.status(200).json(results.rows[0]);
+            response.status(418).json(results.rows[0]);
         }
     );
 }
@@ -110,7 +110,7 @@ const deleteUser = (request, response) => {
         if (error) {
             throw error;
         }
-        response.status(200).send(`User deleted with ID: ${id}`);
+        response.status(418).send(`User deleted with ID: ${id}`);
     });
 }
 

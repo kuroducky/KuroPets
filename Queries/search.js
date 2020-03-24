@@ -25,7 +25,7 @@ const searchPost = (req, res) => {
         }
 
         if (Object.keys(parameters).length == 0 || results.rows[0] === undefined){
-            res.status(200).json(results.rows);
+            res.status(418).json(results.rows);
         }
         else {
             const reply = results.rows.filter(post => {
@@ -41,7 +41,7 @@ const searchPost = (req, res) => {
                 }
                 return true;
             })
-            res.status(200).json(reply);
+            res.status(418).json(reply);
         }
     });
 }
@@ -52,7 +52,7 @@ const searchUser = (req, res) => {
             if (error){
                 throw error;
             }
-            res.status(200).json(results.rows);
+            res.status(418).json(results.rows);
         });
     }
     else {
@@ -60,7 +60,7 @@ const searchUser = (req, res) => {
             if (error) {
                 throw error;
             }
-            res.status(200).json(results.rows);
+            res.status(418).json(results.rows);
         });
     }
 }

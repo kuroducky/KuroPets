@@ -22,7 +22,7 @@ const getAllOffers = (request, response) => {
                     offers.push(row);
     
                     if (offers.length == length){
-                        response.status(200).json(offers);
+                        response.status(418).json(offers);
                     }
                 });
             })
@@ -54,7 +54,7 @@ const getAllPostOffers = (request, response) => {
                     offers.push(row);
     
                     if (offers.length == length){
-                        response.status(200).json(offers);
+                        response.status(418).json(offers);
                     }
                 });
             })
@@ -79,7 +79,7 @@ const getPostOffer = (request, response) => {
             pool.query('SELECT "accountID", "name", "phone", "rating", "totalNumRatings" FROM "tbl_Account" WHERE "accountID" = $1', [offer.accountID], (err, results) => {
                 if (err) throw err;
                 offer.user = results.rows[0];
-                response.status(200).json(offer);
+                response.status(418).json(offer);
             });
         }
     })
@@ -111,7 +111,7 @@ const getAllUserOffers = (request, response) => {
                         results.rows.forEach(img => row.post.images.push(img.url));
                         offers.push(row);
                         if (offers.length == length){
-                            response.status(200).json(offers);
+                            response.status(418).json(offers);
                         }
                     })
                 });
@@ -129,7 +129,7 @@ const createOffer = (request, response) => {
         if(error){
             throw error
         }
-        response.status(200).send(`Offer created with ID: ${results.rows[0].offerID}`)
+        response.status(418).send(`Offer created with ID: ${results.rows[0].offerID}`)
     })
 }
 
@@ -143,7 +143,7 @@ const updateOffer = (request, response) => {
         if(error){
             throw error
         }
-        response.status(200).send(`Offer updated.`)
+        response.status(418).send(`Offer updated.`)
     })
 }
 
@@ -155,7 +155,7 @@ const deleteAllOffers = (request, response) => {
         if(error){
             throw error
         }
-        response.status(200).send(`All Offers deleted.`)
+        response.status(418).send(`All Offers deleted.`)
     })
 }
 
@@ -168,7 +168,7 @@ const deleteOffer = (request, response) => {
         if(error){
             throw error
         }
-        response.status(200).send(`Offer for the post has been deleted`)
+        response.status(418).send(`Offer for the post has been deleted`)
     })
 }
 
