@@ -1,9 +1,11 @@
 import React from "react";
-import { Button, Row, Col, Typography, Avatar, Rate } from "antd";
+import FittedImage from "react-fitted-image";
+import { Button, Row, Col, Typography, Tooltip, Popconfirm } from "antd";
 import {
-  UserOutlined,
-  WalletOutlined,
-  DollarOutlined
+  DollarCircleOutlined,
+  InfoCircleOutlined,
+  CheckCircleTwoTone,
+  CheckCircleOutlined
 } from "@ant-design/icons";
 
 const { Title } = Typography;
@@ -46,11 +48,37 @@ const offers = [
   }
 ];
 
-const acceptOffer = id => {
-  console.log("accepted offer from: ", id);
-};
 class OfferTab extends React.Component {
+  state = {
+    offers: []
+  };
+
+  confirmOfferComplete = id => {
+    console.log(`offer ${id} completed!`);
+  };
+  viewPost = id => {
+    this.props.history.push(`/post/${id}`);
+  };
+  async componentDidMount() {
+    const { id } = this.props.match.params;
+    const response = await fetch(`http://172.21.148.170/api/user/${id}/offer`);
+    const json = await response.json();
+    console.log(json);
+    this.setState({ offers: json });
+  }
   render() {
+    const truncateString = (str, num) => {
+      // If the length of str is less than or equal to num
+      // just return str--don't truncate it.
+      if (str.length <= num) {
+        return str;
+      }
+      // Return str truncated with '...' concatenated to the end of str.
+      return str.slice(0, num) + "...";
+    };
+
+    const { offers } = this.state;
+    const sessionUser = JSON.parse(localStorage.getItem("user"));
     return (
       <div
         style={{
@@ -66,70 +94,82 @@ class OfferTab extends React.Component {
               style={{
                 border: "1px solid #e8e8e8",
                 borderRadius: "8px",
-                padding: "10px 10px",
-                marginBottom: "15px"
-                // minHeight: "90px"
+                padding: "20px 20px 20px 20px",
+                marginBottom: "15px",
+                minHeight: "150px",
+                boxShadow:
+                  "0 3px 10px 0 rgba(44,44,45,.07), inset 0 0 0 1px rgba(44,44,45,.07)"
               }}
             >
-              <Row>
-                <Col span={8}>
-                  <Title style={{ marginBottom: "-2px" }} level={4}>
-                    <Avatar
-                      style={{
-                        marginRight: "6px"
-                      }}
-                      icon={<UserOutlined />}
-                    />
-                    {offer.user.name}{" "}
-                  </Title>
-                  <Rate
-                    disabled
-                    allowHalf
-                    defaultValue={Math.floor(offer.user.rating * 2) / 2}
+              <Row gutter={16}>
+                <Col span={6}>
+                  <FittedImage
+                    fit="cover"
+                    style={{
+                      height: "130px",
+                      borderRadius: "8px"
+                    }}
+                    src={
+                      offer.post.images[0]
+                        ? offer.post.images[0]
+                        : "/placeholder-tb.png"
+                    }
                   />
                 </Col>
-                <Col span={10}>
-                  <span style={{ marginTop: "5px" }}>
-                    <DollarOutlined /> Price:{" "}
-                    <strong>${offer.price.toFixed(2)}</strong>
-                  </span>{" "}
-                  <br /> <WalletOutlined /> Payments:{" "}
-                  {offer.paymentType
-                    ? offer.paymentType.split(",").map((p, i) => {
-                        if (i === 1)
-                          return (
-                            <span key={i}>
-                              <strong>
-                                , {p.replace(/^\w/, c => c.toUpperCase())}{" "}
-                              </strong>
-                            </span>
-                          );
-                        else
-                          return (
-                            <span key={i}>
-                              <strong>
-                                {p.replace(/^\w/, c => c.toUpperCase())}{" "}
-                              </strong>
-                            </span>
-                          );
-                      })
-                    : ""}
+                <Col span={12}>
+                  <Title level={3}>{offer.post.title}</Title>
+                  {truncateString(offer.post.description, 130)}
                 </Col>
                 <Col span={6}>
                   <Button
                     block
+                    size="large"
                     style={{ marginBottom: "10px" }}
                     // size="large"
                     type="primary"
                     onClick={() => {
-                      acceptOffer(offer.user.accountID);
+                      this.viewPost(offer.postID);
                     }}
                   >
-                    <strong>Accept</strong>
+                    <strong>View Full Post</strong>
                   </Button>
-                  <Button block>
-                    <strong>Chat</strong>
-                  </Button>
+                  <InfoCircleOutlined /> Offer Status:{" "}
+                  <strong>{offer.status} </strong>
+                  <br />
+                  <DollarCircleOutlined /> Offer Price:{" "}
+                  <strong>${offer.price} </strong>
+                  <br />
+                  {sessionUser != null &&
+                  sessionUser.accountID === offer.accountID &&
+                  offer.status === "Pending" ? (
+                    <Popconfirm
+                      title="Offer Completed?"
+                      placement="left"
+                      icon={
+                        <CheckCircleOutlined style={{ color: "#52c41a" }} />
+                      }
+                      onConfirm={() => {
+                        this.confirmOfferComplete(offer.offerID);
+                      }}
+                      onCancel={() => {
+                        console.log("cancel");
+                      }}
+                      okText="Yes"
+                      cancelText="No"
+                    >
+                      <Button
+                        style={{
+                          float: "right",
+                          marginTop: "20px",
+                          marginRight: "5px"
+                        }}
+                        shape="circle"
+                        icon={<CheckCircleTwoTone twoToneColor="#52c41a" />}
+                      />
+                    </Popconfirm>
+                  ) : (
+                    " "
+                  )}
                 </Col>
               </Row>
             </div>

@@ -12,15 +12,6 @@ const mainPageStyles = {
   padding: "2px 22px 0px 22px"
 };
 
-const data = {
-  user: {
-    phone: "912345678",
-    name: "Dawwen Tan",
-    accountID: 30,
-    totalNumRatings: 4,
-    rating: 4.5
-  }
-};
 const { Content } = Layout;
 const { Title, Text } = Typography;
 const { TabPane } = Tabs;
@@ -34,7 +25,6 @@ class Profile extends React.Component {
     const { id } = this.props.match.params;
     const response = await fetch(`http://172.21.148.170/api/user/${id}`);
     const json = await response.json();
-    console.log(json);
     const user = json[0];
     if (user) {
       delete user.password;
@@ -83,7 +73,13 @@ class Profile extends React.Component {
                     Contact me at: <strong>{user.phone}</strong>
                   </Text>
                 </div>
-                <EditProfileButton {...this.props} />
+                {user.name &&
+                user.accountID ===
+                  JSON.parse(localStorage.getItem("user")).accountID ? (
+                  <EditProfileButton user={this.state.user} {...this.props} />
+                ) : (
+                  ""
+                )}
               </div>
             </Col>
             <Col span={16}>

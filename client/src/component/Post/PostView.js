@@ -1,6 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Button, Row, Col, Carousel, Typography, Avatar, Tooltip } from "antd";
+import {
+  Button,
+  Row,
+  Col,
+  Carousel,
+  Typography,
+  Avatar,
+  Tooltip,
+  Popconfirm
+} from "antd";
 import FittedImage from "react-fitted-image";
 import {
   UserOutlined,
@@ -11,6 +20,7 @@ import {
   DeleteTwoTone,
   CheckCircleTwoTone,
   EditTwoTone,
+  ExclamationCircleOutlined,
   SmileOutlined
 } from "@ant-design/icons";
 import MakeOfferButton from "./MakeOfferButton";
@@ -145,17 +155,25 @@ const PostView = props => {
         sessionUser.accountID ===
           user.accountID /* if user is the post creator*/ ? (
           <Fragment>
-            <Tooltip title="Delete Post">
+            <Popconfirm
+              title="Are you sure you want to delete?"
+              icon={<ExclamationCircleOutlined style={{ color: "red" }} />}
+              onConfirm={() => {
+                const { postID } = props.postDetails;
+                fetch("http://172.21.148.170/api/post/" + postID, {
+                  method: "DELETE"
+                }).then(res => {
+                  console.log(res);
+                  props.history.push("/");
+                });
+              }}
+              onCancel={() => {
+                console.log("cancel");
+              }}
+              okText="Yes"
+              cancelText="No"
+            >
               <Button
-                onClick={() => {
-                  const { postID } = props.postDetails;
-                  fetch("http://172.21.148.170/api/post/" + postID, {
-                    method: "DELETE"
-                  }).then(res => {
-                    console.log(res);
-                    props.history.push("/");
-                  });
-                }}
                 style={{
                   float: "right",
                   marginRight: "15px"
@@ -163,7 +181,7 @@ const PostView = props => {
                 shape="circle"
                 icon={<DeleteTwoTone twoToneColor="#EF2917" />}
               />
-            </Tooltip>
+            </Popconfirm>
 
             <EditPostButton {...props} />
           </Fragment>

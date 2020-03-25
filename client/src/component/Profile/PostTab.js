@@ -91,7 +91,7 @@ class PostTab extends React.Component {
   };
   async componentDidMount() {
     const { id } = this.props.match.params;
-    const response = await fetch(`http://172.21.148.170/api/user/${id}/post`);
+    const response = await fetch(`http://172.21.148.170/api/user/${id}/post`); // http://172.21.148.170/api/user/31/offer
     const json = await response.json();
     console.log(json);
     this.setState({ posts: json });
