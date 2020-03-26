@@ -89,11 +89,11 @@ const authenticateUser = (request, response) => {
 
 const updateUser = (request, response) => {
     const id = parseInt(request.params.id);
-    const { name, password, phone, rating, totalNumRatings } = request.body;
+    const { name, phone } = request.body;
 
     pool.query(
-        'UPDATE "tbl_Account" SET "name" = $1, "password" = $2, "phone" = $3, "rating" = $4, "totalNumRatings" = $5 WHERE "accountID" = $6 RETURNING *',
-        [name, password, phone, rating, totalNumRatings, id],
+        'UPDATE "tbl_Account" SET "name" = $1, "phone" = $2 WHERE "accountID" = $3 RETURNING *',
+        [name, phone, id],
         (error, results) => {
             if (error) {
                 throw error;

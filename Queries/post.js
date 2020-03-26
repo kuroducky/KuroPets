@@ -7,11 +7,10 @@ const getPost = (req, res) => {
   pool.query('SELECT * FROM "tbl_Post"', (err, results) => {
     if (err) throw err;
     length = results.rows.length;
-
     if (length == 0)
       res.status(400).json(posts);
     else {
-      for (let i = 0; i < length; i++) {
+      for (let i = 0; i < results.rows.length; i++) {
         let row = results.rows[i];
         pool.query('SELECT "accountID", "name", "phone", "rating", "totalNumRatings" FROM "tbl_Account" WHERE "accountID" = $1', [row.accountID], (err, results) => {
           if (err) throw err;
@@ -22,13 +21,14 @@ const getPost = (req, res) => {
             if (err) throw err;
             results.rows.forEach(image => { row.images.push(image.url) });
 
-            if (req.query.title === undefined || row.title.toLowerCase().includes(req.query.title.toLowerCase()))
+            if (req.query.title === undefined || row.title.toLowerCase().includes(req.query.title.toLowerCase())){
               posts.push(row);
-            if (i == length - 1) {
-              if (posts.length > 0)
-                res.status(418).json(posts);
-              else
-                res.status(400).json(posts);
+            }
+            else {
+              length--;
+            }
+            if (posts.length === length) {
+              res.status(418).json(posts);
             }
           })
         })
@@ -37,13 +37,10 @@ const getPost = (req, res) => {
   })
 };
 
-const getOnePost = (req, res, next) => {
-  console.log("Sik refresh!");
-
+const getOnePost = (req, res) => {
   let post = {};
   const postID = parseInt(req.params.pid);
   pool.query('SELECT * FROM "tbl_Post" WHERE "postID" = $1', [postID], (err, results) => {
-    console.log('run get one post')
     if (err) throw err;
     length = results.rows.length;
 
@@ -136,7 +133,7 @@ const createPost = (req, res) => {
   pool.query(
     'INSERT INTO "tbl_Post"("status", "title", "description", "location", "startDate", "endDate", "timestamp", "typeOfPet", "service", "accountID") VALUES ($1, $2, $3, $4, $5, $6, current_timestamp, $7, $8, $9) RETURNING *;',
     [
-      "Pending Service",
+      "Pending Offer",
       title,
       description,
       location,
