@@ -53,15 +53,17 @@ class PostControl extends React.Component {
     // })
     this.forceUpdate();
   };
-  async componentDidUpdate(prevProps, prevState) {
-    if (prevState.postDetails !== this.state.postDetails) {
-      const response = await fetch(
-        `http://172.21.148.170/api/post/${this.state.id}`
-      );
-      const json = await response.json();
-      this.setState({ postDetails: json });
-    }
-  }
+  // async componentDidUpdate(prevProps, prevState) {
+  //   if (prevState.postDetails != this.state.postDetails) {
+  //     console.log("prevState", prevState.postDetails);
+  //     console.log("current", this.state.postDetails);
+  //     const response = await fetch(
+  //       `http://172.21.148.170/api/post/${this.state.id}`
+  //     );
+  //     const json = await response.json();
+  //     this.setState({ postDetails: json });
+  //   }
+  // }
   async componentDidMount() {
     console.log("fetching post data...");
     const response = await fetch(

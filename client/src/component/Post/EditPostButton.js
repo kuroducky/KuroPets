@@ -92,37 +92,7 @@ class EditPostButton extends React.Component {
     values.endDate = values.startEndDate[1].format("YYYY-MM-DDTHH:mm:ss");
     values.status = "Pending Service";
     values.accountID = JSON.parse(localStorage.getItem("user")).accountID;
-    // values.accountID = user.accountID;
     delete values.startEndDate;
-    // if (values.startEndDate === undefined) {
-    //   values.startEndDate = [
-    //     moment(this.props.postDetails.startDate),
-    //     moment(this.props.postDetails.endDate)
-    //   ];
-    // }
-
-    // values.startDate = values.startEndDate[0].format("YYYY-MM-DDTHH:mm:ss"); // 2020-02-22T16:00:00.000Z
-    // values.endDate = values.startEndDate[1].format("YYYY-MM-DDTHH:mm:ss");
-    // values.status = "Pending Service";
-    // values.accountID = JSON.parse(localStorage.getItem("user")).accountID;
-    // // values.accountID = user.accountID;
-    // delete values.startEndDate;
-    // console.log(values);
-    // const response = await fetch(
-    //   `http://172.21.148.170/api/post/${this.props.postDetails.postID}`,
-    //   {
-    //     method: "PUT",
-    //     headers: {
-    //       Accept: "application/json",
-    //       "Content-Type": "application/json"
-    //     },
-    //     body: JSON.stringify(values)
-    //   }
-    // );
-
-    // const content = await response.json();
-
-    // console.log(content);
     this.props.updatePost(values);
     this.setState({ visible: false });
   };
