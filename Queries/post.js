@@ -292,6 +292,14 @@ const deletePost = (req, res) => {
       );
     }
   );
+
+  pool.query(
+    'DELETE FROM "tbl_Offers" WHERE "postID" = $1',
+    [postID],
+    (error, results) => {
+      if (error) throw error;
+    }
+  );
 };
 
 module.exports = {

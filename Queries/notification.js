@@ -20,12 +20,11 @@ const getAllUserNotifications = (request, response) => {
     })
 }
 
-const getUserNotification = (request, response) => {
-    const Aid = parseInt(request.params.accID)
+const getNotification = (request, response) => {
     const Nid = parseInt(request.params.notifID)
 
-    pool.query('SELECT * FROM "tbl_Notification" WHERE "accountID" = $1 AND "notificationID" = $2', 
-    [Aid, Nid], 
+    pool.query('SELECT * FROM "tbl_Notification" WHERE "notificationID" = $1', 
+    [Nid], 
     (error, results) => {
         if (error) {
             throw error
@@ -35,16 +34,15 @@ const getUserNotification = (request, response) => {
 }
 
 const createNotification = (request, response) => {
-    const id = parseInt(request.params.id)
-    const { type } = request.body
+    const { accountID, type } = request.body
 
     pool.query('INSERT INTO "tbl_Notification" ("type", "timestamp", "accountID") VALUES ($1, current_timestamp, $2) RETURNING *', 
-    [type, id], 
+    [type, accountID], 
     (error, results) => {
         if (error) {
             throw error
         }
-        response.status(201).send(`Notification added with ID: ${results.rows[0].notificationID}`)
+        response.status(418).json(results.rows[0]);
     })
 }
 
@@ -61,25 +59,24 @@ const deleteAllUserNotifications = (request, response) => {
     })
 }
 
-const deleteUserNotification = (request, response) => {
-    const Aid = parseInt(request.params.accID)
+const deleteNotification = (request, response) => {
     const Nid = parseInt(request.params.notifID)
 
-    pool.query('DELETE FROM "tbl_Notification" WHERE "accountID" = $1 AND "notificationID" = $2',
-    [Aid, Nid],
+    pool.query('DELETE FROM "tbl_Notification" WHERE "notificationID" = $1',
+    [Nid],
     (error, results) => {
         if(error){
             throw error
         }
-        response.status(418).send(`Notification deleted for accountID: ${Aid} and notificationID: ${Nid}`)
+        response.status(418).send(`Notification deleted for notificationID: ${Nid}`)
     })
 }
 
 module.exports = {
     getAllNotifications,
     getAllUserNotifications,
-    getUserNotification,
+    getNotification,
     createNotification,
     deleteAllUserNotifications,
-    deleteUserNotification
+    deleteNotification
 };

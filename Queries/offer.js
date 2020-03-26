@@ -31,7 +31,7 @@ const getAllOffers = (request, response) => {
 }
 
 const getAllPostOffers = (request, response) => {
-    const id = parseInt(request.params.id)
+    const id = parseInt(request.params.pid)
     let length;
     let offers = [];
 
@@ -62,11 +62,10 @@ const getAllPostOffers = (request, response) => {
     })
 }
 
-const getPostOffer = (request, response) => {
-    const pid = parseInt(request.params.pid)
+const getOffer = (request, response) => {
     const oid = parseInt(request.params.oid)
-    pool.query('SELECT * FROM "tbl_Offers" WHERE "postID" = $1 AND "offerID" = $2',
-    [pid, oid],
+    pool.query('SELECT * FROM "tbl_Offers" WHERE "offerID" = $1',
+    [oid],
     (error, results) => {
         if(error){
             throw error
@@ -104,6 +103,7 @@ const getAllUserOffers = (request, response) => {
             results.rows.forEach(row => {
                 pool.query('SELECT "postID", "title", "description" FROM "tbl_Post" WHERE "postID" = $1', [row.postID], (err, results) => {
                     if (err) throw err;
+
                     row.post = results.rows[0];
                     row.post.images = []
                     pool.query('SELECT "url" FROM "tbl_Images" WHERE "postID" = $1', [row.postID], (err, results) => {
@@ -121,29 +121,27 @@ const getAllUserOffers = (request, response) => {
 }
 
 const createOffer = (request, response) => {
-    const id = parseInt(request.params.id)
-    const {accountID, price, paymentType} = request.body
+    const { postID, accountID, price, paymentType} = request.body
     pool.query('INSERT INTO "tbl_Offers" ("postID", "accountID", "price", "paymentType", "status") VALUES ($1, $2, $3, $4, \'Pending\') RETURNING *',
-    [id, accountID, price, paymentType],
+    [postID, accountID, price, paymentType],
     (error, results) => {
         if(error){
             throw error
         }
-        response.status(418).send(`Offer created with ID: ${results.rows[0].offerID}`)
+        response.status(418).json(results.rows[0])
     })
 }
 
 const updateOffer = (request, response) => {
-    const pid = parseInt(request.params.pid)
     const oid = parseInt(request.params.oid)
-    const {price, paymentType, status} = request.body   
-    pool.query('UPDATE "tbl_Offers" SET "price" = $1, "paymentType" = $2, "status" = $3 WHERE "postID" = $4 AND "offerID" = $5 RETURNING *',
-    [price, paymentType, status, pid, oid],
+    const {status} = request.body   
+    pool.query('UPDATE "tbl_Offers" SET "status" = $1 WHERE "offerID" = $2 RETURNING *',
+    [status, oid],
     (error, results) => {
         if(error){
             throw error
         }
-        response.status(418).send(`Offer updated.`)
+        response.status(418).json(results.row[0])
     })
 }
 
@@ -160,10 +158,9 @@ const deleteAllOffers = (request, response) => {
 }
 
 const deleteOffer = (request, response) => {
-    const pid = parseInt(request.params.pid)
     const oid = parseInt(request.params.oid)
-    pool.query('DELETE FROM "tbl_Offers" WHERE "postID" = $1 AND "offerID" = $2',
-    [pid, oid],
+    pool.query('DELETE FROM "tbl_Offers" WHERE "offerID" = $1',
+    [oid],
     (error, results) => {
         if(error){
             throw error
@@ -175,10 +172,10 @@ const deleteOffer = (request, response) => {
 module.exports = {
     getAllOffers,
     getAllPostOffers,
-    getPostOffer,
+    getOffer,
     getAllUserOffers,
     createOffer,
     updateOffer,
-    deleteAllOffers,
+    //deleteAllOffers,
     deleteOffer
 };

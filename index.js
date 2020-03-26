@@ -49,22 +49,22 @@ app.put("/api/post/:pid", db.post.updatePost);
 app.delete("/api/post/:pid", db.post.deletePost);
 
 // Image endpoints
-app.get("/api/image/:pid", db.image.getImages);
-app.get("/api/image/:pid/:imid", db.image.getOneImage);
-app.post("/api/image/:pid", db.image.postImage);
-app.put("/api/image/:pid/:imid", db.image.updateImage);
-app.delete("/api/image/:pid", db.image.deleteAllImages);
-app.delete("/api/image/:pid/:imid", db.image.deleteOneImage);
+// app.get("/api/image/:pid", db.image.getImages);
+// app.get("/api/image/:pid/:imid", db.image.getOneImage);
+// app.post("/api/image/:pid", db.image.postImage);
+// app.put("/api/image/:pid/:imid", db.image.updateImage);
+// app.delete("/api/image/:pid", db.image.deleteAllImages);
+// app.delete("/api/image/:pid/:imid", db.image.deleteOneImage);
 
 // Offer endpoints
 app.get("/api/offer", db.offer.getAllOffers);
-app.get("/api/offer/:id", db.offer.getAllPostOffers);
-app.get("/api/offer/:pid/:oid", db.offer.getPostOffer);
+app.get("/api/offer/:oid", db.offer.getOffer);
+app.get("/api/post/:pid/offer", db.offer.getAllPostOffers);
 app.get("/api/user/:id/offer", db.offer.getAllUserOffers);
-app.post("/api/offer/:id", db.offer.createOffer);
-app.put("/api/offer/:pid/:oid", db.offer.updateOffer);
-app.delete("/api/offer/:id", db.offer.deleteAllOffers);
-app.delete("/api/offer/:pid/:oid", db.offer.deleteOffer);
+app.post("/api/offer", db.offer.createOffer);
+app.put("/api/offer/:oid", db.offer.updateOffer);
+// app.delete("/api/offer/:id", db.offer.deleteAllOffers);
+app.delete("/api/offer/:oid", db.offer.deleteOffer);
 
 // Chat endpoints
 app.get("/api/chat", db.chat.getAllChats);
@@ -81,16 +81,16 @@ app.post("/api/chat", db.chat.createChat);
 
 // Notification endpoints
 app.get("/api/notification", db.notification.getAllNotifications);
-app.get("/api/notification/:id", db.notification.getAllUserNotifications);
+app.get("/api/user/:id/notification", db.notification.getAllUserNotifications);
 app.get(
-  "/api/notification/:accID/:notifID",
-  db.notification.getUserNotification
+  "/api/notification/:notifID",
+  db.notification.getNotification
 );
-app.post("/api/notification/:id", db.notification.createNotification);
-app.delete("/api/notification/:id", db.notification.deleteAllUserNotifications);
+app.post("/api/notification", db.notification.createNotification);
+app.delete("/api/user/:id/notification", db.notification.deleteAllUserNotifications);
 app.delete(
-  "/api/notification/:accID/:notifID",
-  db.notification.deleteUserNotification
+  "/api/notification/:notifID",
+  db.notification.deleteNotification
 );
 
 // Location endpoints
