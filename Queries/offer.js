@@ -153,7 +153,12 @@ const updateOffer = (request, response) => {
         if(error){
             throw error
         }
-        response.status(418).json(results.row[0])
+        if (results.rows.length == 0) {
+            response.status(400).json([]);
+        }
+        else {
+            response.status(418).json(results.rows[0])
+        }
     })
 }
 
