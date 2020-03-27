@@ -12,7 +12,7 @@ const getAllNotifications = (request, response) => {
 const getAllUserNotifications = (request, response) => {
     const id = parseInt(request.params.id)
 
-    pool.query('SELECT * FROM "tbl_Notification" WHERE "accountID" = $1', [id], (error, results) => {
+    pool.query('UPDATE "tbl_Notification" SET "seen" = true WHERE "accountID" = $1 AND "seen" = false RETURNING *', [id], (error, results) => {
         if (error) {
             throw error
         }
@@ -36,7 +36,7 @@ const getNotification = (request, response) => {
 const createNotification = (request, response) => {
     const { accountID, type } = request.body
 
-    pool.query('INSERT INTO "tbl_Notification" ("type", "timestamp", "accountID") VALUES ($1, current_timestamp, $2) RETURNING *', 
+    pool.query('INSERT INTO "tbl_Notification" ("type", "timestamp", "accountID", "seen") VALUES ($1, current_timestamp, $2, false) RETURNING *', 
     [type, accountID], 
     (error, results) => {
         if (error) {
