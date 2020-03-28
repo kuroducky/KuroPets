@@ -26,6 +26,7 @@ import {
 import MakeOfferButton from "./MakeOfferButton";
 import ViewOfferButton from "./ViewOfferButton";
 import EditPostButton from "./EditPostButton";
+import CompleteServiceButton from "./CompleteServiceButton";
 const { Fragment } = React;
 const { Text, Title } = Typography;
 const PostView = props => {
@@ -138,14 +139,7 @@ const PostView = props => {
         sessionUser.accountID === user.accountID &&
         status === "Pending Service" ? (
           <Tooltip title="Confirm Service Complete">
-            <Button
-              style={{
-                float: "right",
-                marginRight: "15px"
-              }}
-              shape="circle"
-              icon={<CheckCircleTwoTone twoToneColor="#52c41a" />}
-            />
+            <CompleteServiceButton {...props} />
           </Tooltip>
         ) : (
           " "

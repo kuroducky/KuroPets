@@ -52,10 +52,6 @@ class OfferTab extends React.Component {
   state = {
     offers: []
   };
-
-  confirmOfferComplete = id => {
-    console.log(`offer ${id} completed!`);
-  };
   viewPost = id => {
     this.props.history.push(`/post/${id}`);
   };
@@ -134,42 +130,17 @@ class OfferTab extends React.Component {
                     <strong>View Full Post</strong>
                   </Button>
                   <InfoCircleOutlined /> Offer Status:{" "}
-                  <strong>{offer.status} </strong>
+                  {offer.status === "Accepted" ? (
+                    <span style={{ color: "green" }}>
+                      <strong>{offer.status} </strong>
+                    </span>
+                  ) : (
+                    <strong>{offer.status} </strong>
+                  )}
                   <br />
                   <DollarCircleOutlined /> Offer Price:{" "}
                   <strong>${offer.price} </strong>
                   <br />
-                  {sessionUser != null &&
-                  sessionUser.accountID === offer.accountID &&
-                  offer.status === "Pending" ? (
-                    <Popconfirm
-                      title="Offer Completed?"
-                      placement="left"
-                      icon={
-                        <CheckCircleOutlined style={{ color: "#52c41a" }} />
-                      }
-                      onConfirm={() => {
-                        this.confirmOfferComplete(offer.offerID);
-                      }}
-                      onCancel={() => {
-                        console.log("cancel");
-                      }}
-                      okText="Yes"
-                      cancelText="No"
-                    >
-                      <Button
-                        style={{
-                          float: "right",
-                          marginTop: "20px",
-                          marginRight: "5px"
-                        }}
-                        shape="circle"
-                        icon={<CheckCircleTwoTone twoToneColor="#52c41a" />}
-                      />
-                    </Popconfirm>
-                  ) : (
-                    " "
-                  )}
                 </Col>
               </Row>
             </div>

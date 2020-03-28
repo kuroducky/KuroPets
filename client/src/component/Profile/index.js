@@ -20,7 +20,23 @@ class Profile extends React.Component {
   state = {
     user: {}
   };
+  onUpdateForm = async values => {
+    console.log(values);
+    const response = await fetch(
+      `http://172.21.148.170/api/user/${this.state.user.accountID}`,
+      {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(values)
+      }
+    );
 
+    const content = await response.json();
+    this.setState({ user: content });
+  };
   async componentDidMount() {
     const { id } = this.props.match.params;
     const response = await fetch(`http://172.21.148.170/api/user/${id}`);
@@ -76,7 +92,11 @@ class Profile extends React.Component {
                 {user.name &&
                 user.accountID ===
                   JSON.parse(localStorage.getItem("user")).accountID ? (
-                  <EditProfileButton user={this.state.user} {...this.props} />
+                  <EditProfileButton
+                    user={this.state.user}
+                    onUpdateForm={this.onUpdateForm}
+                    {...this.props}
+                  />
                 ) : (
                   ""
                 )}

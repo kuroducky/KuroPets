@@ -25,7 +25,8 @@ const postDetails = {
 class PostControl extends React.Component {
   state = {
     id: this.props.match.params.id,
-    postDetails: postDetails
+    postDetails: postDetails,
+    offers: []
   };
   updatePost = async values => {
     console.log("upd: ", values);
@@ -73,6 +74,12 @@ class PostControl extends React.Component {
     console.log(json);
     console.log("fetched data is here...");
     this.setState({ postDetails: json });
+
+    const responseOffer = await fetch(
+      `http://172.21.148.170/api/post/${this.state.id}/offer`
+    );
+    const jsonOffer = await responseOffer.json();
+    this.setState({ offers: jsonOffer });
   }
   render() {
     const { postDetails } = this.state;
@@ -81,6 +88,7 @@ class PostControl extends React.Component {
         postID={this.state.id}
         updatePost={this.updatePost}
         postDetails={postDetails}
+        offers={this.state.offers}
         {...this.props}
       />
     );

@@ -3,13 +3,25 @@ import { Button, Modal, Row, Col, Typography, Avatar, Rate, Empty } from "antd";
 import {
   UserOutlined,
   WalletOutlined,
-  DollarOutlined
+  DollarOutlined,
+  CheckCircleOutlined
 } from "@ant-design/icons";
 
 const { Title } = Typography;
 
-const acceptOffer = id => {
+const acceptOffer = async id => {
   console.log("accepted offer from: ", id);
+  const response = await fetch(`http://172.21.148.170/api/offer/${id}`, {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ status: "Accepted" })
+  });
+
+  const content = await response.json();
+  console.log(content);
 };
 const ContentView = ({ visible, onCancel, offers }) => {
   return (
@@ -89,20 +101,26 @@ const ContentView = ({ visible, onCancel, offers }) => {
                             );
                         })
                       : ""}
-                    )}
                   </Col>
-                  <Col span={6}>
-                    <Button
-                      block
-                      style={{ marginBottom: "10px" }}
-                      // size="large"
-                      type="primary"
-                      onClick={() => {
-                        acceptOffer(offer.user.accountID);
-                      }}
-                    >
-                      <strong>Accept</strong>
-                    </Button>
+                  <Col style={{ textAlign: "center" }} span={6}>
+                    {offer.status === "Pending" ? (
+                      <Button
+                        block
+                        style={{ marginBottom: "10px" }}
+                        // size="large"
+                        type="primary"
+                        onClick={() => {
+                          acceptOffer(offer.user.accountID);
+                        }}
+                      >
+                        <strong>Accept</strong>
+                      </Button>
+                    ) : (
+                      <Title style={{ color: "green" }} level={4}>
+                        <CheckCircleOutlined /> Accepted
+                      </Title>
+                    )}
+
                     <Button block>
                       <strong>Chat</strong>
                     </Button>
@@ -124,7 +142,7 @@ class ViewOfferButton extends React.Component {
   };
   async componentDidMount() {
     const response = await fetch(
-      `http://172.21.148.170/api/offer/${this.props.postID}`
+      `http://172.21.148.170/api/post/${this.props.postID}/offer`
     );
     const json = await response.json();
     console.log("offers", json);

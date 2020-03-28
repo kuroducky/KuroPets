@@ -66,7 +66,7 @@ class EditProfileButton extends React.Component {
     visible: false
   };
   onUpdateForm = values => {
-    console.log(values);
+    this.props.onUpdateForm(values);
     this.setState({ visible: false });
   };
   render() {
