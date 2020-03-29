@@ -104,16 +104,28 @@ const getAllUserOffers = (request, response) => {
                 pool.query('SELECT "postID", "title", "description" FROM "tbl_Post" WHERE "postID" = $1', [row.postID], (err, results) => {
                     if (err) throw err;
 
-                    row.post = results.rows[0];
-                    row.post.images = []
-                    pool.query('SELECT "url" FROM "tbl_Images" WHERE "postID" = $1', [row.postID], (err, results) => {
-                        if (err) throw err;
-                        results.rows.forEach(img => row.post.images.push(img.url));
-                        offers.push(row);
-                        if (offers.length == length){
-                            response.status(418).json(offers);
-                        }
-                    })
+                    if (results.rows.length == 0){
+                        console.log(`Post ${row.postID} is undefined. Deleting offer...`);
+                        pool.query('DELETE FROM "tbl_Offers" WHERE "offerID" = $1', [row.offerID], (err, res) => {
+                            if (err) throw err;
+                            length--;
+                            if (offers.length == length){
+                                response.status(418).json(offers);
+                            }
+                        })
+                    }
+                    else {
+                        row.post = results.rows[0];
+                        row.post.images = []
+                        pool.query('SELECT "url" FROM "tbl_Images" WHERE "postID" = $1', [row.postID], (err, results) => {
+                            if (err) throw err;
+                            results.rows.forEach(img => row.post.images.push(img.url));
+                            offers.push(row);
+                            if (offers.length == length){
+                                response.status(418).json(offers);
+                            }
+                        })
+                    }
                 });
             })
         }
@@ -141,7 +153,12 @@ const updateOffer = (request, response) => {
         if(error){
             throw error
         }
-        response.status(418).json(results.row[0])
+        if (results.rows.length == 0) {
+            response.status(400).json([]);
+        }
+        else {
+            response.status(418).json(results.rows[0])
+        }
     })
 }
 
