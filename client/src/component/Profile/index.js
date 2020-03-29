@@ -16,7 +16,7 @@ const { Content } = Layout;
 const { Title, Text } = Typography;
 const { TabPane } = Tabs;
 
-class Profile extends React.Component {
+class ProfileControl extends React.Component {
   state = {
     user: {}
   };
@@ -133,4 +133,4 @@ class Profile extends React.Component {
   }
 }
 
-export default Profile;
+export default ProfileControl;

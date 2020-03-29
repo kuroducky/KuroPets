@@ -7,7 +7,7 @@ import Post from "./component/Post";
 import PostCreation from "./component/PostCreation";
 import Register from "./component/Register";
 import Chat from "./component/Chat";
-import Profile from "./component/Profile";
+import ProfileControl from "./component/Profile";
 import Location from "./component/Location";
 class Router extends React.Component {
   state = {
@@ -68,7 +68,7 @@ class Router extends React.Component {
             render={props => (
               <Fragment>
                 <Topbar onSearchSubmit={this.onSearchSubmit} {...props} />
-                <Profile {...props} />
+                <ProfileControl {...props} />
               </Fragment>
             )}
           />
