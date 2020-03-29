@@ -2,10 +2,10 @@ import Moment from 'react-moment';
 import React, { useState, useEffect } from 'react';
 import { withChatkitOneToOne } from '@pusher/chatkit-client-react';
 
-import './Chat.css';
+import './Chatbox.css';
 import defaultAvatar from './default-avatar.png';
 
-function Chat(props) {
+function Chatbox(props) {
   const [pendingMessage, setPendingMessage] = useState('');
   const messageList = React.createRef();
 
@@ -118,4 +118,4 @@ function Message({ isOwnMessage, isLatestMessage, createdAt, textContent }) {
   );
 }
 
-export default withChatkitOneToOne(Chat);
+export default withChatkitOneToOne(Chatbox);
