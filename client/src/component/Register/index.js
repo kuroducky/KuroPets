@@ -26,7 +26,7 @@ const tailFormItemLayout = {
   }
 };
 
-const RegistrationForm = ({ history }) => {
+const RegisterView = ({ history }) => {
   const [form] = Form.useForm();
 
   const onFinish = async values => {
@@ -148,7 +148,7 @@ const mainPageStyles = {
   borderRadius: "8px",
   padding: "2px 22px 0px 0px"
 };
-class Register extends React.Component {
+class RegisterControl extends React.Component {
   render() {
     return (
       <Content style={mainPageStyles}>
@@ -158,11 +158,11 @@ class Register extends React.Component {
             minHeight: 380
           }}
         >
-          <RegistrationForm {...this.props} />
+          <RegisterView {...this.props} />
         </div>
       </Content>
     );
   }
 }
 
-export default Register;
+export default RegisterControl;
