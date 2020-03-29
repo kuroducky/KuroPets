@@ -86,8 +86,9 @@ const MakeOfferButton = ({ postID }) => {
 
   const onCreate = async values => {
     values.accountID = JSON.parse(localStorage.getItem("user")).accountID;
+    values.postID = postID;
     console.log(values);
-    const response = await fetch(`http://172.21.148.170/api/offer/${postID}`, {
+    const response = await fetch(`http://172.21.148.170/api/offer`, {
       method: "POST",
       headers: {
         Accept: "application/json",
