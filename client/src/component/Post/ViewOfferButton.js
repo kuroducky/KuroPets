@@ -9,21 +9,7 @@ import {
 
 const { Title } = Typography;
 
-const acceptOffer = async id => {
-  console.log("accepted offer from: ", id);
-  const response = await fetch(`http://172.21.148.170/api/offer/${id}`, {
-    method: "PUT",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ status: "Accepted" })
-  });
-
-  const content = await response.json();
-  console.log(content);
-};
-const OfferView = ({ visible, onCancel, offers }) => {
+const OfferView = ({ visible, onCancel, offers, acceptOffer }) => {
   return (
     <Modal
       visible={visible}
@@ -110,7 +96,7 @@ const OfferView = ({ visible, onCancel, offers }) => {
                         // size="large"
                         type="primary"
                         onClick={() => {
-                          acceptOffer(offer.user.accountID);
+                          acceptOffer(offer.offerID);
                         }}
                       >
                         <strong>Accept</strong>
@@ -140,6 +126,23 @@ class ViewOfferButton extends React.Component {
     visible: false,
     offers: []
   };
+  acceptOffer = async id => {
+    console.log("accepted offer from: ", id);
+    const response = await fetch(`http://172.21.148.170/api/offer/${id}`, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ status: "Accepted" })
+    });
+
+    const content = await response.json();
+    console.log(content);
+
+    this.setState({ visible: false });
+    window.location.reload();
+  };
   async componentDidMount() {
     const response = await fetch(
       `http://172.21.148.170/api/post/${this.props.postID}/offer`
@@ -165,6 +168,7 @@ class ViewOfferButton extends React.Component {
           {...this.props}
           offers={this.state.offers}
           visible={this.state.visible}
+          acceptOffer={this.acceptOffer}
           onCancel={() => {
             this.setState({ visible: false });
           }}

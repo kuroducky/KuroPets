@@ -6,6 +6,7 @@ const { Text, Title } = Typography;
 const { Meta } = Card;
 
 const MarketPlaceView = ({ posts }) => {
+  posts = posts.filter(post => post.status !== "Service Completed");
   // Post = {
   //   postID: 1238,
   //   title: "My goldfish is drowning help me!",

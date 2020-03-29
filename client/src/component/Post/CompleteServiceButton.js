@@ -1,25 +1,15 @@
 import React, { useState } from "react";
-import { Button, Modal, Rate, Form, message } from "antd";
+import { Button, Modal, Rate, Typography, Form, message } from "antd";
 
 import { CheckCircleTwoTone } from "@ant-design/icons";
-{
-  /* <Button
-style={{
-  float: "right",
-  marginRight: "15px"
-}}
-shape="circle"
-icon={<CheckCircleTwoTone twoToneColor="#52c41a" />}
-/> */
-}
-
-const ContentView = ({ visible, onRate, onCancel }) => {
+const { Text } = Typography;
+const CompleteServiceView = ({ visible, onCompleteService, onCancel }) => {
   const [form] = Form.useForm();
   return (
     <Modal
       visible={visible}
-      title="How would you rate the experience?"
-      okText="Rate"
+      title="Confirm the service is completed?"
+      okText="Confirm"
       cancelText="Cancel"
       onCancel={onCancel}
       centered
@@ -28,7 +18,7 @@ const ContentView = ({ visible, onRate, onCancel }) => {
           .validateFields()
           .then(values => {
             form.resetFields();
-            onRate(values);
+            onCompleteService(values);
           })
           .catch(info => {
             console.log("Validate Failed:", info);
@@ -44,6 +34,7 @@ const ContentView = ({ visible, onRate, onCancel }) => {
           modifier: "public"
         }}
       >
+        <Text>How would you rate the experience?</Text>
         <Form.Item
           name="rating"
           rules={[
@@ -64,10 +55,41 @@ const CompleteServiceButton = props => {
   const [visible, setVisible] = useState(false);
   console.log("complete button props: ", props);
 
-  const onRate = values => {
-    console.log(values);
+  const onCompleteService = async values => {
+    // values contains ratings
+
+    // POST to change post status
+    const response = await fetch(
+      `http://172.21.148.170/api/post/${props.postID}/complete`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        }
+      }
+    );
+
+    const content = await response.json();
+    console.log("post complete", content);
+    // POST to change rating of caretaker
+
+    const responseRate = await fetch(
+      `http://172.21.148.170/api/user/${props.offers[0].accountID}/rate`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(values)
+      }
+    );
+    const contentRate = await responseRate.json();
+    console.log("rate", contentRate);
     message.success("Rating received!");
     setVisible(false);
+    window.location.reload();
   };
   // const onCreate = async values => {
   //   values.accountID = JSON.parse(localStorage.getItem("user")).accountID;
@@ -101,9 +123,9 @@ const CompleteServiceButton = props => {
         shape="circle"
         icon={<CheckCircleTwoTone twoToneColor="#52c41a" />}
       />
-      <ContentView
+      <CompleteServiceView
         visible={visible}
-        onRate={onRate}
+        onCompleteService={onCompleteService}
         onCancel={() => {
           setVisible(false);
         }}

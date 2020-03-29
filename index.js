@@ -19,7 +19,7 @@ app.use(function(req, res, next) {
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
   );
-  res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+  res.header("Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, OPTIONS");
   next();
 });
 
@@ -45,6 +45,7 @@ app.get("/api/post", db.post.getPost);
 app.get("/api/post/:pid", db.post.getOnePost);
 app.get("/api/user/:aid/post", db.post.getOneAccountPost);
 app.post("/api/post/", db.post.createPost);
+// post  /api/post/:pid/complete
 app.put("/api/post/:pid", db.post.updatePost);
 app.delete("/api/post/:pid", db.post.deletePost);
 
@@ -82,16 +83,13 @@ app.post("/api/chat", db.chat.createChat);
 // Notification endpoints
 app.get("/api/notification", db.notification.getAllNotifications);
 app.get("/api/user/:id/notification", db.notification.getAllUserNotifications);
-app.get(
-  "/api/notification/:notifID",
-  db.notification.getNotification
-);
+app.get("/api/notification/:notifID", db.notification.getNotification);
 app.post("/api/notification", db.notification.createNotification);
-app.delete("/api/user/:id/notification", db.notification.deleteAllUserNotifications);
 app.delete(
-  "/api/notification/:notifID",
-  db.notification.deleteNotification
+  "/api/user/:id/notification",
+  db.notification.deleteAllUserNotifications
 );
+app.delete("/api/notification/:notifID", db.notification.deleteNotification);
 
 // Location endpoints
 app.get("/api/location/vet", db.location.getVets);
