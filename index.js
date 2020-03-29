@@ -45,6 +45,7 @@ app.get("/api/post", db.post.getPost);
 app.get("/api/post/:pid", db.post.getOnePost);
 app.get("/api/user/:aid/post", db.post.getOneAccountPost);
 app.post("/api/post/", db.post.createPost);
+app.post("/api/post/:pid/complete", db.post.completePost);
 app.put("/api/post/:pid", db.post.updatePost);
 app.delete("/api/post/:pid", db.post.deletePost);
 
