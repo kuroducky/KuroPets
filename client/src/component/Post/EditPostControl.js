@@ -112,7 +112,7 @@ class EditPostControl extends React.Component {
             }}
           />
         </Tooltip>
-        <ContentView
+        <EditPostView
           {...this.props}
           visible={this.state.visible}
           postDetails={this.props.postDetails}

@@ -9,25 +9,7 @@ import {
 
 const { Title } = Typography;
 
-<<<<<<< HEAD:client/src/component/Post/ViewOfferButton.js
-const OfferView = ({ visible, onCancel, offers, acceptOffer }) => {
-=======
-const acceptOffer = async id => {
-  console.log("accepted offer from: ", id);
-  const response = await fetch(`http://172.21.148.170/api/offer/${id}`, {
-    method: "PUT",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ status: "Accepted" })
-  });
-
-  const content = await response.json();
-  console.log(content);
-};
-const ViewOfferView = ({ visible, onCancel, offers }) => {
->>>>>>> 8ed7ec5f37847eacfbd5483a0a04b18900661d91:client/src/component/Post/ViewOfferControl.js
+const ViewOfferView = ({ visible, onCancel, offers, acceptOffer }) => {
   return (
     <Modal
       visible={visible}
