@@ -5,7 +5,7 @@ import Topbar from "./component/Topbar";
 import MarketPlace from "./component/MarketPlace";
 import Post from "./component/Post";
 import PostCreation from "./component/PostCreation";
-import Register from "./component/Register";
+import RegisterControl from "./component/Register";
 import Chat from "./component/Chat";
 import ProfileControl from "./component/Profile";
 import Location from "./component/Location";
@@ -58,7 +58,7 @@ class Router extends React.Component {
             render={props => (
               <Fragment>
                 <Topbar onSearchSubmit={this.onSearchSubmit} {...props} />
-                <Register {...props} />
+                <RegisterControl {...props} />
               </Fragment>
             )}
           />
