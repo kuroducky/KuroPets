@@ -9,7 +9,25 @@ import {
 
 const { Title } = Typography;
 
+<<<<<<< HEAD:client/src/component/Post/ViewOfferButton.js
 const OfferView = ({ visible, onCancel, offers, acceptOffer }) => {
+=======
+const acceptOffer = async id => {
+  console.log("accepted offer from: ", id);
+  const response = await fetch(`http://172.21.148.170/api/offer/${id}`, {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ status: "Accepted" })
+  });
+
+  const content = await response.json();
+  console.log(content);
+};
+const ViewOfferView = ({ visible, onCancel, offers }) => {
+>>>>>>> 8ed7ec5f37847eacfbd5483a0a04b18900661d91:client/src/component/Post/ViewOfferControl.js
   return (
     <Modal
       visible={visible}
@@ -121,7 +139,7 @@ const OfferView = ({ visible, onCancel, offers, acceptOffer }) => {
   );
 };
 
-class ViewOfferButton extends React.Component {
+class ViewOfferControl extends React.Component {
   state = {
     visible: false,
     offers: []
@@ -164,7 +182,7 @@ class ViewOfferButton extends React.Component {
         >
           <strong>View Offers</strong>
         </Button>
-        <OfferView
+        <ViewOfferView
           {...this.props}
           offers={this.state.offers}
           visible={this.state.visible}
@@ -177,4 +195,4 @@ class ViewOfferButton extends React.Component {
     );
   }
 }
-export default ViewOfferButton;
+export default ViewOfferControl;

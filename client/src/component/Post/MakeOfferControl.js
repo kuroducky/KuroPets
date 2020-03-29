@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Modal, Form, Radio, message, InputNumber } from "antd";
 import { DollarCircleOutlined, MobileOutlined } from "@ant-design/icons";
 
-const OfferView = ({ visible, onCreate, onCancel }) => {
+const MakeOfferView = ({ visible, onCreate, onCancel }) => {
   const [form] = Form.useForm();
   return (
     <Modal
@@ -81,7 +81,7 @@ const OfferView = ({ visible, onCreate, onCancel }) => {
   );
 };
 
-const MakeOfferButton = ({ postID }) => {
+const MakeOfferControl = ({ postID }) => {
   const [visible, setVisible] = useState(false);
 
   const onCreate = async values => {
@@ -116,7 +116,7 @@ const MakeOfferButton = ({ postID }) => {
       >
         <strong>Make Offer</strong>
       </Button>
-      <OfferView
+      <MakeOfferView
         visible={visible}
         onCreate={onCreate}
         onCancel={() => {
@@ -127,4 +127,4 @@ const MakeOfferButton = ({ postID }) => {
   );
 };
 
-export default MakeOfferButton;
+export default MakeOfferControl;

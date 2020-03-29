@@ -1,7 +1,7 @@
 import React from "react";
 import { Layout, Col, Row, Typography, Avatar, Rate, Tabs } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import EditProfileButton from "./EditProfileButton";
+import EditProfileControl from "./EditProfileControl";
 import PostTab from "./PostTab";
 import OfferTab from "./OfferTab";
 
@@ -92,7 +92,7 @@ class Profile extends React.Component {
                 {user.name &&
                 user.accountID ===
                   JSON.parse(localStorage.getItem("user")).accountID ? (
-                  <EditProfileButton
+                  <EditProfileControl
                     user={this.state.user}
                     onUpdateForm={this.onUpdateForm}
                     {...this.props}

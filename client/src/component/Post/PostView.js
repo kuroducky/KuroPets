@@ -23,10 +23,10 @@ import {
   ExclamationCircleOutlined,
   SmileOutlined
 } from "@ant-design/icons";
-import MakeOfferButton from "./MakeOfferButton";
-import ViewOfferButton from "./ViewOfferButton";
-import EditPostButton from "./EditPostButton";
-import CompleteServiceButton from "./CompleteServiceButton";
+import MakeOfferControl from "./MakeOfferControl";
+import ViewOfferControl from "./ViewOfferControl";
+import EditPostControl from "./EditPostControl";
+import CompleteServiceControl from "./CompleteServiceControl";
 const { Fragment } = React;
 const { Text, Title } = Typography;
 const PostView = props => {
@@ -86,9 +86,9 @@ const PostView = props => {
               {/* checks if is post creator or caretaker */}{" "}
               {sessionUser != null &&
               sessionUser.accountID === user.accountID ? (
-                <ViewOfferButton {...props} />
+                <ViewOfferControl {...props} />
               ) : (
-                <MakeOfferButton {...props} />
+                <MakeOfferControl {...props} />
               )}
               <Button
                 style={{ marginRight: "15px", float: "right", width: "220px" }}
@@ -139,7 +139,7 @@ const PostView = props => {
         sessionUser.accountID === user.accountID &&
         status === "Pending Service" ? (
           <Tooltip title="Confirm Service Complete">
-            <CompleteServiceButton {...props} />
+            <CompleteServiceControl {...props} />
           </Tooltip>
         ) : (
           " "
@@ -177,7 +177,7 @@ const PostView = props => {
               />
             </Popconfirm>
 
-            <EditPostButton {...props} />
+            <EditPostControl {...props} />
           </Fragment>
         ) : (
           ""

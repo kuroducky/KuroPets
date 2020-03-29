@@ -2,7 +2,7 @@ import React from "react";
 
 import { ChatkitProvider } from "@pusher/chatkit-client-react";
 import "./ChatApp.css";
-import Chat from "./Chat";
+import Chatbox from "./Chatbox";
 import UserListControl from "./UserListControl";
 
 class ChatView extends React.Component {
@@ -44,7 +44,7 @@ class ChatView extends React.Component {
                 userId={userId}
               >
                 <UserListControl {...this.state} chatList={this.props.chatList} updateSelectedUser={this.updateSelectedUser} />
-                <Chat otherUserId={otherId} msgCount={msgCount} saveMsgCount={this.saveMsgCount} />
+                <Chatbox otherUserId={otherId} msgCount={msgCount} saveMsgCount={this.saveMsgCount} />
               </ChatkitProvider>
             </div>
           </>

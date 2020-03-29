@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\client",
+    "\\client\\src",
+    "\\client\\src\\component",
+    "\\client\\src\\component\\Register",
+    "\\client\\src\\component\\Topbar"
+  ],
+  "SelectedNode": "\\client\\src\\component\\Topbar\\LoginButton.js",
+  "PreviewInSolutionExplorer": false
+}

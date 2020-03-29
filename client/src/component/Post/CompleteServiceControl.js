@@ -51,7 +51,7 @@ const CompleteServiceView = ({ visible, onCompleteService, onCancel }) => {
   );
 };
 
-const CompleteServiceButton = props => {
+const CompleteServiceControl = props => {
   const [visible, setVisible] = useState(false);
   console.log("complete button props: ", props);
 
@@ -134,4 +134,4 @@ const CompleteServiceButton = props => {
   );
 };
 
-export default CompleteServiceButton;
+export default CompleteServiceControl;

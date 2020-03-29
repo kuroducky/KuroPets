@@ -6,7 +6,7 @@ const pool = new Pool({
   database: "kuropets_db",
   password: "Kuroducky",
   port: 5432,
-  // connectionTimeoutMillis: 2000,
+  connectionTimeoutMillis: 2000,
   query_timeout: 1000
 });
 // const promise = require('bluebird');

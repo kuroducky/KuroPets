@@ -130,6 +130,7 @@ const createPost = (req, res) => {
     service,
     accountID
   } = req.body;
+
   pool.query(
     'INSERT INTO "tbl_Post"("status", "title", "description", "location", "startDate", "endDate", "timestamp", "typeOfPet", "service", "accountID") VALUES ($1, $2, $3, $4, $5, $6, current_timestamp, $7, $8, $9) RETURNING *;',
     [
@@ -175,6 +176,15 @@ const createPost = (req, res) => {
     }
   );
 };
+
+const completePost = (req, res) => {
+  const postID = parseInt(req.params.pid);
+
+  pool.query('UPDATE "tbl_Post" SET "status" = $1 WHERE "postID" = $2 RETURNING *', ["Service Completed", postID], (err, results) => {
+    if (err) throw err;
+    res.status(418).json(results.rows[0]);
+  })
+}
 
 const updatePost = (req, res) => {
   const postID = parseInt(req.params.pid);
@@ -225,7 +235,7 @@ const updatePost = (req, res) => {
               console.error('Unable to commit transaction, killing client', error);
             }
             done(error);
-            res.status(201).json(result.rows[0]);
+            res.status(418).json(result.rows[0]);
             console.log('update finish')
           })
         })
@@ -307,6 +317,7 @@ module.exports = {
   getOnePost,
   getOneAccountPost,
   createPost,
+  completePost,
   updatePost,
   deletePost
 };
