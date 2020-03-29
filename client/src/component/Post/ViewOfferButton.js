@@ -23,7 +23,7 @@ const acceptOffer = async id => {
   const content = await response.json();
   console.log(content);
 };
-const ContentView = ({ visible, onCancel, offers }) => {
+const OfferView = ({ visible, onCancel, offers }) => {
   return (
     <Modal
       visible={visible}
@@ -161,7 +161,7 @@ class ViewOfferButton extends React.Component {
         >
           <strong>View Offers</strong>
         </Button>
-        <ContentView
+        <OfferView
           {...this.props}
           offers={this.state.offers}
           visible={this.state.visible}

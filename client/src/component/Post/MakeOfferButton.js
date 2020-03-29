@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Modal, Form, Radio, message, InputNumber } from "antd";
 import { DollarCircleOutlined, MobileOutlined } from "@ant-design/icons";
 
-const CollectionCreateForm = ({ visible, onCreate, onCancel }) => {
+const OfferView = ({ visible, onCreate, onCancel }) => {
   const [form] = Form.useForm();
   return (
     <Modal
@@ -115,7 +115,7 @@ const MakeOfferButton = ({ postID }) => {
       >
         <strong>Make Offer</strong>
       </Button>
-      <CollectionCreateForm
+      <OfferView
         visible={visible}
         onCreate={onCreate}
         onCancel={() => {
