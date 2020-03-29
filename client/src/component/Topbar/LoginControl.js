@@ -68,7 +68,7 @@ const LoginForm = ({ visible, onLogin, onCancel }) => {
     </Modal>
   );
 };
-const LoginButton = props => {
+const LoginControl = props => {
   const [visible, setVisible] = useState(false);
 
   const onLogin = async ({ username, password }) => {
@@ -105,4 +105,4 @@ const LoginButton = props => {
     </Fragment>
   );
 };
-export default LoginButton;
+export default LoginControl;

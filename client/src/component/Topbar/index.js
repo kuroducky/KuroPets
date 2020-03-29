@@ -19,7 +19,7 @@ import {
   LogoutOutlined
 } from "@ant-design/icons";
 
-import LoginButton from "./LoginButton";
+import LoginControl from "./LoginControl";
 import { logout } from "../../Auth";
 const { Header } = Layout;
 const { Search } = Input;
@@ -130,7 +130,7 @@ const Topbar = props => {
             </Button>
           </Link>
         ) : (
-          <LoginButton {...props} />
+          <LoginControl {...props} />
         )}
 
         {/* Chat Button, counter represents unopened chats KIV*/}

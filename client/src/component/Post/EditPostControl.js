@@ -5,7 +5,7 @@ import { EditTwoTone } from "@ant-design/icons";
 
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
-const ContentView = ({ visible, onCancel, onUpdateForm, postDetails }) => {
+const EditPostView = ({ visible, onCancel, onUpdateForm, postDetails }) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -76,7 +76,7 @@ const ContentView = ({ visible, onCancel, onUpdateForm, postDetails }) => {
     </Modal>
   );
 };
-class EditPostButton extends React.Component {
+class EditPostControl extends React.Component {
   state = {
     visible: false
   };
@@ -126,4 +126,4 @@ class EditPostButton extends React.Component {
   }
 }
 
-export default EditPostButton;
+export default EditPostControl;

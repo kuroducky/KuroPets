@@ -13,7 +13,7 @@ icon={<CheckCircleTwoTone twoToneColor="#52c41a" />}
 /> */
 }
 
-const ContentView = ({ visible, onRate, onCancel }) => {
+const CompleteServiceView = ({ visible, onRate, onCancel }) => {
   const [form] = Form.useForm();
   return (
     <Modal
@@ -60,7 +60,7 @@ const ContentView = ({ visible, onRate, onCancel }) => {
   );
 };
 
-const CompleteServiceButton = props => {
+const CompleteServiceControl = props => {
   const [visible, setVisible] = useState(false);
   console.log("complete button props: ", props);
 
@@ -101,7 +101,7 @@ const CompleteServiceButton = props => {
         shape="circle"
         icon={<CheckCircleTwoTone twoToneColor="#52c41a" />}
       />
-      <ContentView
+      <CompleteServiceView
         visible={visible}
         onRate={onRate}
         onCancel={() => {
@@ -112,4 +112,4 @@ const CompleteServiceButton = props => {
   );
 };
 
-export default CompleteServiceButton;
+export default CompleteServiceControl;

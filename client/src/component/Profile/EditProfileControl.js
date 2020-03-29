@@ -1,7 +1,7 @@
 import React, { useEffect, Fragment } from "react";
 import { Button, Form, Input, Modal } from "antd";
 
-const ContentView = ({ visible, onCancel, onUpdateForm, user }) => {
+const EditProfileView = ({ visible, onCancel, onUpdateForm, user }) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -61,7 +61,7 @@ const ContentView = ({ visible, onCancel, onUpdateForm, user }) => {
   );
 };
 
-class EditProfileButton extends React.Component {
+class EditProfileControl extends React.Component {
   state = {
     visible: false
   };
@@ -80,7 +80,7 @@ class EditProfileButton extends React.Component {
         >
           <strong>Edit Profile</strong>
         </Button>
-        <ContentView
+        <EditProfileView
           {...this.props}
           visible={this.state.visible}
           user={this.props.user}
@@ -94,4 +94,4 @@ class EditProfileButton extends React.Component {
   }
 }
 
-export default EditProfileButton;
+export default EditProfileControl;
