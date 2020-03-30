@@ -19,7 +19,7 @@ const Location = props => {
       <div
         style={{
           marginTop: 24,
-          minHeight: 380
+          minHeight: 800
         }}
       >
         <Title level={2}> Location Services</Title>

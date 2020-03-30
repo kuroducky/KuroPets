@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { useEffect, Fragment } from "react";
 import {
   Layout,
   Input,
@@ -7,7 +7,8 @@ import {
   Badge,
   Dropdown,
   Menu,
-  Typography
+  Typography,
+  notification
 } from "antd";
 
 import { Link } from "react-router-dom";
@@ -42,6 +43,26 @@ const Topbar = props => {
     paddingLeft: "5%",
     borderBottom: "1px solid #f0f0f0"
   };
+
+  // Notification fetch logic
+  useEffect(() => {
+    async function fetchNotif() {
+      if (localStorage.getItem("user")) {
+        const { accountID } = JSON.parse(localStorage.getItem("user"));
+        const response = await fetch(
+          `http://172.21.148.170/api/user/${accountID}/notification`
+        );
+        let content = await response.json();
+        console.log("notification", content);
+        content.forEach(notif => {
+          notification.open({
+            message: notif.type
+          });
+        });
+      }
+    }
+    fetchNotif();
+  }, []);
 
   const logOutUser = () => {
     logout();
@@ -145,13 +166,22 @@ const Topbar = props => {
                 }}
               >
                 <Badge count={5}>
-                  <Button shape="circle" icon={<MessageFilled />} />
+                  <Button
+                    onClick={() => {
+                      props.history.push(`/chat`);
+                    }}
+                    shape="circle"
+                    icon={<MessageFilled />}
+                  />
                 </Badge>
               </span>
             </Tooltip>
             {/* Location services Button */}
             <Tooltip title="Location Services">
               <Button
+                onClick={() => {
+                  props.history.push(`/location`);
+                }}
                 style={{
                   float: "right",
                   marginTop: "16px",

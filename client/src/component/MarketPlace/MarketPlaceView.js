@@ -75,8 +75,8 @@ const MarketPlaceView = ({ posts }) => {
                         backgroundSize: "cover",
                         backgroundPosition: "center",
                         display: "block",
-                        width: "100%",
-                        height: "100%",
+                        width: "300px",
+                        height: "300px",
                         borderRadius: "8px",
                         margin: "10px 0 20px 0"
                       }}
