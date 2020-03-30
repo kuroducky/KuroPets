@@ -1,10 +1,18 @@
 const pool = require("./connect");
 
+
+/**
+ * A getPost function that gets all available post that were made by all users
+ * This function queries the database to find out all avaialbe posts and outputs
+ * them into the market place  
+ * @param {JSON} req 
+ * @param {JSON} res 
+ */
 const getPost = (req, res) => {
   let posts = [];
   let length;
 
-  pool.query('SELECT * FROM "tbl_Post"', (err, results) => {
+  pool.query('SELECT * FROM "tbl_Post" ORDER BY timestamp DESC', (err, results) => {
     if (err) throw err;
     length = results.rows.length;
     if (length == 0)
@@ -37,6 +45,13 @@ const getPost = (req, res) => {
   })
 };
 
+
+/**
+ * The function getOnePost queries the database and gets the post from the PostID that
+ * URL endpoint. This would output the post that corresponds to the specific postID
+ * @param {JSON} req 
+ * @param {JSON} res 
+ */
 const getOnePost = (req, res) => {
   let post = {};
   const postID = parseInt(req.params.pid);
@@ -82,6 +97,13 @@ const getOnePost = (req, res) => {
 //       return next(error);
 //     });
 
+/**
+ * The getOneAccountPost function gets all the post that was made by one specific account. 
+ * The URL endpoint requires the accountID and will output all posts that corresponds to that one 
+ * specific accountID.
+ * @param {JSON} req 
+ * @param {JSON} res 
+ */
 const getOneAccountPost = (req, res) => {
   const accountID = parseInt(req.params.aid);
   let posts = [];
@@ -119,6 +141,13 @@ const getOneAccountPost = (req, res) => {
   );
 };
 
+/**
+ * The function createPost will take in the JSON string that is required by creation of post and store it. 
+ * req will then make use of the inputs and do an INSERT query into the table "tbl_Post" to perform the creation
+ * of the post. The response paramater, res, will output the inputs that were inserted into the Tbl_Post.
+ * @param {JSON} req 
+ * @param {JSON} res 
+ */
 const createPost = (req, res) => {
   const {
     title,
@@ -177,6 +206,12 @@ const createPost = (req, res) => {
   );
 };
 
+/**
+ * The function completePost will take in the parameter of postID from req and make use of the value to do 
+ * an UPDATE query to the specific post to change its status to "Service Completed".
+ * @param {JSON} req 
+ * @param {JSON} res 
+ */
 const completePost = (req, res) => {
   const postID = parseInt(req.params.pid);
 
@@ -186,6 +221,14 @@ const completePost = (req, res) => {
   })
 }
 
+/**
+ * The function updatePost will take in the inputs that are required by the table in database
+ * and change all the current available values to the newly inserted inputs. The "UPDATE" query 
+ * will be called in the function to insert the newly inserted inputs and update current available 
+ * inputs in the database tbl_Post.
+ * @param {JSON} req 
+ * @param {JSON} res 
+ */
 const updatePost = (req, res) => {
   const postID = parseInt(req.params.pid);
 
@@ -280,6 +323,13 @@ const updatePost = (req, res) => {
 //   );
 // };
 
+/**
+ * The function deletePost will take in the parameters PostID and remove the specific postID from the tbl_Post in 
+ * database. A "DELETE" query will be performed based on the postID that is available from the parameter req, and it
+ * find the corresponding postID in the database and delete it accordingly.
+ * @param {*} req 
+ * @param {*} res 
+ */
 const deletePost = (req, res) => {
   const postID = parseInt(req.params.pid);
 
