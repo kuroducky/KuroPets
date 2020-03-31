@@ -23,6 +23,7 @@ const Location = props => {
         }}
       >
         <Title level={2}> Location Services</Title>
+        Location and weather Data
         <LocationControl {...props} />
       </div>
     </Content>

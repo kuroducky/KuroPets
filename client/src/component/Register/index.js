@@ -32,13 +32,14 @@ const RegisterView = ({ history }) => {
   const onFinish = async values => {
     delete values.agreement;
     delete values.confirm;
+    console.log(values);
     const content = await register(values);
 
     console.log(content);
     if (content.querySuccess) {
       form.resetFields();
       const { name, password } = content.data;
-      let success = await login(name, password);
+      let success = await login(name, values.password);
       if (success) {
         history.push("/");
       } else {
