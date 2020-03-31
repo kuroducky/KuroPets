@@ -1,4 +1,6 @@
 const pool = require('./connect')
+const crypto = require('crypto')
+const email = require('./email')
 
 const getUsers = (request, response) => {
     pool.query('SELECT * FROM "tbl_Account"', (error, results) => {
@@ -21,7 +23,7 @@ const getUserById = (request, response) => {
 }
 
 const createUser = (request, response) => {
-    const { name, password, phone } = request.body;
+    const { name, email, password, phone } = request.body;
     var dict = {};
 
     pool.query('SELECT * FROM "tbl_Account" WHERE "name" = $1', [name], (error, results) => {
@@ -34,8 +36,9 @@ const createUser = (request, response) => {
             response.status(400).json(dict);
         }
         else {
-            pool.query('INSERT INTO "tbl_Account" ("name", "password", "phone", "rating", "totalNumRatings") VALUES ($1, $2, $3, $4, $5) RETURNING *',
-            [name, password, phone, 0, 0], (error, results) => {
+            const hash = crypto.createHmac('sha256', password).update(name).digest('hex')
+            pool.query('INSERT INTO "tbl_Account" ("name", "email", "password", "phone", "rating", "totalNumRatings") VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+            [name, email, hash, phone, 0, 0], (error, results) => {
                 if (error) {
                     throw error;
                 }
@@ -71,7 +74,8 @@ const rateUser = (req, res) => {
 const authenticateUser = (request, response) => {
     const { name, password } = request.body;
 
-    pool.query('SELECT * FROM "tbl_Account" WHERE "name" = $1 AND "password" = $2', [name, password], (error, results) => {
+    const hash = crypto.createHmac('sha256', password).update(name).digest('hex')
+    pool.query('SELECT * FROM "tbl_Account" WHERE "name" = $1 AND "password" = $2', [name, hash], (error, results) => {
         if (error)
             throw error;
 
@@ -80,6 +84,7 @@ const authenticateUser = (request, response) => {
             dict.loginSuccess = false;
         }
         else {
+            email.sendMail('lee.wonnjen@gmail.com', 'Welcome to KuroPets!')
             dict.loginSuccess = true
             dict.data = results.rows[0];
         }
@@ -89,11 +94,11 @@ const authenticateUser = (request, response) => {
 
 const updateUser = (request, response) => {
     const id = parseInt(request.params.id);
-    const { name, phone } = request.body;
+    const { name, email, phone } = request.body;
 
     pool.query(
-        'UPDATE "tbl_Account" SET "name" = $1, "phone" = $2 WHERE "accountID" = $3 RETURNING *',
-        [name, phone, id],
+        'UPDATE "tbl_Account" SET "name" = $1, "email" = $2, "phone" = $3 WHERE "accountID" = $4 RETURNING *',
+        [name, email, phone, id],
         (error, results) => {
             if (error) {
                 throw error;
