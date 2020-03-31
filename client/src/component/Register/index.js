@@ -84,7 +84,19 @@ const RegisterView = ({ history }) => {
       >
         <Input />
       </Form.Item>
-
+      <Form.Item
+        name="email"
+        label="Email Address"
+        rules={[
+          {
+            type: "email",
+            required: true,
+            message: "Please input a valid email address"
+          }
+        ]}
+      >
+        <Input />
+      </Form.Item>
       <Form.Item
         name="password"
         label="Password"
@@ -128,6 +140,20 @@ const RegisterView = ({ history }) => {
         name="agreement"
         valuePropName="checked"
         {...tailFormItemLayout}
+        rules={[
+          {
+            required: true,
+            message: "Please agree to the terms!"
+          },
+          ({ getFieldValue }) => ({
+            validator(rule, value) {
+              if (!value || getFieldValue("agreement") === true) {
+                return Promise.resolve();
+              }
+              return Promise.reject("Please agree to the terms!");
+            }
+          })
+        ]}
       >
         <Checkbox>I have read the agreement</Checkbox>
       </Form.Item>
