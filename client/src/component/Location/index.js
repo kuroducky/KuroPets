@@ -23,7 +23,8 @@ const Location = props => {
         }}
       >
         <Title level={2}> Location Services</Title>
-        Location and weather Data
+        View locations of Vets and Parks in Singapore, click on them to view
+        more details...
         <LocationControl {...props} />
       </div>
     </Content>
