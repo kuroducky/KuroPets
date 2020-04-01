@@ -73,9 +73,10 @@ app.delete("/api/offer/:oid", db.offer.deleteOffer);
 
 // Chat endpoints
 app.get("/api/chat", db.chat.getAllChats);
+app.get("/api/chat/:url/user", db.chat.getUsers);
 app.get("/api/chat/:id", db.chat.getAllUserChats);
-// app.get("/api/chat/:accID1/:accID2", db.chat.getUserChat);
-app.post("/api/chat", db.chat.createChat);
+app.get("/api/chat/:id/:otherId", db.chat.getUserChat);
+// app.post("/api/chat", db.chat.createChat);
 
 // Rating endpoints
 // app.get("/api/rating", db.rating.getAllRatings);

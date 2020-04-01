@@ -58,19 +58,21 @@ class ChatControl extends React.Component {
     chatDetails: {
       instanceLocator: instanceLocator,
       tokenProvider: tokenProvider,
-      userId: this.props.match.params.userId,
-      otherId: this.props.match.params.otherId
+      userId: null,
+      otherId: null
     },
     chatList : chatList
   };
 
   async componentDidMount() {
     const response = await fetch(
-      `http://172.21.148.170/api/chat/${this.state.chatDetails.userId}`
+      `http://172.21.148.170/api/chat/${this.props.url}/user`
     );
     const json = await response.json();
     console.log(json);
-    this.setState({ chatList: json });
+    this.setState({ id : json.id,
+                    otherId : json.otherId,
+                    chatList: json });
   }
 
   render() {

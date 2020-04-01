@@ -5,6 +5,15 @@ import defaultAvatar from "./default-avatar.png";
 
 class UserListView extends React.Component {
 
+  getUrl = async () => {
+    const response = await fetch(
+      `http://172.21.148.170/api/chat/${this.props.url}/user`
+    );
+    const json = await response.json();
+    console.log(json);
+    return json.url;
+  }
+
   render() {
     const { userId, otherId, chatList } = this.props;
     let userName;
@@ -29,7 +38,7 @@ class UserListView extends React.Component {
           <li className={className}>
             <Link
               onClick={this.props.updateSelectedUser}
-              to={`/chat/${userId}/${user.otherId}`}
+              to={`/chat/${this.getUrl()}`}
             >
               <div>
                 <img

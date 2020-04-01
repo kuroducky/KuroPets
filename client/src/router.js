@@ -83,7 +83,7 @@ class Router extends React.Component {
             )}
           />
           <Route
-            path="/chat/:userId/:otherId"
+            path="/chat/:url"
             exact
             render={props => (
               <Fragment>
