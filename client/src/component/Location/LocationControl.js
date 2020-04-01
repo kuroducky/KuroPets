@@ -9,28 +9,28 @@ import {
 
 const { TabPane } = Tabs;
 
-const MyMapComponent = withScriptjs(
-  withGoogleMap(props => (
-    <GoogleMap defaultZoom={12} defaultCenter={{ lat: 1.3521, lng: 103.8198 }}>
-      {" "}
-      {/* {props.isMarkerShown && (
-        <Marker position={{ lat: -34.397, lng: 150.644 }} />
-      )} */}
-      {props.vets.map(v => {
-        console.log(v.lat);
-        return (
-          <Marker
-            key={v._id}
-            position={{
-              lat: Number(v.lat),
-              lng: Number(v.long)
-            }}
-          />
-        );
-      })}
-    </GoogleMap>
-  ))
-);
+// const MyMapComponent = withScriptjs(
+//   withGoogleMap(props => (
+//     <GoogleMap defaultZoom={12} defaultCenter={{ lat: 1.3521, lng: 103.8198 }}>
+//       {" "}
+//       {/* {props.isMarkerShown && (
+//         <Marker position={{ lat: -34.397, lng: 150.644 }} />
+//       )} */}
+//       {props.vets.map(v => {
+//         console.log(v.lat);
+//         return (
+//           <Marker
+//             key={v._id}
+//             position={{
+//               lat: Number(v.lat),
+//               lng: Number(v.long)
+//             }}
+//           />
+//         );
+//       })}
+//     </GoogleMap>
+//   ))
+// );
 
 class LocationControl extends React.Component {
   state = {
@@ -69,13 +69,13 @@ class LocationControl extends React.Component {
       });
     });
 
-    // const weatherData = await fetch(
-    //   "https://www.nea.gov.sg/api/Weather24hrs/GetData/1573372500"
-    // );
+    const weatherData = await fetch(
+      "https://www.nea.gov.sg/api/Weather24hrs/GetData/1573372500"
+    );
 
-    // weatherData.json().then(r => {
-    //   console.log(r);
-    // });
+    weatherData.json().then(r => {
+      console.log(r);
+    });
   }
   render() {
     console.log(this.state.vets[0]);
@@ -92,23 +92,23 @@ class LocationControl extends React.Component {
               >
                 <TabPane tab="Vets" key="1">
                   <div style={{ height: "500px" }}>
-                    {/* <iframe
-                    width="90%"
-                    height="90%"
-                    src="https://data.gov.sg/dataset/list-of-licensed-vet-centres/resource/b2871270-4eef-44a3-be98-908e2a73b19f/view/286eec34-5059-43dc-b927-3573341858dc"
-                    frameBorder="0"
-                  >
-                    {" "}
-                  </iframe> */}
+                    <iframe
+                      width="90%"
+                      height="90%"
+                      src="https://data.gov.sg/dataset/list-of-licensed-vet-centres/resource/b2871270-4eef-44a3-be98-908e2a73b19f/view/286eec34-5059-43dc-b927-3573341858dc"
+                      frameBorder="0"
+                    >
+                      {" "}
+                    </iframe>
 
-                    <MyMapComponent
+                    {/* <MyMapComponent
                       isMarkerShown
                       vets={this.state.vets}
                       googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyDH4TLVV3LYbKJLx6xCWwzaVkTNDA52lNY"
                       loadingElement={<div style={{ height: `100%` }} />}
                       containerElement={<div style={{ height: `500px` }} />}
                       mapElement={<div style={{ height: `100%` }} />}
-                    />
+                    /> */}
                   </div>
                 </TabPane>
                 <TabPane tab="Parks" key="2">

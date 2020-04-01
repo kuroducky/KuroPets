@@ -7,6 +7,7 @@ const { Text, Title } = Typography;
 const { Meta } = Card;
 
 function calculateDiff(date_time) {
+  if (moment().diff(date_time, "minutes") < 1) return "just created";
   if (moment().diff(date_time, "minutes") < 60)
     return moment().diff(date_time, "minutes") == 1
       ? `${moment().diff(date_time, "minutes")} minute ago`

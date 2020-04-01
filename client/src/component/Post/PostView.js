@@ -32,6 +32,7 @@ const { Fragment } = React;
 const { Text, Title } = Typography;
 
 function calculateDiff(date_time) {
+  if (moment().diff(date_time, "minutes") < 1) return "just created";
   if (moment().diff(date_time, "minutes") < 60)
     return moment().diff(date_time, "minutes") == 1
       ? `${moment().diff(date_time, "minutes")} minute ago`
@@ -144,8 +145,8 @@ const PostView = props => {
           <br />
           <Text>
             <CalendarOutlined /> Date:{" "}
-            <strong>{moment(startDate).format("YYYY-MM-DD")}</strong> -{" "}
-            <strong>{moment(endDate).format("YYYY-MM-DD")}</strong>
+            <strong>{moment(startDate).format("DD MMM YYYY")}</strong> -{" "}
+            <strong>{moment(endDate).format("DD MMM YYYY")}</strong>
           </Text>
           <br />
           <br />

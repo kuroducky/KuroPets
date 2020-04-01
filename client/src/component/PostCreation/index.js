@@ -68,6 +68,7 @@ class PostCreation extends React.Component {
     message.success("Post created!");
     // this.props.form.resetFields();
     this.setState({ images: [] });
+    this.props.history.push(`/post/${content.postID}`);
   }
   render() {
     const validateMessages = {

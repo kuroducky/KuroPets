@@ -88,6 +88,10 @@ class ProfileControl extends React.Component {
                   <Text>
                     Contact me at: <strong>{user.phone}</strong>
                   </Text>
+                  <br />
+                  <Text>
+                    Email me at: <strong>{user.email}</strong>
+                  </Text>
                 </div>
                 {user.name &&
                 user.accountID ===
