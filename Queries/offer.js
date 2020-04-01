@@ -1,5 +1,5 @@
 const pool = require('./connect')
-
+const mailer = require('./email')
 
 /**
  * The function getAllOffers gets all offers available in the database by running a "SELECT" query on tbl_Offers
@@ -175,6 +175,19 @@ const createOffer = (request, response) => {
         if(error){
             throw error
         }
+        pool.query('SELECT * FROM "tbl_Post" WHERE "postID" = $1',
+        [postID],
+        (error, results) => {
+            if(error){
+                throw error
+            }
+            let title = results.rows[0].title
+            pool.query('SELECT * FROM "tbl_Account" WHERE "accountID" = $1', [results.rows[0].accountID], (err, results) => {
+                if (err) throw err;
+                console.log(results.rows[0])
+                mailer.sendMail(results.rows[0].email, `An offer for your post "${title}"!`)
+            })
+        })
         response.status(418).json(results.rows[0])
     })
 }

@@ -27,6 +27,10 @@ const getUserChat = (request, response) => {
     const id2 = request.params.otherId
     const { name, otherName } = request.query
 
+    if (id1 == id2){
+        res.status(400).json({})
+    }
+
     pool.query('SELECT * FROM "tbl_Chat" WHERE "id" = $1 AND "otherId" = $2',
     [id1, id2],
     (error, results) => {
