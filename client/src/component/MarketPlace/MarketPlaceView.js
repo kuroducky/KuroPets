@@ -1,9 +1,25 @@
 import React from "react";
+import moment from "moment";
 import { Card, Col, Avatar, Row, Typography, Empty } from "antd";
 import { Link } from "react-router-dom";
 import { UserOutlined } from "@ant-design/icons";
 const { Text, Title } = Typography;
 const { Meta } = Card;
+
+function calculateDiff(date_time) {
+  if (moment().diff(date_time, "minutes") < 60)
+    return moment().diff(date_time, "minutes") == 1
+      ? `${moment().diff(date_time, "minutes")} minute ago`
+      : `${moment().diff(date_time, "minutes")} minutes ago`;
+  else if (moment().diff(date_time, "hours") < 24)
+    return moment().diff(date_time, "hours") == 1
+      ? `${moment().diff(date_time, "hours")} hour ago`
+      : `${moment().diff(date_time, "hours")} hours ago`;
+  else
+    return moment().diff(date_time, "days") == 1
+      ? `${moment().diff(date_time, "days")} day ago`
+      : `${moment().diff(date_time, "days")} days ago`;
+}
 
 const MarketPlaceView = ({ posts }) => {
   posts = posts.filter(post => post.status !== "Service Completed");
@@ -64,7 +80,10 @@ const MarketPlaceView = ({ posts }) => {
                       />
                       {post.user.name}{" "}
                     </Title>
-                    <Text type="secondary"> 1 minute ago</Text> <br />
+                    <Text type="secondary">
+                      {calculateDiff(post.timestamp)}
+                    </Text>{" "}
+                    <br />
                     <div
                       style={{
                         backgroundImage: `url('${
