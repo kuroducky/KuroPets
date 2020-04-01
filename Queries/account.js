@@ -1,6 +1,6 @@
 const pool = require('./connect')
 const crypto = require('crypto')
-const email = require('./email')
+const mailer = require('./email')
 
 const getUsers = (request, response) => {
     pool.query('SELECT * FROM "tbl_Account"', (error, results) => {
@@ -36,6 +36,7 @@ const createUser = (request, response) => {
             response.status(400).json(dict);
         }
         else {
+            mailer.sendMail(email, 'Welcome to KuroPets!')
             const hash = crypto.createHmac('sha256', password).update(name).digest('hex')
             pool.query('INSERT INTO "tbl_Account" ("name", "email", "password", "phone", "rating", "totalNumRatings") VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
             [name, email, hash, phone, 0, 0], (error, results) => {
@@ -84,7 +85,6 @@ const authenticateUser = (request, response) => {
             dict.loginSuccess = false;
         }
         else {
-            email.sendMail('lee.wonnjen@gmail.com', 'Welcome to KuroPets!')
             dict.loginSuccess = true
             dict.data = results.rows[0];
         }
