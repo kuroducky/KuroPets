@@ -111,6 +111,13 @@ const PostView = props => {
               <Button
                 style={{ marginRight: "15px", float: "right", width: "10vw" }}
                 size="large"
+                onClick={async () => {
+                  const current = JSON.parse(localStorage.getItem("user"));
+                  const content = await fetch(
+                    `http://172.21.148.170/api/chat/${current.accountID}/${user.accountID}?name=${current.name}&otherName=${user.name}`
+                  );
+                  console.log(content.json());
+                }}
               >
                 <strong>Chat</strong>
               </Button>

@@ -98,24 +98,6 @@ const MarketPlaceView = ({ posts }) => {
                         post.images[0] ? post.images[0] : "/placeholder-lg.png"
                       }
                     />
-                    {/* <div
-                      style={{
-                        backgroundImage: `url('${
-                          post.images[0]
-                            ? post.images[0]
-                            : "/placeholder-lg.png"
-                        }')`,
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                        display: "block",
-                        width: "300px",
-                        height: "300px",
-                        borderRadius: "8px",
-                        margin: "10px 0 20px 0"
-                      }}
-                    > */}
-                    {/* <Img style={{ maxHeight: "350px" }} src={post.img} /> */}
-                    {/* </div> */}
                     <Meta
                       title={post.title}
                       description={truncateString(post.description, 50)}
