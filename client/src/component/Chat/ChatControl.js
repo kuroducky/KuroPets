@@ -9,75 +9,45 @@ const tokenProvider = new TokenProvider({
     "https://us1.pusherplatform.io/services/chatkit_token_provider/v1/19de5151-cc5c-4cc3-8a4b-9ae8f8bced6b/token"
 });
 
-let chatList = [
-  {
-    id: "bob",
-    name: "Bob",
-    otherId: "alice",
-    otherName: "Alice",
-    msgCount : 2,
-    // text: "Goodbye",
-    // byUser: true,
-    // time: "10.00 AM"
-  },
-  {
-    id: "carol",
-    name: "Carol",
-    otherId: "alice",
-    otherName: "Alice",
-    msgCount : 1,
-    // text: "Carol : Heyo",
-    // time: "Yesterday"
-  }
-];
-
-const findMsgCount = (otherId) => {
-  let chat;
-  for (let i=0; i<chatList.length; i++){
-    chat = chatList[i];
-    if (otherId === chat.id || otherId === chat.otherId){
-      return chat.msgCount;
-    }
-  }
-  return 0;
-}
-
-const setMsgCount = (otherId, count) => {
-  let chat;
-  for (let i=0; i<chatList.length; i++){
-    chat = chatList[i];
-    if (otherId === chat.id || otherId === chat.otherId){
-      chat.msgCount = count;
-      return;
-    }
-  }
-}
+let chatList = [];
 
 class ChatControl extends React.Component {
   state = {
     chatDetails: {
       instanceLocator: instanceLocator,
-      tokenProvider: tokenProvider,
-      userId: null,
-      otherId: null
+      tokenProvider: tokenProvider
     },
+    userId: null,
+    otherId: null,
     chatList : chatList
   };
 
   async componentDidMount() {
-    const response = await fetch(
-      `http://172.21.148.170/api/chat/${this.props.url}/user`
+    let response = await fetch(
+      `http://172.21.148.170/api/chat/${this.props.match.params.url}/user`
     );
-    const json = await response.json();
-    console.log(json);
-    this.setState({ id : json.id,
-                    otherId : json.otherId,
-                    chatList: json });
+    let json = await response.json();
+    this.setState({ userId : json.id.toString(),
+                    otherId : json.otherId.toString()});
+    response = await fetch(
+      `http://172.21.148.170/api/chat/${this.state.userId}`
+    );
+    chatList = await response.json();
+    this.setState({ chatList: chatList });
+  }
+
+  updateSelectedUser = (url) => {
+    this.props.history.push(`/chat/${url}`)
+    window.location.reload()
   }
 
   render() {
     const { chatDetails, chatList } = this.state;
-    return <ChatView {...this.props} chatDetails={chatDetails} chatList={chatList} findMsgCount={findMsgCount} setMsgCount={setMsgCount} />;
+    if(this.state.userId && this.state.otherId && this.state.chatList){
+      return <ChatView {...this.props} chatDetails={chatDetails} userId={this.state.userId} otherId={this.state.otherId} chatList={chatList} updateSelectedUser={this.updateSelectedUser} />
+    } else {
+      return (<div />)
+    }
   }
 }
 

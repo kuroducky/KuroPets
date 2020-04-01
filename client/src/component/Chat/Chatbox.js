@@ -24,7 +24,6 @@ function Chatbox(props) {
       return;
     }
     props.chatkit.sendSimpleMessage({ text: pendingMessage })
-    props.saveMsgCount(props.msgCount + 1);
     setPendingMessage('');
   };
   
@@ -55,7 +54,7 @@ function Chatbox(props) {
         </div>
       </div>
       <div className="Chat__messages" ref={messageList}>
-        {messages.slice(-props.msgCount).map(m => (
+        {messages.map(m => (
           <Message key={m.id} {...m} />
         ))}
       </div>

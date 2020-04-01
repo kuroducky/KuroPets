@@ -5,15 +5,6 @@ import defaultAvatar from "./default-avatar.png";
 
 class UserListView extends React.Component {
 
-  getUrl = async () => {
-    const response = await fetch(
-      `http://172.21.148.170/api/chat/${this.props.url}/user`
-    );
-    const json = await response.json();
-    console.log(json);
-    return json.url;
-  }
-
   render() {
     const { userId, otherId, chatList } = this.props;
     let userName;
@@ -24,21 +15,20 @@ class UserListView extends React.Component {
         [user.name, user.otherName] = [user.otherName, user.name];
       }
       
-      if (userId === user.id){
+      if (userId == user.id){
         if (userName === undefined){
           userName = user.name;
         }
   
         let className = "UserList__container__list__item";
-        if (otherId === user.otherId) {
+        if (otherId == user.otherId) {
           className += " UserList__container__list__item--selected";
         }
   
         items.push(
           <li className={className}>
             <Link
-              onClick={this.props.updateSelectedUser}
-              to={`/chat/${this.getUrl()}`}
+              onClick={() => {this.props.updateSelectedUser(user.url)}}
             >
               <div>
                 <img
@@ -51,13 +41,7 @@ class UserListView extends React.Component {
                 <p className="UserList__container__list__item__content__name">
                   {user.otherName}
                 </p>
-                {/* <p className="UserList__container__list__item__content__text">
-                  {user.text}
-                </p> */}
               </div>
-              {/* <div className="UserList__container__list__item__time">
-                {user.time}
-              </div> */}
             </Link>
           </li>
         );

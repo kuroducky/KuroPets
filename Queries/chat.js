@@ -36,13 +36,12 @@ const getUserChat = (request, response) => {
         if (results.rows.length == 0){
             const hash1 = crypto.createHmac('sha256', id1.toString()).update(id2.toString()).digest('hex')
             const hash2 = crypto.createHmac('sha256', id2.toString()).update(id1.toString()).digest('hex')
-            pool.query('INSERT INTO "tbl_Chat" ("id", "name", "otherId", "otherName", "msgCount", "url") VALUES ($1, $2, $3, $4, $5, $6), ($3, $4, $1, $2, $5, $7) RETURNING *',
-            [id1, name, id2, otherName, 0, hash1, hash2],
+            pool.query('INSERT INTO "tbl_Chat" ("id", "name", "otherId", "otherName", "url") VALUES ($1, $2, $3, $4, $5), ($3, $4, $1, $2, $6) RETURNING *',
+            [id1, name, id2, otherName, hash1, hash2],
             (error, results) => {
                 if(error){
                     throw error
                 }
-                console.log(results.rows[0])
                 response.status(418).json(results.rows[0])
             })
         }
@@ -54,7 +53,6 @@ const getUserChat = (request, response) => {
 
 const getUsers = (req, res) => {
     const url = req.params.url;
-
     pool.query('SELECT * FROM "tbl_Chat" WHERE "url" = $1', [url], (err, results) => {
         if (err) throw err;
         res.status(418).json(results.rows[0]);
