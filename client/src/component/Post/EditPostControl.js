@@ -90,7 +90,7 @@ class EditPostControl extends React.Component {
 
     values.startDate = values.startEndDate[0].format("YYYY-MM-DDTHH:mm:ss"); // 2020-02-22T16:00:00.000Z
     values.endDate = values.startEndDate[1].format("YYYY-MM-DDTHH:mm:ss");
-    values.status = "Pending Service";
+    values.status = "Pending Offer";
     values.accountID = JSON.parse(localStorage.getItem("user")).accountID;
     delete values.startEndDate;
     this.props.updatePost(values);
