@@ -9,7 +9,7 @@ import {
 
 const { Title } = Typography;
 
-const ViewOfferView = ({ visible, onCancel, offers, acceptOffer }) => {
+const ViewOfferView = ({ history, visible, onCancel, offers, acceptOffer }) => {
   return (
     <Modal
       visible={visible}
@@ -107,7 +107,21 @@ const ViewOfferView = ({ visible, onCancel, offers, acceptOffer }) => {
                       </Title>
                     )}
 
-                    <Button block>
+                    <Button
+                      onClick={async () => {
+                        const current = JSON.parse(
+                          localStorage.getItem("user")
+                        );
+                        const content = await fetch(
+                          `http://172.21.148.170/api/chat/${current.accountID}/${offer.user.accountID}?name=${current.name}&otherName=${offer.user.name}`
+                        );
+                        content.json().then(r => {
+                          history.push(`/chat/${r.url}`);
+                        });
+                        console.log(offer.user.accountID);
+                      }}
+                      block
+                    >
                       <strong>Chat</strong>
                     </Button>
                   </Col>
@@ -166,6 +180,7 @@ class ViewOfferControl extends React.Component {
         </Button>
         <ViewOfferView
           {...this.props}
+          history={this.props.history}
           offers={this.state.offers}
           visible={this.state.visible}
           acceptOffer={this.acceptOffer}
