@@ -1,5 +1,6 @@
 import React from "react";
 import moment from "moment";
+import FittedImage from "react-fitted-image";
 import { Card, Col, Avatar, Row, Typography, Empty } from "antd";
 import { Link } from "react-router-dom";
 import { UserOutlined } from "@ant-design/icons";
@@ -85,7 +86,19 @@ const MarketPlaceView = ({ posts }) => {
                       {calculateDiff(post.timestamp)}
                     </Text>{" "}
                     <br />
-                    <div
+                    <FittedImage
+                      fit="cover"
+                      style={{
+                        height: "50vh",
+                        width: "18vw",
+                        margin: "10px auto 20px auto",
+                        borderRadius: "8px"
+                      }}
+                      src={
+                        post.images[0] ? post.images[0] : "/placeholder-lg.png"
+                      }
+                    />
+                    {/* <div
                       style={{
                         backgroundImage: `url('${
                           post.images[0]
@@ -100,9 +113,9 @@ const MarketPlaceView = ({ posts }) => {
                         borderRadius: "8px",
                         margin: "10px 0 20px 0"
                       }}
-                    >
-                      {/* <Img style={{ maxHeight: "350px" }} src={post.img} /> */}
-                    </div>
+                    > */}
+                    {/* <Img style={{ maxHeight: "350px" }} src={post.img} /> */}
+                    {/* </div> */}
                     <Meta
                       title={post.title}
                       description={truncateString(post.description, 50)}

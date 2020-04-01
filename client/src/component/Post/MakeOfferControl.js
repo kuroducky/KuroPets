@@ -106,7 +106,7 @@ const MakeOfferControl = ({ postID }) => {
   return (
     <div>
       <Button
-        style={{ float: "right", width: "220px" }}
+        style={{ float: "right", width: "10vw" }}
         size="large"
         type="primary"
         onClick={() => {

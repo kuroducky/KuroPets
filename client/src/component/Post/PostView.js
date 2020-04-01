@@ -109,7 +109,7 @@ const PostView = props => {
                 <MakeOfferControl {...props} />
               )}
               <Button
-                style={{ marginRight: "15px", float: "right", width: "220px" }}
+                style={{ marginRight: "15px", float: "right", width: "10vw" }}
                 size="large"
               >
                 <strong>Chat</strong>
