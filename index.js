@@ -1,10 +1,13 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require('cors')
 const requireDir = require("require-dir");
 const db = requireDir("./queries");
 
 const app = express();
 const port = 5000;
+
+app.options('*', cors())
 
 app.use(bodyParser.json());
 app.use(
@@ -20,6 +23,7 @@ app.use(function(req, res, next) {
     "Origin, X-Requested-With, Content-Type, Accept"
   );
   res.header("Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Credential", true);
   next();
 });
 
