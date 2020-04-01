@@ -70,7 +70,7 @@ const MarketPlaceView = ({ posts }) => {
             gutter={16}
           >
             {posts.map((post, i) => (
-              <Col key={i} span={6}>
+              <Col style={{ marginBottom: "10px" }} key={i} span={6}>
                 <Link to={`/post/${post.postID}`}>
                   <Card hoverable bordered={false}>
                     <Title style={{ marginBottom: "5px" }} level={4} strong>
@@ -89,7 +89,7 @@ const MarketPlaceView = ({ posts }) => {
                     <FittedImage
                       fit="cover"
                       style={{
-                        height: "50vh",
+                        height: "300px",
                         width: "18vw",
                         margin: "10px auto 20px auto",
                         borderRadius: "8px"
