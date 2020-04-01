@@ -1,6 +1,24 @@
-const pool = require('./connect')
+const Chatkit = require('@pusher/chatkit-server')
 const crypto = require('crypto')
+const pool = require('./connect')
 const mailer = require('./email')
+
+const createChatkitUser = (id, name) => {
+    const chatkit = new Chatkit.default({
+        instanceLocator: "v1:us1:19de5151-cc5c-4cc3-8a4b-9ae8f8bced6b",
+        key: "f0eae4a4-6ef0-49f1-8c57-58bf1d024b05:SZ7A75gdNNu1VO41Hy1QuiqBK0ZrA4p/GF7r6hsYC5E=",
+    })
+
+    chatkit.createUser({
+        id: id,
+        name: name,
+    })
+    .then(() => {
+        console.log('User created successfully');
+    }).catch((err) => {
+        console.log(err);
+    });
+}
 
 const getUsers = (request, response) => {
     pool.query('SELECT * FROM "tbl_Account"', (error, results) => {
@@ -43,6 +61,7 @@ const createUser = (request, response) => {
                 if (error) {
                     throw error;
                 }
+                createChatkitUser(results.rows[0].accountID.toString(), name);
                 dict.querySuccess = true;
                 dict.data = results.rows[0];
                 response.status(418).json(dict);
@@ -64,7 +83,7 @@ const rateUser = (req, res) => {
             const user = results.rows[0];
             user.rating = (user.rating * user.totalNumRatings + rating)/(user.totalNumRatings + 1);
             user.totalNumRatings++;
-            pool.query('UPDATE "tbl_Account" SET "rating" = $1, "totalNumRatings"=$2', [user.rating, user.totalNumRatings], (err, results) => {
+            pool.query('UPDATE "tbl_Account" SET "rating" = $1, "totalNumRatings"=$2 WHERE "accountID" = $3', [user.rating, user.totalNumRatings, aid], (err, results) => {
                 if (err) throw err;
                 res.status(418).json(user);
             })
