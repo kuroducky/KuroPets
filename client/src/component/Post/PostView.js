@@ -116,7 +116,9 @@ const PostView = props => {
                   const content = await fetch(
                     `http://172.21.148.170/api/chat/${current.accountID}/${user.accountID}?name=${current.name}&otherName=${user.name}`
                   );
-                  console.log(content.json());
+                  content.json().then(r => {
+                    props.history.push(`/chat/${r.url}`);
+                  });
                 }}
               >
                 <strong>Chat</strong>
