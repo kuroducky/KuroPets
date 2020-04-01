@@ -165,21 +165,19 @@ const Topbar = props => {
                   marginRight: "50px"
                 }}
               >
-                <Badge count={5}>
-                  <Button
-                    onClick={async () => {
-                      const current = JSON.parse(localStorage.getItem("user"));
-                      const content = await fetch(
-                        `http://172.21.148.170/api/chat/${current.accountID}`
-                      );
-                      content.json().then(r => {
-                        props.history.push(`/chat/${r[0].url}`);
-                      });
-                    }}
-                    shape="circle"
-                    icon={<MessageFilled />}
-                  />
-                </Badge>
+                <Button
+                  onClick={async () => {
+                    const current = JSON.parse(localStorage.getItem("user"));
+                    const content = await fetch(
+                      `http://172.21.148.170/api/chat/${current.accountID}`
+                    );
+                    content.json().then(r => {
+                      props.history.push(`/chat/${r[0].url}`);
+                    });
+                  }}
+                  shape="circle"
+                  icon={<MessageFilled />}
+                />
               </span>
             </Tooltip>
             {/* Location services Button */}

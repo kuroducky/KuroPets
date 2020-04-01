@@ -8,7 +8,8 @@ const EditProfileView = ({ visible, onCancel, onUpdateForm, user }) => {
     console.log(user.name);
     form.setFieldsValue({
       name: user.name,
-      phone: user.phone
+      phone: user.phone,
+      email: user.email
     });
   }, []);
   return (
@@ -51,6 +52,9 @@ const EditProfileView = ({ visible, onCancel, onUpdateForm, user }) => {
           <Input />
         </Form.Item>
         <Form.Item name={"phone"} label="Phone Number">
+          <Input />
+        </Form.Item>
+        <Form.Item name={"email"} label="Email Address">
           <Input />
         </Form.Item>
         {/* <Form.Item name={"password"} label="Password">
