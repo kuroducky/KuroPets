@@ -185,7 +185,7 @@ const createOffer = (request, response) => {
             pool.query('SELECT * FROM "tbl_Account" WHERE "accountID" = $1', [results.rows[0].accountID], (err, results) => {
                 if (err) throw err;
                 console.log(results.rows[0])
-                mailer.sendMail(results.rows[0].email, `An offer for your post "${title}"!`)
+                mailer.sendMail(results.rows[0].email, `An offer has been made for your post "${title}"!`)
             })
         })
         response.status(418).json(results.rows[0])
