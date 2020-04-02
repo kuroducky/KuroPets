@@ -9,7 +9,8 @@ import {
   Typography,
   Avatar,
   Tooltip,
-  Popconfirm
+  Popconfirm,
+  message
 } from "antd";
 import FittedImage from "react-fitted-image";
 import {
@@ -108,21 +109,30 @@ const PostView = props => {
               ) : (
                 <MakeOfferControl {...props} />
               )}
-              <Button
-                style={{ marginRight: "15px", float: "right", width: "10vw" }}
-                size="large"
-                onClick={async () => {
-                  const current = JSON.parse(localStorage.getItem("user"));
-                  const content = await fetch(
-                    `http://172.21.148.170/api/chat/${current.accountID}/${user.accountID}?name=${current.name}&otherName=${user.name}`
-                  );
-                  content.json().then(r => {
-                    props.history.push(`/chat/${r.url}`);
-                  });
-                }}
-              >
-                <strong>Chat</strong>
-              </Button>
+              {(sessionUser == null ||
+                sessionUser.accountID != user.accountID) && (
+                <Button
+                  style={{
+                    marginRight: "15px",
+                    float: "right",
+                    width: "10vw"
+                  }}
+                  size="large"
+                  onClick={async () => {
+                    if (localStorage.getItem("user")) {
+                      const current = JSON.parse(localStorage.getItem("user"));
+                      const content = await fetch(
+                        `http://172.21.148.170/api/chat/${current.accountID}/${user.accountID}?name=${current.name}&otherName=${user.name}`
+                      );
+                      content.json().then(r => {
+                        props.history.push(`/chat/${r.url}`);
+                      });
+                    } else message.warning("Please Login first");
+                  }}
+                >
+                  <strong>Chat</strong>
+                </Button>
+              )}
             </Col>
           </Row>
           <Title
