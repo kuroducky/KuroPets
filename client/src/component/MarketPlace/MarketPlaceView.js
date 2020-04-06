@@ -24,7 +24,7 @@ function calculateDiff(date_time) {
 }
 
 const MarketPlaceView = ({ posts }) => {
-  posts = posts.filter(post => post.status !== "Service Completed");
+  posts = posts.filter(post => post.status === "Pending Offer");
   // Post = {
   //   postID: 1238,
   //   title: "My goldfish is drowning help me!",
