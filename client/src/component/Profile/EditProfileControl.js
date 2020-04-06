@@ -46,15 +46,22 @@ const EditProfileView = ({ visible, onCancel, onUpdateForm, user }) => {
               required: true
             }
           ]}
-          name={"name"}
-          label="Name"
+          name={"phone"}
+          label="Phone Number"
         >
           <Input />
         </Form.Item>
-        <Form.Item name={"phone"} label="Phone Number">
-          <Input />
-        </Form.Item>
-        <Form.Item name={"email"} label="Email Address">
+        <Form.Item
+          rules={[
+            {
+              type: "email",
+              required: true,
+              message: "Please input a valid email address"
+            }
+          ]}
+          name={"email"}
+          label="Email Address"
+        >
           <Input />
         </Form.Item>
         {/* <Form.Item name={"password"} label="Password">
