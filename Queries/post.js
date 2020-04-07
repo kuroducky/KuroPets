@@ -1,6 +1,5 @@
 const pool = require("./connect");
 
-
 /**
  * A getPost function that gets all available post that were made by all users
  * This function queries the database to find out all avaialbe posts and outputs
@@ -78,24 +77,6 @@ const getOnePost = (req, res) => {
     }
   })
 }
-
-//   pool.any('SELECT * FROM "tbl_Post" WHERE "postID" = $1', [postID])
-//     .then(data => {
-//       const length = data.length;
-//       if (length == 0)
-//       {
-//         res.status(400).json(post);
-//       }
-//       else
-//       {
-//         post = data;
-//         console.log(post);
-//         res.status(400).json(post);
-//       }
-//     })
-//     .catch(error => {
-//       return next(error);
-//     });
 
 /**
  * The getOneAccountPost function gets all the post that was made by one specific account. 
@@ -285,43 +266,6 @@ const updatePost = (req, res) => {
     })
   })
 }
-
-// const updatePost = (req, res) => {
-//   const postID = parseInt(req.params.pid);
-
-//   const {
-//     status,
-//     title,
-//     description,
-//     location,
-//     startDate,
-//     endDate,
-//     typeOfPet,
-//     service,
-//     accountID
-//   } = req.body;
-
-//   pool.query(
-//     'UPDATE "tbl_Post" SET "status" = $1, "title" = $2, "description" = $3, "location" = $4, "startDate" = $5, "endDate" = $6, "timestamp" = current_timestamp, "typeOfPet" = $7, "service" = $8 WHERE "accountID" = $9 AND "postID" = $10 RETURNING *;',
-//     [
-//       status,
-//       title,
-//       description,
-//       location,
-//       startDate,
-//       endDate,
-//       typeOfPet,
-//       service,
-//       accountID,
-//       postID
-//     ],
-//     (error, results) => {
-//       if (error) throw error;
-//       console.log(results.rows[0])
-//       res.status(201).json(results.rows[0]);
-//     }
-//   );
-// };
 
 /**
  * The function deletePost will take in the parameters PostID and remove the specific postID from the tbl_Post in 

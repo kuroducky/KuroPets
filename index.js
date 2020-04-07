@@ -40,10 +40,6 @@ app.post("/api/user/authenticate", db.account.authenticateUser);
 app.put("/api/user/:id", db.account.updateUser);
 app.delete("/api/user/:id", db.account.deleteUser);
 
-// Search endpoints
-// app.get("/api/search/post", db.search.searchPost);
-// app.get("/api/search/user", db.search.searchUser);
-
 // Post endpoints
 app.get("/api/post", db.post.getPost);
 app.get("/api/post/:pid", db.post.getOnePost);
@@ -53,14 +49,6 @@ app.post("/api/post/:pid/complete", db.post.completePost);
 app.put("/api/post/:pid", db.post.updatePost);
 app.delete("/api/post/:pid", db.post.deletePost);
 
-// Image endpoints
-// app.get("/api/image/:pid", db.image.getImages);
-// app.get("/api/image/:pid/:imid", db.image.getOneImage);
-// app.post("/api/image/:pid", db.image.postImage);
-// app.put("/api/image/:pid/:imid", db.image.updateImage);
-// app.delete("/api/image/:pid", db.image.deleteAllImages);
-// app.delete("/api/image/:pid/:imid", db.image.deleteOneImage);
-
 // Offer endpoints
 app.get("/api/offer", db.offer.getAllOffers);
 app.get("/api/offer/:oid", db.offer.getOffer);
@@ -68,7 +56,6 @@ app.get("/api/post/:pid/offer", db.offer.getAllPostOffers);
 app.get("/api/user/:id/offer", db.offer.getAllUserOffers);
 app.post("/api/offer", db.offer.createOffer);
 app.put("/api/offer/:oid", db.offer.updateOffer);
-// app.delete("/api/offer/:id", db.offer.deleteAllOffers);
 app.delete("/api/offer/:oid", db.offer.deleteOffer);
 
 // Chat endpoints
@@ -76,25 +63,6 @@ app.get("/api/chat", db.chat.getAllChats);
 app.get("/api/chat/:url/user", db.chat.getUsers);
 app.get("/api/chat/:id", db.chat.getAllUserChats);
 app.get("/api/chat/:id/:otherId", db.chat.getUserChat);
-// app.post("/api/chat", db.chat.createChat);
-
-// Rating endpoints
-// app.get("/api/rating", db.rating.getAllRatings);
-// app.get("/api/rating/:id", db.rating.getUserRatings);
-// app.post("/api/rating/:id", db.rating.createRating);
-// app.delete("/api/rating/:id", db.rating.deleteAllUserRatings);
-// app.delete("/api/rating/:rateeID/:ratingID", db.rating.deleteUserRating);
-
-// Notification endpoints
-app.get("/api/notification", db.notification.getAllNotifications);
-app.get("/api/user/:id/notification", db.notification.getAllUserNotifications);
-app.get("/api/notification/:notifID", db.notification.getNotification);
-app.post("/api/notification", db.notification.createNotification);
-app.delete(
-  "/api/user/:id/notification",
-  db.notification.deleteAllUserNotifications
-);
-app.delete("/api/notification/:notifID", db.notification.deleteNotification);
 
 // Location endpoints
 app.get("/api/location/vet", db.location.getVets);

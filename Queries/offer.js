@@ -131,16 +131,16 @@ const getAllUserOffers = (request, response) => {
                 pool.query('SELECT "postID", "title", "description" FROM "tbl_Post" WHERE "postID" = $1', [row.postID], (err, results) => {
                     if (err) throw err;
 
-                    // if (results.rows.length == 0){
-                    //     console.log(`Post ${row.postID} is undefined. Deleting offer...`);
-                    //     pool.query('DELETE FROM "tbl_Offers" WHERE "offerID" = $1', [row.offerID], (err, res) => {
-                    //         if (err) throw err;
-                    //         length--;
-                    //         if (offers.length == length){
-                    //             response.status(418).json(offers);
-                    //         }
-                    //     })
-                    // }
+                    if (results.rows.length == 0){
+                        console.log(`Post ${row.postID} is undefined. Deleting offer...`);
+                        pool.query('DELETE FROM "tbl_Offers" WHERE "offerID" = $1', [row.offerID], (err, res) => {
+                            if (err) throw err;
+                            length--;
+                            if (offers.length == length){
+                                response.status(418).json(offers);
+                            }
+                        })
+                    }
                     else {
                         row.post = results.rows[0];
                         row.post.images = []
@@ -218,18 +218,6 @@ const updateOffer = (request, response) => {
     })
 }
 
-// const deleteAllOffers = (request, response) => {
-//     const id = parseInt(request.params.id)
-//     pool.query('DELETE FROM "tbl_Offers" WHERE "postID" = $1',
-//     [id],
-//     (error, results) => {
-//         if(error){
-//             throw error
-//         }
-//         response.status(418).send(`All Offers deleted.`)
-//     })
-// }
-
 /**
  * The function deleteOffer will take in the offerID from the URL endpoint 
  * and store it in parameters. A "DELETE" query will be performed based on 
@@ -258,6 +246,5 @@ module.exports = {
     getAllUserOffers,
     createOffer,
     updateOffer,
-    //deleteAllOffers,
     deleteOffer
 };
