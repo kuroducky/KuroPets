@@ -8,7 +8,7 @@ import {
   Dropdown,
   Menu,
   Typography,
-  notification
+  notification,
 } from "antd";
 
 import { Link } from "react-router-dom";
@@ -17,7 +17,7 @@ import {
   EnvironmentFilled,
   UserOutlined,
   FileTextOutlined,
-  LogoutOutlined
+  LogoutOutlined,
 } from "@ant-design/icons";
 
 import LoginControl from "./LoginControl";
@@ -26,12 +26,12 @@ const { Header } = Layout;
 const { Search } = Input;
 const { Text } = Typography;
 
-const Topbar = props => {
+const Topbar = (props) => {
   const logoStyles = {
     width: "120px",
     height: "31px",
     float: "left",
-    margin: "-3px 28px 16px 0"
+    margin: "-3px 28px 16px 0",
   };
 
   const headerStyles = {
@@ -41,28 +41,10 @@ const Topbar = props => {
     background: "#fff",
     paddingRight: "5%",
     paddingLeft: "5%",
-    borderBottom: "1px solid #f0f0f0"
+    borderBottom: "1px solid #f0f0f0",
   };
 
   // Notification fetch logic
-  useEffect(() => {
-    async function fetchNotif() {
-      if (localStorage.getItem("user")) {
-        const { accountID } = JSON.parse(localStorage.getItem("user"));
-        const response = await fetch(
-          `http://172.21.148.170/api/user/${accountID}/notification`
-        );
-        let content = await response.json();
-        console.log("notification", content);
-        content.forEach(notif => {
-          notification.open({
-            message: notif.type
-          });
-        });
-      }
-    }
-    fetchNotif();
-  }, []);
 
   const logOutUser = () => {
     logout();
@@ -70,7 +52,7 @@ const Topbar = props => {
   };
   let currentUser = JSON.parse(localStorage.getItem("user"));
 
-  const onSearchSubmit = value => {
+  const onSearchSubmit = (value) => {
     const keywords = value.split(" ");
     props.onSearchSubmit(keywords);
     props.history.push("/");
@@ -132,7 +114,7 @@ const Topbar = props => {
             width: 800,
             marginLeft: "60px",
             backgroundColor: "#f0f1f1",
-            border: "none"
+            border: "none",
           }}
         />
         {/* Create post button */}
@@ -144,7 +126,7 @@ const Topbar = props => {
               style={{
                 float: "right",
                 marginTop: "16px",
-                padding: "0 20px 0 20px"
+                padding: "0 20px 0 20px",
               }}
             >
               <strong>Post</strong>
@@ -162,7 +144,7 @@ const Topbar = props => {
                 style={{
                   float: "right",
                   marginTop: "0px",
-                  marginRight: "50px"
+                  marginRight: "50px",
                 }}
               >
                 <Button
@@ -171,7 +153,7 @@ const Topbar = props => {
                     const content = await fetch(
                       `http://172.21.148.170/api/chat/${current.accountID}`
                     );
-                    content.json().then(r => {
+                    content.json().then((r) => {
                       props.history.push(`/chat/${r[0].url}`);
                     });
                   }}
@@ -189,7 +171,7 @@ const Topbar = props => {
                 style={{
                   float: "right",
                   marginTop: "16px",
-                  marginRight: "15px"
+                  marginRight: "15px",
                 }}
                 shape="circle"
                 icon={<EnvironmentFilled />}
@@ -200,7 +182,7 @@ const Topbar = props => {
                 style={{
                   float: "right",
                   marginTop: "16px",
-                  marginRight: "15px"
+                  marginRight: "15px",
                 }}
                 shape="circle"
                 icon={<UserOutlined />}
