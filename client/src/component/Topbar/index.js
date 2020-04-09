@@ -8,7 +8,6 @@ import {
   Dropdown,
   Menu,
   Typography,
-  notification,
 } from "antd";
 
 import { Link } from "react-router-dom";
