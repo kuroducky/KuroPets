@@ -1,5 +1,6 @@
 const Pool = require("pg").Pool;
 
+// Creates a connection to the database
 const pool = new Pool({
   user: "postgres",
   host: "localhost",
@@ -9,24 +10,5 @@ const pool = new Pool({
   connectionTimeoutMillis: 2000,
   query_timeout: 1000
 });
-// const promise = require('bluebird');
-// const initOptions = {
-//   promiseLib: promise
-// };
-
-
-// const pgp = require('pg-promise')(initOptions);
-
-// const cn = 
-// {
-//   host: 'localhost',
-//   port: '5432',
-//   database: 'kuropets_db',
-//   user: 'postgres',
-//   password: "Kuroducky"
-// };
-
-// const pool = pgp(cn);
-
 
 module.exports = pool;
