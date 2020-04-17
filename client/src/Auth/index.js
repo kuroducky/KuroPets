@@ -4,13 +4,12 @@ export const login = async (username, password) => {
     method: "POST",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify({ name: username, password: password })
+    body: JSON.stringify({ name: username, password: password }),
   });
 
   const content = await response.json();
-  console.log(content);
   const { loginSuccess } = content;
   if (loginSuccess) {
     delete content.data.password;
@@ -27,14 +26,14 @@ export const logout = () => {
   localStorage.removeItem("user");
 };
 
-export const register = async values => {
+export const register = async (values) => {
   const response = await fetch(`http://172.21.148.170/api/user`, {
     method: "POST",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(values)
+    body: JSON.stringify(values),
   });
 
   const content = await response.json();

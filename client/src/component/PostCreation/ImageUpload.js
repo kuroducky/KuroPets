@@ -8,10 +8,9 @@ class ImageUpload extends React.Component {
     super(props);
     this.form = React.createRef();
   }
-  onAddImage = value => {
+  onAddImage = (value) => {
     const { image } = value;
     const { onSubmitImage } = this.props;
-    console.log();
     onSubmitImage(image);
     this.form.current.resetFields();
   };
@@ -25,7 +24,7 @@ class ImageUpload extends React.Component {
           marginBottom: "50px",
           boxShadow:
             "0 3px 10px 0 rgba(44,44,45,.07), inset 0 0 0 1px rgba(44,44,45,.07)",
-          borderRadius: "8px"
+          borderRadius: "8px",
         }}
       >
         <br />
@@ -42,7 +41,7 @@ class ImageUpload extends React.Component {
                   fit="cover"
                   style={{
                     height: "500px",
-                    borderRadius: "8px"
+                    borderRadius: "8px",
                   }}
                   src={"/placeholder-lg.png"}
                 />
@@ -54,7 +53,7 @@ class ImageUpload extends React.Component {
                     fit="cover"
                     style={{
                       height: "500px",
-                      borderRadius: "8px"
+                      borderRadius: "8px",
                     }}
                     src={link}
                   />

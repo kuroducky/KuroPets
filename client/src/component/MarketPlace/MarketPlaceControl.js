@@ -4,7 +4,7 @@ import MarkplaceView from "./MarketPlaceView";
 // props: {keywords: []}
 class MarkPlaceControl extends React.Component {
   state = {
-    posts: []
+    posts: [],
   };
   async componentDidUpdate(previousProps, previousState) {
     const { keywords } = this.props;
@@ -34,7 +34,6 @@ class MarkPlaceControl extends React.Component {
     this.setState({ posts: json });
   }
   render() {
-    console.log("from marketplace: ", this.props.keywords);
     const { posts } = this.state;
     return (
       <div>

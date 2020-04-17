@@ -16,11 +16,11 @@ const CompleteServiceView = ({ visible, onCompleteService, onCancel }) => {
       onOk={() => {
         form
           .validateFields()
-          .then(values => {
+          .then((values) => {
             form.resetFields();
             onCompleteService(values);
           })
-          .catch(info => {
+          .catch((info) => {
             console.log("Validate Failed:", info);
           });
       }}
@@ -31,7 +31,7 @@ const CompleteServiceView = ({ visible, onCompleteService, onCancel }) => {
         layout="vertical"
         name="form_in_modal"
         initialValues={{
-          modifier: "public"
+          modifier: "public",
         }}
       >
         <Text>How would you rate the experience?</Text>
@@ -40,8 +40,8 @@ const CompleteServiceView = ({ visible, onCompleteService, onCancel }) => {
           rules={[
             {
               required: true,
-              message: "Please rate the experience!"
-            }
+              message: "Please rate the experience!",
+            },
           ]}
         >
           <Rate />
@@ -51,11 +51,10 @@ const CompleteServiceView = ({ visible, onCompleteService, onCancel }) => {
   );
 };
 
-const CompleteServiceControl = props => {
+const CompleteServiceControl = (props) => {
   const [visible, setVisible] = useState(false);
-  console.log("complete button props: ", props);
 
-  const onCompleteService = async values => {
+  const onCompleteService = async (values) => {
     // values contains ratings
 
     // POST to change post status
@@ -65,13 +64,12 @@ const CompleteServiceControl = props => {
         method: "POST",
         headers: {
           Accept: "application/json",
-          "Content-Type": "application/json"
-        }
+          "Content-Type": "application/json",
+        },
       }
     );
 
     const content = await response.json();
-    console.log("post complete", content);
     // POST to change rating of caretaker
 
     const responseRate = await fetch(
@@ -80,13 +78,12 @@ const CompleteServiceControl = props => {
         method: "POST",
         headers: {
           Accept: "application/json",
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(values)
+        body: JSON.stringify(values),
       }
     );
     const contentRate = await responseRate.json();
-    console.log("rate", contentRate);
     message.success("Rating received!");
     setVisible(false);
     window.location.reload();
@@ -118,7 +115,7 @@ const CompleteServiceControl = props => {
         }}
         style={{
           float: "right",
-          marginRight: "15px"
+          marginRight: "15px",
         }}
         shape="circle"
         icon={<CheckCircleTwoTone twoToneColor="#52c41a" />}

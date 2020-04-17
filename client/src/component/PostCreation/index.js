@@ -8,7 +8,7 @@ import {
   Input,
   Button,
   DatePicker,
-  message
+  message,
 } from "antd";
 import ImageUpload from "./ImageUpload";
 const { Content } = Layout;
@@ -19,23 +19,23 @@ const mainPageStyles = {
   marginLeft: "5%",
   marginRight: "5%",
   marginTop: 60,
-  padding: "2px 22px 0px 22px"
+  padding: "2px 22px 0px 22px",
 };
 class PostCreation extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      images: []
+      images: [],
     };
     this.onSubmitForm = this.onSubmitForm.bind(this);
     this.form = React.createRef();
   }
-  onSubmitImage = url => {
-    this.setState(prevState => ({
-      images: [...prevState.images, url]
+  onSubmitImage = (url) => {
+    this.setState((prevState) => ({
+      images: [...prevState.images, url],
     }));
   };
-  onDeleteImage = index => {
+  onDeleteImage = (index) => {
     const images = [...this.state.images];
     images.splice(index, 1);
     this.setState({ images: images });
@@ -56,14 +56,13 @@ class PostCreation extends React.Component {
       method: "POST",
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(values)
+      body: JSON.stringify(values),
     });
 
     const content = await response.json();
 
-    console.log(content);
     this.form.current.resetFields();
     message.success("Post created!");
     // this.props.form.resetFields();
@@ -72,14 +71,14 @@ class PostCreation extends React.Component {
   }
   render() {
     const validateMessages = {
-      required: "This field is required!"
+      required: "This field is required!",
     };
     return (
       <Content style={mainPageStyles}>
         <div
           style={{
             marginTop: 24,
-            minHeight: 380
+            minHeight: 380,
           }}
         >
           <Title style={{ marginBottom: "0px" }} level={2}>
@@ -102,7 +101,7 @@ class PostCreation extends React.Component {
                   marginBottom: "50px",
                   boxShadow:
                     "0 3px 10px 0 rgba(44,44,45,.07), inset 0 0 0 1px rgba(44,44,45,.07)",
-                  borderRadius: "8px"
+                  borderRadius: "8px",
                 }}
               >
                 <Form
@@ -116,8 +115,8 @@ class PostCreation extends React.Component {
                   <Form.Item
                     rules={[
                       {
-                        required: true
-                      }
+                        required: true,
+                      },
                     ]}
                     name={"title"}
                     label="Title"
@@ -136,8 +135,8 @@ class PostCreation extends React.Component {
                   <Form.Item
                     rules={[
                       {
-                        required: true
-                      }
+                        required: true,
+                      },
                     ]}
                     name={"startEndDate"}
                     label="Start and End Date"

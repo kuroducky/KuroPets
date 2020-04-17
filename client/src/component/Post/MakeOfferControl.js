@@ -15,11 +15,11 @@ const MakeOfferView = ({ visible, onCreate, onCancel }) => {
       onOk={() => {
         form
           .validateFields()
-          .then(values => {
+          .then((values) => {
             form.resetFields();
             onCreate(values);
           })
-          .catch(info => {
+          .catch((info) => {
             console.log("Validate Failed:", info);
           });
       }}
@@ -29,7 +29,7 @@ const MakeOfferView = ({ visible, onCreate, onCancel }) => {
         layout="vertical"
         name="form_in_modal"
         initialValues={{
-          modifier: "public"
+          modifier: "public",
         }}
       >
         <Form.Item
@@ -38,8 +38,8 @@ const MakeOfferView = ({ visible, onCreate, onCancel }) => {
           rules={[
             {
               required: true,
-              message: "Please input the price of your offer!"
-            }
+              message: "Please input the price of your offer!",
+            },
           ]}
         >
           <InputNumber
@@ -47,11 +47,11 @@ const MakeOfferView = ({ visible, onCreate, onCancel }) => {
             size={"large"}
             autoFocus
             min={0}
-            formatter={value =>
+            formatter={(value) =>
               `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             }
-            parser={value => value.replace(/\$\s?|(,*)/g, "")}
-            onChange={value => {
+            parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+            onChange={(value) => {
               console.log(value);
             }}
           />
@@ -63,8 +63,8 @@ const MakeOfferView = ({ visible, onCreate, onCancel }) => {
           rules={[
             {
               required: true,
-              message: "Please input payment method!"
-            }
+              message: "Please input payment method!",
+            },
           ]}
         >
           <Radio.Group defaultValue="paylah" buttonStyle="solid">
@@ -84,22 +84,20 @@ const MakeOfferView = ({ visible, onCreate, onCancel }) => {
 const MakeOfferControl = ({ postID }) => {
   const [visible, setVisible] = useState(false);
 
-  const onCreate = async values => {
+  const onCreate = async (values) => {
     values.accountID = JSON.parse(localStorage.getItem("user")).accountID;
     values.postID = postID;
-    console.log(values);
     const response = await fetch(`http://172.21.148.170/api/offer`, {
       method: "POST",
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(values)
+      body: JSON.stringify(values),
     });
 
     // const content = await response.json();'
     message.success("Offer received!");
-    console.log("Received values of form: ", response);
     setVisible(false);
   };
 

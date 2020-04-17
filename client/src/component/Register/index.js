@@ -6,36 +6,34 @@ const { Content } = Layout;
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
-    sm: { span: 8 }
+    sm: { span: 8 },
   },
   wrapperCol: {
     xs: { span: 24 },
-    sm: { span: 16 }
-  }
+    sm: { span: 16 },
+  },
 };
 const tailFormItemLayout = {
   wrapperCol: {
     xs: {
       span: 24,
-      offset: 0
+      offset: 0,
     },
     sm: {
       span: 16,
-      offset: 8
-    }
-  }
+      offset: 8,
+    },
+  },
 };
 
 const RegisterView = ({ history }) => {
   const [form] = Form.useForm();
 
-  const onFinish = async values => {
+  const onFinish = async (values) => {
     delete values.agreement;
     delete values.confirm;
-    console.log(values);
     const content = await register(values);
 
-    console.log(content);
     if (content.querySuccess) {
       form.resetFields();
       const { name, password } = content.data;
@@ -66,8 +64,8 @@ const RegisterView = ({ history }) => {
         rules={[
           {
             required: true,
-            message: "Please input your username"
-          }
+            message: "Please input your username",
+          },
         ]}
       >
         <Input />
@@ -79,8 +77,8 @@ const RegisterView = ({ history }) => {
         rules={[
           {
             required: true,
-            message: "Please input your phone number"
-          }
+            message: "Please input your phone number",
+          },
         ]}
       >
         <Input />
@@ -92,8 +90,8 @@ const RegisterView = ({ history }) => {
           {
             type: "email",
             required: true,
-            message: "Please input a valid email address"
-          }
+            message: "Please input a valid email address",
+          },
         ]}
       >
         <Input />
@@ -104,8 +102,8 @@ const RegisterView = ({ history }) => {
         rules={[
           {
             required: true,
-            message: "Please input your password!"
-          }
+            message: "Please input your password!",
+          },
         ]}
         hasFeedback
       >
@@ -120,7 +118,7 @@ const RegisterView = ({ history }) => {
         rules={[
           {
             required: true,
-            message: "Please confirm your password!"
+            message: "Please confirm your password!",
           },
           ({ getFieldValue }) => ({
             validator(rule, value) {
@@ -130,8 +128,8 @@ const RegisterView = ({ history }) => {
               return Promise.reject(
                 "The two passwords that you entered do not match!"
               );
-            }
-          })
+            },
+          }),
         ]}
       >
         <Input.Password />
@@ -144,7 +142,7 @@ const RegisterView = ({ history }) => {
         rules={[
           {
             required: true,
-            message: "Please agree to the terms!"
+            message: "Please agree to the terms!",
           },
           ({ getFieldValue }) => ({
             validator(rule, value) {
@@ -152,8 +150,8 @@ const RegisterView = ({ history }) => {
                 return Promise.resolve();
               }
               return Promise.reject("Please agree to the terms!");
-            }
-          })
+            },
+          }),
         ]}
       >
         <Checkbox>I have read the agreement</Checkbox>
@@ -173,7 +171,7 @@ const mainPageStyles = {
   boxShadow:
     "0 3px 10px 0 rgba(44,44,45,.07), inset 0 0 0 1px rgba(44,44,45,.07)",
   borderRadius: "8px",
-  padding: "2px 22px 0px 0px"
+  padding: "2px 22px 0px 0px",
 };
 class RegisterControl extends React.Component {
   render() {
@@ -182,7 +180,7 @@ class RegisterControl extends React.Component {
         <div
           style={{
             marginTop: 24,
-            minHeight: 380
+            minHeight: 380,
           }}
         >
           <RegisterView {...this.props} />

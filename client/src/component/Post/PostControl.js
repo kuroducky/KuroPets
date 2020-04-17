@@ -9,7 +9,7 @@ const postDetails = {
   location: "Seng Kang",
   images: [
     "https://images.unsplash.com/photo-1548366086-7f1b76106622?ixlib=rb-1.2.1&auto=format&fit=crop&w=924&q=80",
-    "https://images.unsplash.com/photo-1551928692-6954104dee5a?ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80"
+    "https://images.unsplash.com/photo-1551928692-6954104dee5a?ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80",
   ],
   dateTime: "2020-03-04T13:30",
   status: "Pending Offer", // "pending offer", "pending service", "service completed"
@@ -19,27 +19,25 @@ const postDetails = {
   endDate: "2020-03-09",
   user: {
     accountID: "20",
-    name: "Scrappy Tay"
-  }
+    name: "Scrappy Tay",
+  },
 };
 class PostControl extends React.Component {
   state = {
     id: this.props.match.params.id,
     postDetails: postDetails,
-    offers: []
+    offers: [],
   };
-  updatePost = async values => {
-    console.log("upd: ", values);
-    console.log(values);
+  updatePost = async (values) => {
     const response = await fetch(
       `http://172.21.148.170/api/post/${this.state.postDetails.postID}`,
       {
         method: "PUT",
         headers: {
           Accept: "application/json",
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(values)
+        body: JSON.stringify(values),
       }
     );
 

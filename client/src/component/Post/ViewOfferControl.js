@@ -4,7 +4,7 @@ import {
   UserOutlined,
   WalletOutlined,
   DollarOutlined,
-  CheckCircleOutlined
+  CheckCircleOutlined,
 } from "@ant-design/icons";
 
 const { Title } = Typography;
@@ -26,7 +26,7 @@ const ViewOfferView = ({ history, visible, onCancel, offers, acceptOffer }) => {
         style={{
           maxHeight: "500px",
           overflow: "auto",
-          padding: "8px 24px"
+          padding: "8px 24px",
         }}
       >
         {offers.length == 0 ? (
@@ -40,7 +40,7 @@ const ViewOfferView = ({ history, visible, onCancel, offers, acceptOffer }) => {
                   border: "1px solid #e8e8e8",
                   borderRadius: "8px",
                   padding: "10px 10px",
-                  marginBottom: "15px"
+                  marginBottom: "15px",
                   // minHeight: "90px"
                 }}
               >
@@ -49,7 +49,7 @@ const ViewOfferView = ({ history, visible, onCancel, offers, acceptOffer }) => {
                     <Title style={{ marginBottom: "-2px" }} level={4}>
                       <Avatar
                         style={{
-                          marginRight: "6px"
+                          marginRight: "6px",
                         }}
                         icon={<UserOutlined />}
                       />
@@ -73,7 +73,7 @@ const ViewOfferView = ({ history, visible, onCancel, offers, acceptOffer }) => {
                             return (
                               <span key={i}>
                                 <strong>
-                                  , {p.replace(/^\w/, c => c.toUpperCase())}{" "}
+                                  , {p.replace(/^\w/, (c) => c.toUpperCase())}{" "}
                                 </strong>
                               </span>
                             );
@@ -81,7 +81,7 @@ const ViewOfferView = ({ history, visible, onCancel, offers, acceptOffer }) => {
                             return (
                               <span key={i}>
                                 <strong>
-                                  {p.replace(/^\w/, c => c.toUpperCase())}{" "}
+                                  {p.replace(/^\w/, (c) => c.toUpperCase())}{" "}
                                 </strong>
                               </span>
                             );
@@ -115,10 +115,9 @@ const ViewOfferView = ({ history, visible, onCancel, offers, acceptOffer }) => {
                         const content = await fetch(
                           `http://172.21.148.170/api/chat/${current.accountID}/${offer.user.accountID}?name=${current.name}&otherName=${offer.user.name}`
                         );
-                        content.json().then(r => {
+                        content.json().then((r) => {
                           history.push(`/chat/${r.url}`);
                         });
-                        console.log(offer.user.accountID);
                       }}
                       block
                     >
@@ -138,21 +137,19 @@ const ViewOfferView = ({ history, visible, onCancel, offers, acceptOffer }) => {
 class ViewOfferControl extends React.Component {
   state = {
     visible: false,
-    offers: []
+    offers: [],
   };
-  acceptOffer = async id => {
-    console.log("accepted offer from: ", id);
+  acceptOffer = async (id) => {
     const response = await fetch(`http://172.21.148.170/api/offer/${id}`, {
       method: "PUT",
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ status: "Accepted" })
+      body: JSON.stringify({ status: "Accepted" }),
     });
 
     const content = await response.json();
-    console.log(content);
 
     this.setState({ visible: false });
     window.location.reload();
@@ -162,7 +159,6 @@ class ViewOfferControl extends React.Component {
       `http://172.21.148.170/api/post/${this.props.postID}/offer`
     );
     const json = await response.json();
-    console.log("offers", json);
     this.setState({ offers: json });
   }
   render() {

@@ -5,7 +5,7 @@ import {
   DollarCircleOutlined,
   InfoCircleOutlined,
   CheckCircleTwoTone,
-  CheckCircleOutlined
+  CheckCircleOutlined,
 } from "@ant-design/icons";
 
 const { Title } = Typography;
@@ -14,52 +14,51 @@ const offers = [
     user: { name: "Johnny", accountID: "22", rating: 3 },
     price: 300,
     payment: ["cash", "paylah"],
-    status: "pending"
+    status: "pending",
   },
   {
     user: { name: "Scrappy", accountID: "23", rating: 2.1 },
     price: 400,
     payment: ["cash"],
-    status: "pending"
+    status: "pending",
   },
   {
     user: { name: "Skippy", accountID: "24", rating: 4.4 },
     price: 320.4,
     payment: ["paylah"],
-    status: "pending"
+    status: "pending",
   },
   {
     user: { name: "Sandy", accountID: "25", rating: 3.3 },
     price: 310,
     payment: ["cash", "paylah"],
-    status: "pending"
+    status: "pending",
   },
   {
     user: { name: "tommy", accountID: "26", rating: 3.2 },
     price: 300,
     payment: ["cash"],
-    status: "pending"
+    status: "pending",
   },
   {
     user: { name: "Sally", accountID: "27", rating: 4.6 },
     price: 400,
     payment: ["paylah"],
-    status: "pending"
-  }
+    status: "pending",
+  },
 ];
 
 class OfferTab extends React.Component {
   state = {
-    offers: []
+    offers: [],
   };
-  viewPost = id => {
+  viewPost = (id) => {
     this.props.history.push(`/post/${id}`);
   };
   async componentDidMount() {
     const { id } = this.props.match.params;
     const response = await fetch(`http://172.21.148.170/api/user/${id}/offer`);
     const json = await response.json();
-    console.log(json);
     this.setState({ offers: json });
   }
   render() {
@@ -80,7 +79,7 @@ class OfferTab extends React.Component {
         style={{
           maxHeight: "600px",
           overflow: "auto",
-          padding: "8px 24px"
+          padding: "8px 24px",
         }}
       >
         {offers.map((offer, key) => {
@@ -94,7 +93,7 @@ class OfferTab extends React.Component {
                 marginBottom: "15px",
                 minHeight: "150px",
                 boxShadow:
-                  "0 3px 10px 0 rgba(44,44,45,.07), inset 0 0 0 1px rgba(44,44,45,.07)"
+                  "0 3px 10px 0 rgba(44,44,45,.07), inset 0 0 0 1px rgba(44,44,45,.07)",
               }}
             >
               <Row gutter={16}>
@@ -103,7 +102,7 @@ class OfferTab extends React.Component {
                     fit="cover"
                     style={{
                       height: "130px",
-                      borderRadius: "8px"
+                      borderRadius: "8px",
                     }}
                     src={
                       offer.post.images[0]

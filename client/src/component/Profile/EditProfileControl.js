@@ -5,11 +5,10 @@ const EditProfileView = ({ visible, onCancel, onUpdateForm, user }) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    console.log(user.name);
     form.setFieldsValue({
       name: user.name,
       phone: user.phone,
-      email: user.email
+      email: user.email,
     });
   }, []);
   return (
@@ -22,10 +21,10 @@ const EditProfileView = ({ visible, onCancel, onUpdateForm, user }) => {
       onOk={() => {
         form
           .validateFields()
-          .then(values => {
+          .then((values) => {
             onUpdateForm(values);
           })
-          .catch(info => {
+          .catch((info) => {
             console.log("Validate Failed:", info);
           });
       }}
@@ -37,14 +36,14 @@ const EditProfileView = ({ visible, onCancel, onUpdateForm, user }) => {
         layout="vertical"
         name="form_in_modal"
         initialValues={{
-          modifier: "public"
+          modifier: "public",
         }}
       >
         <Form.Item
           rules={[
             {
-              required: true
-            }
+              required: true,
+            },
           ]}
           name={"phone"}
           label="Phone Number"
@@ -56,8 +55,8 @@ const EditProfileView = ({ visible, onCancel, onUpdateForm, user }) => {
             {
               type: "email",
               required: true,
-              message: "Please input a valid email address"
-            }
+              message: "Please input a valid email address",
+            },
           ]}
           name={"email"}
           label="Email Address"
@@ -74,9 +73,9 @@ const EditProfileView = ({ visible, onCancel, onUpdateForm, user }) => {
 
 class EditProfileControl extends React.Component {
   state = {
-    visible: false
+    visible: false,
   };
-  onUpdateForm = values => {
+  onUpdateForm = (values) => {
     this.props.onUpdateForm(values);
     this.setState({ visible: false });
   };

@@ -83,17 +83,16 @@ const { Title } = Typography;
 
 class PostTab extends React.Component {
   state = {
-    posts: []
+    posts: [],
   };
 
-  viewPost = id => {
+  viewPost = (id) => {
     this.props.history.push(`/post/${id}`);
   };
   async componentDidMount() {
     const { id } = this.props.match.params;
     const response = await fetch(`http://172.21.148.170/api/user/${id}/post`); // http://172.21.148.170/api/user/31/offer
     const json = await response.json();
-    console.log(json);
     this.setState({ posts: json });
   }
   render() {
@@ -113,7 +112,7 @@ class PostTab extends React.Component {
         style={{
           maxHeight: "600px",
           overflow: "auto",
-          padding: "8px 24px"
+          padding: "8px 24px",
         }}
       >
         {posts.map((post, key) => {
@@ -127,7 +126,7 @@ class PostTab extends React.Component {
                 marginBottom: "15px",
                 minHeight: "150px",
                 boxShadow:
-                  "0 3px 10px 0 rgba(44,44,45,.07), inset 0 0 0 1px rgba(44,44,45,.07)"
+                  "0 3px 10px 0 rgba(44,44,45,.07), inset 0 0 0 1px rgba(44,44,45,.07)",
               }}
             >
               <Row gutter={16}>
@@ -136,7 +135,7 @@ class PostTab extends React.Component {
                     fit="cover"
                     style={{
                       height: "130px",
-                      borderRadius: "8px"
+                      borderRadius: "8px",
                     }}
                     src={
                       post.images[0] ? post.images[0] : "/placeholder-tb.png"

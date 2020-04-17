@@ -9,7 +9,7 @@ const mainPageStyles = {
   marginLeft: "5%",
   marginRight: "5%",
   marginTop: 60,
-  padding: "2px 22px 0px 22px"
+  padding: "2px 22px 0px 22px",
 };
 
 const { Content } = Layout;
@@ -18,19 +18,18 @@ const { TabPane } = Tabs;
 
 class ProfileControl extends React.Component {
   state = {
-    user: {}
+    user: {},
   };
-  onUpdateForm = async values => {
-    console.log(values);
+  onUpdateForm = async (values) => {
     const response = await fetch(
       `http://172.21.148.170/api/user/${this.state.user.accountID}`,
       {
         method: "PUT",
         headers: {
           Accept: "application/json",
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(values)
+        body: JSON.stringify(values),
       }
     );
 
@@ -46,9 +45,8 @@ class ProfileControl extends React.Component {
       delete user.password;
       this.setState({ user });
     }
-    console.log(this.state);
   }
-  callback = key => {
+  callback = (key) => {
     console.log(key);
   };
   render() {
@@ -58,7 +56,7 @@ class ProfileControl extends React.Component {
         <div
           style={{
             marginTop: 80,
-            minHeight: 380
+            minHeight: 380,
           }}
         >
           <Row style={{ marginTop: "20px" }} gutter={16}>
@@ -67,7 +65,7 @@ class ProfileControl extends React.Component {
                 <Avatar
                   size={128}
                   style={{
-                    margin: "0 6px 20px 0"
+                    margin: "0 6px 20px 0",
                   }}
                   icon={<UserOutlined />}
                 />
@@ -113,7 +111,7 @@ class ProfileControl extends React.Component {
                   marginBottom: "50px",
                   boxShadow:
                     "0 3px 10px 0 rgba(44,44,45,.07), inset 0 0 0 1px rgba(44,44,45,.07)",
-                  borderRadius: "8px"
+                  borderRadius: "8px",
                 }}
               >
                 <Tabs
